@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .product {
+            height: 2.11rem;
+            position:relative;
+        }
+        .divicon{
+
+        }
+            .divicon img {
+                width: 0.99rem;
+                height: 0.99rem;
+                margin-top: 0.27rem;
+            }
+            .divicon div {
+                width: 100%;
+                text-align: center;
+                font-size: 0.42rem;
+                margin-top: 0.22rem;
+                font-weight: bold;
+            }
+
+        .news {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="display-flex flex-direction-column" style="position:absolute;left:0;width:100%;bottom:2px;background-color:#fff;" v-bind:style="{top:safeAreaTop + 'px'}">
+        <div class="flex-shrink-0" style="height:1.1rem;width:100%;background-color:#fff;position:relative;">
+            <img style="width:0.75rem;height:0.75rem;position:absolute;left:0.45rem;top:0.22rem;" src="../imgs/home/head.svg" />
+            <div style="font-size:0.45rem;position:absolute;left:1.36rem;top:0.38rem;color:#333333;font-weight:bold;height:100%;line-height:100%;" @click="loginClick">{{amount}}</div>
+            <img @click="contactUsClick" style="width:0.75rem;height:0.72rem;position:absolute;right:0.45rem;bottom:0.2rem;" src="../imgs/home/service.svg" />
+        </div>
+        <div class="flex-1 canscroll">
+            <div class="display-flex flex-direction-column" >
+
+                <div id="banner" @click="bannerClick" class="flex-shrink-0" style="width:100%;margin-top:0.17rem;margin-bottom:0.17rem;display:none;"></div>
+                <div style="width:100%;" class="flex-1">
+                    <div style="position:relative;color:#717171;margin-right:0.3rem;" :style="{height:getFontSize(1.08)}">
+
+                        <div id="divNoticeContainer" style="height:100%;color:#333333;padding-left:1.4rem;overflow:hidden;">
+                            <div style="white-space:nowrap;font-size:0.33rem;" :style="{height:getFontSize(1.08),lineHeight:getFontSize(1.08)}" v-for="item in notices">{{item.content}}</div>
+                        </div>
+
+                        <img src="../imgs/home/sound.svg" style="height:0.45rem;position:absolute;left:0.6rem;top:0.315rem;" />
+                    </div>
+
+                    <div class="display-flex flex-direction-row" style="width:100%;height:2.26rem;color:#333333;">
+                        <div @click="openRanking" class="flex-1 display-flex flex-direction-column align-items-center divicon" style="height:100%;">
+                            <img src="../imgs/home/gsph.svg" />
+                            <div>{{textRes.items["高手排行榜"]}}</div>
+                        </div>
+                        <div @click="openActivity" class="flex-1 display-flex flex-direction-column align-items-center divicon" style="height:100%;">
+                            <img src="../imgs/home/hdzq.svg" />
+                            <div>{{textRes.items["活动专区"]}}</div>
+                        </div>
+                        <div @click="showPopularize" class="flex-1 display-flex flex-direction-column align-items-center divicon" style="height:100%;">
+                            <img src="../imgs/home/wdtg.svg" />
+                            <div>{{textRes.items["我的推广"]}}</div>
+                        </div>
+                        <div @click="showBeginnerGuide" class="flex-1 display-flex flex-direction-column align-items-center divicon" style="height:100%;">
+                            <img src="../imgs/home/xsjx.svg" />
+                            <div>{{textRes.items["新手教学home"]}}</div>
+                        </div>
+                    </div>
+                    <div style="position:relative;background-color:#f7f7f7;height:0.3rem;"></div>
+                    <div style="position:relative;background-color:#fff;height:1.2rem;">
+                        <div style="position:absolute;left:0.6rem;top:0.39rem;background-color:#ea3131;width:0.12rem;height:0.45rem;"></div>
+                        <div class="display-flex flex-direction-row align-items-center" style="padding-left:0.98rem;font-weight:bold;height:100%;color:#333333;">
+                            <div style="font-size:0.51rem;">{{textRes.items["热门品种推荐"]}}</div>
+                        </div>
+                        <div style="height:1px;border-top:1px solid #F5F5F5;margin-left:0.6rem;margin-right:0.6rem;"></div>
+                    </div>
+                    <div v-show="products.length>0" class="display-flex flex-direction-row align-items-center justify-content-space-between" style="height:2.97rem;width:100%;padding-left:0.59rem;padding-right:0.59rem;">
+                        <div class="flex-1 flex-shrink-0 product" @click="commodityClick(item)" :style="{marginLeft:index>0?'0.3rem':''}" v-for="item,index in products">
+                            <div style="color:#4A4A4A;position:absolute;left:0.28rem;top:0.1rem;font-size:0.36rem;">{{item.marketsymbol}} {{item.leverage}}X</div>
+
+                            <div :style="{color:item.isDown?textRes.items['TextColor跌']:textRes.items['TextColor涨']}" style="font-weight:bold;position:absolute;left:0.28rem;top:0.75rem;font-size:0.6rem;">{{item.percent}}</div>
+                            <div :style="{color:item.isDown?textRes.items['TextColor跌']:textRes.items['TextColor涨']}" style="position:absolute;left:0.28rem;top:1.65rem;font-size:0.3rem;">{{formatMoney(toFixed(item.showPrice,item.decimalplace))}}</div>
+                        </div>
+                    </div>
+                    <div @click="recharge" style="background-color:#F8F8F8;padding:0.3rem 0.45rem 0.2rem 0.45rem;">
+                        <img v-if="textRes.langName=='zh-CN'" src="../imgs/home/b1.png" style="width:10.35rem;height:2.16rem;" />
+                        <img v-if="textRes.langName=='en-US'" src="../imgs/home/b2.png" style="width:10.35rem;height:2.16rem;" />
+                    </div>
+                    <div @click="rechargeCredit" style="background-color:#F8F8F8;padding:0 0.45rem 0.3rem 0.45rem;">
+                        <img v-if="textRes.langName=='zh-CN'" src="../imgs/home/b3.png" style="width:10.35rem;height:2.16rem;" />
+                        <img v-if="textRes.langName=='en-US'" src="../imgs/home/b4.png" style="width:10.35rem;height:2.16rem;" />
+                    </div>
+                    <div style="background-color:#F8F8F8;padding:0 0.45rem 0.3rem 0.45rem;color:#4A4A4A;">
+                        <div @click="newsClick" style="width:10.35rem;height:2.16rem;border-radius:0.06rem;background-color:#fff;position:relative;">
+                            <img src="../imgs/home/news.svg" style="width:1.23rem;height:1.23rem;margin-left:0.6rem;margin-top:0.57rem;" />
+                            <div style="width:0.03rem;height:1.11rem;background-color:#F5F5F5;position:absolute;top:0.6rem;left:2.37rem;"></div>
+                            <div class="news" style="position:absolute;top:0.54rem;left:3.15rem;font-weight:bold;width:6.21rem;overflow:hidden;text-overflow:ellipsis;" :style="{fontSize:getFontSize(0.42),lineHeight:getFontSize(0.6),height:getFontSize(0.6)}">
+                                {{coinApi.title}}
+                            </div>
+                            <div class="news" style="position:absolute;top:1.23rem;left:3.15rem;color:#787878;width:6.21rem;overflow:hidden;text-overflow:ellipsis;" :style="{fontSize:getFontSize(0.36),lineHeight:getFontSize(0.5),height:getFontSize(0.5)}">
+                                {{coinApi.content}}
+                            </div>
+                            <svg style="position:absolute;left:9.69rem;width:0.21rem;height:0.48rem;top:0.84rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                                <path d="M0,0 L100,50 L0,100" stroke="#787878" stroke-width="8" fill="none"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div style="position:relative;background-color:#fff;height:1.2rem;">
+                        <div style="position:absolute;left:0.6rem;top:0.39rem;background-color:#ea3131;width:0.12rem;height:0.45rem;"></div>
+                        <div class="display-flex flex-direction-row align-items-center" style="padding-left:0.98rem;font-weight:bold;height:100%;color:#333333;">
+                            <div style="font-size:0.51rem;">{{textRes.items["高手排行榜"]}}</div>
+                        </div>
+                        <div style="height:1px;border-top:1px solid #F5F5F5;margin-left:0.6rem;margin-right:0.6rem;"></div>
+                    </div>
+                    <div style="padding-left:0.57rem;padding-right:0.57rem;color:#333333;">
+                        <table cellspacing="0" style="width:100%;">
+                            <tr style="font-weight:bold;text-align:center;height:1.29rem;">
+                                <td style="border-bottom:1px solid #f7f7f7;font-size:0.45rem;">{{textRes.items["排行"]}}</td>
+                                <td style="border-bottom:1px solid #f7f7f7;font-size:0.45rem;">{{textRes.items["用户"]}}</td>
+
+                                <td style="border-bottom:1px solid #f7f7f7;font-size:0.45rem;">{{textRes.items["收益率"]}}</td>
+                                <td style="border-bottom:1px solid #f7f7f7;font-size:0.45rem;color:#ea3131;">{{textRes.items["盈利金额"]}}</td>
+                            </tr>
+                            <tr style="text-align:center;height:1.29rem;" v-for="item in rankings">
+                                <td style="border-bottom:1px solid #f7f7f7;font-size:0.42rem;">{{item.Number}}</td>
+                                <td style="border-bottom:1px solid #f7f7f7;font-size:0.42rem;">{{hidePhone(item.phone)}}</td>
+
+                                <td style="border-bottom:1px solid #f7f7f7;font-size:0.42rem;">{{(item.winRage*100).toFixed(2)}}%</td>
+                                <td style="border-bottom:1px solid #f7f7f7;font-size:0.42rem;color:#ea3131;">{{formatMoney(item.profit,"+")}}</td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+</body>
+</html>

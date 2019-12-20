@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div class="display-flex flex-direction-column" style="width:100%;height:100%;background-color:#fff;">
+        <pageheader class="flex-shrink-0" :title="title" :withloading="true" :showloading="isBusy"></pageheader>
+
+        <div class="flex-1 canscroll">
+            <div class="display-flex flex-direction-row align-items-start" style="margin-top:0.66rem;padding-bottom:0.45rem;position:relative;">
+                <div class="flex-shrink-0" style="margin-left:0.45rem;background-color:#EA3131;width:0.12rem;height:0.45rem;"></div>
+                <div class="flex-1" style="font-size:0.42rem;color:#4A4A4A;font-weight:bold;margin-left:0.33rem;">{{msgitem.title}}</div>
+                <div class="flex-shrink-0" style="color:#B8B8B8;font-size:0.36rem;margin-right:0.45rem;">{{showUTCTime(msgitem.createTime)}}</div>
+
+                <div style="position:absolute;left:0.45rem;right:0.45rem;bottom:0;height:1px;border-bottom:1px solid #FAFAFA;"></div>
+            </div>
+            <div style="margin-top:0.45rem;margin-left:0.9rem;margin-right:0.9rem;color:#7F7F7F;font-size:0.36rem;">
+                {{msgitem.content}}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

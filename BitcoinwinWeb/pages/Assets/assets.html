@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div class="pages-my pages-assets canscroll" style="position:absolute;left:0;top:0;width:100%;height:100%;background-color:#fff;">
+        <div class="myheader" :style="{paddingTop:safeTop}">
+            <div style="padding-top:0.6rem;padding-left:0.62rem;position:relative;font-size:0.4rem;color:#fff;">
+                {{textRes.items['账户余额']}}&nbsp;&nbsp;(USDT)
+                <div @click="billList" style="position:absolute;right:0.64rem;top:0.6rem;font-size:0.4rem;">
+                    {{textRes.items['明细']}}
+                </div>
+
+                <div v-if="data.loanAmount>0" @click="repay" style="width:2.84rem;height:0.74rem;line-height:0.74rem;border-radius:999rem;background-color:#fff;position:absolute;top:1.25rem;right:0.6rem;color:#ec2f35;text-align:center;font-size:0.33rem;font-weight:bold;">
+                    {{textRes.items['立即还款']}}
+                </div>
+
+                <div v-if="data.loanAmount==0" @click="borrow" style="width:2.84rem;height:0.74rem;line-height:0.74rem;border-radius:999rem;background-color:#fff;position:absolute;top:1.25rem;right:0.6rem;color:#ec2f35;text-align:center;font-size:0.33rem;font-weight:bold;">
+                    {{textRes.items['我要借款']}}
+                </div>
+            </div>
+            <div style="padding-top:0.2rem;padding-left:0.62rem;position:relative;font-size:0.8rem;color:#fff;font-weight:bold;width:1px;white-space:nowrap;">
+                {{formatMoney(toFixed(data.canusedAmount,2))}}
+            </div>
+            <div class="display-flex flex-direction-row" style="margin-top:0.5rem;height:1.53rem;">
+                <div class="flex-1 display-flex flex-direction-row align-items-center" style="background-color:#ee5a5a;">
+                    <div @click="recordAction('Assets_冻结资产')" style="margin-left:0.64rem;color:#fff;">
+                        <div style="font-size:0.32rem;margin-bottom:0.1rem;">{{textRes.items['冻结资产']}}</div>
+                        <div style="font-size:0.5rem;font-weight:bold;">{{formatMoney(toFixed(data.frozenAssets,2))}}</div>
+                    </div>
+                </div>
+                <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-left:1px;background-color:#ee5a5a;">
+                    <div @click="recordAction('Assets_借款')" style="margin-left:0.64rem;color:#fff;">
+                        <div style="font-size:0.32rem;margin-bottom:0.1rem;">{{textRes.items['借款']}}</div>
+                        <div style="font-size:0.5rem;font-weight:bold;">{{formatMoney(toFixed(data.loanAmount,2))}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="!IsDemoMode()" style="height:2rem;padding-left:0.6rem;padding-right:0.6rem;margin-top:0.18rem;" class="display-flex flex-direction-row justify-content-space-between align-items-center">
+            <div @click="rechargeClick" touchmode="btnclick" class="btn flex-1">{{textRes.items['充值']}}</div>
+            <div @click="withdrawClick" class="btn flex-1" touchmode="btnclick" style="margin-left:0.3rem;">{{textRes.items['提现']}}</div>
+            <div @click="creaditAccountClick" class="btn flex-1" touchmode="btnclick" style="margin-left:0.3rem;">{{textRes.items['信用资本']}}</div>
+        </div>
+        <div style="background-color:#f5f5f5;height:0.3rem;"></div>
+        <div style="margin-bottom:0.11rem;">
+            <div style="margin-left:0.44rem;margin-right:0.44rem;">
+                <div class="itemtitle" style="padding-top:0.35rem;">
+                    {{textRes.items['余额宝']}}&nbsp;&nbsp;(USDT)
+                    <div @click="balanceList" class="itemtitle" style="color:#4070d6;position:absolute;right:0.03rem;top:0.4rem;font-size:0.38rem;">{{textRes.items['明细']}}</div>
+                    <div v-show="data.balanceTreasure.totalIncome>0" @click="canTransAmount=data.balanceTreasure.totalIncome;isYEB=true;isShowTransDialog=true" class="itembtn">{{textRes.items['转入余额']}}</div>
+                </div>
+                <div class="borderBottom" style="margin-top:0.03rem;padding-bottom:0.27rem;font-size:0.72rem;color:#4A4A4A;font-weight:bold;">
+                    {{formatMoney(toFixed(data.balanceTreasure.totalIncome,2))}}
+                </div>
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="">
+                    <div class="flex-1" style="padding-top:0.27rem;padding-bottom:0.21rem;font-weight:bold;font-size:0.42rem;color:#484848;">
+                        {{textRes.items['累计收益']}}
+                    </div>
+                    <div style="font-size:0.6rem;font-weight:bold;color:#484848;">
+                        {{formatMoney(toFixed(data.balanceTreasure.accumulatedIncome,4))}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.24rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['待结算']}}
+                    </div>
+                    <div style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['昨日总收益']}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.54rem;font-weight:400;color:#666666;">
+                        {{formatMoney(toFixed(data.balanceTreasure.settlementIncome,4))}}
+                    </div>
+                    <div style="font-size:0.54rem;font-weight:400;color:#EA3131;">
+                        {{formatMoney(toFixed(data.balanceTreasure.yesterdayTotalIncome,4),'+')}}
+                    </div>
+                </div>
+
+                <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.24rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['余额']}}({{data.balanceTreasure.balanceAnnual}}%)
+                    </div>
+                    <div style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['昨日收益']}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.54rem;font-weight:400;color:#666666;">
+                        {{formatMoney(toFixed(data.balanceTreasure.canusedBalnace,4))}}
+                    </div>
+                    <div style="font-size:0.54rem;font-weight:400;color:#EA3131;">
+                        {{formatMoney(toFixed(data.balanceTreasure.balanceIncome,4),'+')}}
+                    </div>
+                </div>
+
+                <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.24rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['保证金']}}({{data.balanceTreasure.marginAnnual}}%)
+                    </div>
+                    <div style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['昨日收益']}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.54rem;font-weight:400;color:#666666;">
+                        {{formatMoney(toFixed(data.balanceTreasure.margin,4))}}
+                    </div>
+                    <div style="font-size:0.54rem;font-weight:400;color:#EA3131;">
+                        {{formatMoney(toFixed(data.balanceTreasure.marginIncome,4),'+')}}
+                    </div>
+                </div>
+
+                <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.24rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['信用资本利息']}}({{data.balanceTreasure.creditAccountAnnual}}%)
+                    </div>
+                    <div style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['昨日收益']}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center" style="padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.54rem;font-weight:400;color:#666666;">
+                        {{formatMoney(toFixed(data.balanceTreasure.creditAmount,4))}}
+                    </div>
+                    <div style="font-size:0.54rem;font-weight:400;color:#EA3131;">
+                        {{formatMoney(toFixed(data.balanceTreasure.creditAccountIncome,4),'+')}}
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+        <div style="background-color:#f5f5f5;height:0.3rem;"></div>
+
+        <div v-if="!isVip" style="margin-bottom:0.11rem;">
+            <div style="margin-left:0.44rem;margin-right:0.44rem;">
+                <div class="itemtitle" style="padding-top:0.35rem;">
+                    {{textRes.items['邀请收益']}}&nbsp;&nbsp;(USDT)
+                    <div @click="shareInCome(data.distributionIncome.totalIncome,data.distributionIncome.accumulatedIncome)" class="itemtitle" style="color:#4070d6;position:absolute;right:0.03rem;top:0.4rem;font-size:0.38rem;">{{textRes.items['明细']}}</div>
+                    <div v-show="data.distributionIncome.totalIncome>0" @click="canTransAmount=data.distributionIncome.totalIncome;isShowTransDialog=true" class="itembtn">{{textRes.items['转入余额']}}</div>
+                </div>
+                <div class="borderBottom" style="margin-top:0.03rem;padding-bottom:0.27rem;font-size:0.72rem;color:#4A4A4A;font-weight:bold;">
+                    {{formatMoney(toFixed(data.distributionIncome.totalIncome,2))}}
+                </div>
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="">
+                    <div class="flex-1" style="padding-top:0.27rem;padding-bottom:0.21rem;font-weight:bold;font-size:0.42rem;color:#484848;">
+                        {{textRes.items['累计收益']}}
+                    </div>
+                    <div style="font-size:0.6rem;font-weight:bold;color:#484848;">
+                        {{formatMoney(toFixed(data.distributionIncome.accumulatedIncome,4))}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.24rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['待结算']}}
+                    </div>
+                    <div style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['昨日总收益']}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.54rem;font-weight:400;color:#666666;">
+                        {{formatMoney(toFixed(data.distributionIncome.settlementIncome,4))}}
+                    </div>
+                    <div style="font-size:0.54rem;font-weight:400;color:#EA3131;">
+                        {{formatMoney(toFixed(data.distributionIncome.yesterdayTotalIncome,4),"+")}}
+                    </div>
+                </div>
+
+                <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.24rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['邀请好友收益']}}
+                    </div>
+                    <div style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.getItem('年化',data.distributionIncome.inviteFriendsAnnual)}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.54rem;font-weight:400;color:#666666;">
+                        {{textRes.getItem('n人',data.distributionIncome.inviteFriendsCount)}}
+                    </div>
+                    <div style="font-size:0.54rem;font-weight:400;color:#EA3131;">
+                        {{formatMoney(toFixed(data.distributionIncome.inviteFriendsIncome,4),"+")}}
+                    </div>
+                </div>
+
+                <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.24rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['好友分享获赠']}}
+                    </div>
+                    <div style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.getItem('年化',data.distributionIncome.friendsShareGiftsAnnual)}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center" style="padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.54rem;font-weight:400;color:#666666;">
+                        {{textRes.getItem('n人',data.distributionIncome.friendsShareGiftsCount)}}
+                    </div>
+                    <div style="font-size:0.54rem;font-weight:400;color:#EA3131;">
+                        {{formatMoney(toFixed(data.distributionIncome.friendsShareGiftsIncome,4),"+")}}
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <div v-if="!isVip" style="background-color:#f5f5f5;height:0.3rem;"></div>
+
+        <div v-if="isVip" style="margin-bottom:0.11rem;">
+            <div style="margin-left:0.44rem;margin-right:0.44rem;">
+                <div class="itemtitle" style="padding-top:0.35rem;">
+                    {{textRes.items['邀请收益']}}&nbsp;&nbsp;(USDT)
+                    <div @click="shareInCome(data.distributionIncome.totalIncome,data.distributionIncome.accumulatedIncome)" class="itemtitle" style="color:#4070d6;position:absolute;right:0.03rem;top:0.4rem;font-size:0.38rem;">{{textRes.items['明细']}}</div>
+                    <div v-show="data.distributionIncome.totalIncome>0" @click="canTransAmount=data.distributionIncome.totalIncome;isShowTransDialog=true" class="itembtn">{{textRes.items['转入余额']}}</div>
+                </div>
+                <div class="borderBottom" style="margin-top:0.03rem;padding-bottom:0.27rem;font-size:0.72rem;color:#4A4A4A;font-weight:400;">
+                    {{formatMoney(data.distributionIncome.totalIncome)}}
+                </div>
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="">
+                    <div class="flex-1" style="padding-top:0.27rem;padding-bottom:0.21rem;font-weight:bold;font-size:0.42rem;color:#484848;">
+                        {{textRes.items['累计收益']}}
+                    </div>
+                    <div style="font-size:0.6rem;font-weight:bold;color:#484848;">
+                        {{formatMoney(data.distributionIncome.accumulatedIncome)}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.24rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['待结算']}}
+                    </div>
+                    <div style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['昨日总收益']}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.54rem;font-weight:400;color:#666666;">
+                        {{formatMoney(data.distributionIncome.settlementIncome)}}
+                    </div>
+                    <div style="font-size:0.54rem;font-weight:400;color:#EA3131;">
+                        {{formatMoney(data.distributionIncome.yesterdayTotalIncome,"+")}}
+                    </div>
+                </div>
+
+                <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.24rem;padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['邀请好友收益']}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center" style="padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['年化利息收入']}}（{{textRes.getItem('年化',data.distributionIncome.inviteFriendsAnnual)}}）
+                    </div>
+                    <div style="font-size:0.54rem;font-weight:400;color:#EA3131;">
+                        {{formatMoney(data.distributionIncome.inviteFriendsIncome,"+")}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['手续费返佣']}} ({{data.distributionIncome.inviteFriendsCommissionRate}}%)
+                    </div>
+                    <div style="font-size:0.54rem;font-weight:400;color:#EA3131;">
+                        {{formatMoney(data.distributionIncome.inviteFriendsTradeCommissionIncome,"+")}}
+                    </div>
+                </div>
+
+                <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.24rem;padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['好友分享获赠']}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center" style="padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['年化利息收入']}}（{{textRes.getItem('年化',data.distributionIncome.friendsShareGiftsAnnual)}}）
+                    </div>
+                    <div style="font-size:0.54rem;font-weight:400;color:#EA3131;">
+                        {{formatMoney(data.distributionIncome.friendsShareGiftsIncome,"+")}}
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="padding-bottom:0.27rem;">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['手续费返佣']}} ({{data.distributionIncome.friendsShareGiftsCommissionRate}}%)
+                    </div>
+                    <div style="font-size:0.54rem;font-weight:400;color:#EA3131;">
+                        {{formatMoney(data.distributionIncome.friendsShareTradeCommissionIncome,"+")}}
+                    </div>
+                </div>
+
+                <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.24rem;padding-bottom:1rem">
+                    <div class="flex-1" style="font-size:0.36rem;color:#9B9B9B;font-weight:400;">
+                        {{textRes.items['首次入金奖励']}}
+                    </div>
+                    <div style="font-size:0.54rem;color:#EA3131;font-weight:400;">
+                        {{formatMoney(data.distributionIncome.firstDepositGiveMoney)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div @click="recordAction('Assets_底部广告');rechargeClick()" style="background-color:#f6f7fb;height:2.03rem;padding-left:0.66rem;padding-right:0.66rem;padding-top:0.47rem;padding-bottom:0.47rem;color:#494a4c;font-size:0.39rem;font-weight:bold;" v-html="textRes.items['宣传语'].replace(/\n/g,'<br>')"></div>
+
+        <!--转入金额输入框-->
+        <div v-show="isShowTransDialog" class="display-flex flex-direction-column align-items-center justify-content-center" style="position:fixed;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);color:#4A4A4A;">
+            <div style="background-color:#fff;border-radius:0.18rem;width:9.18rem;margin-top:-3rem;">
+                <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.99rem;padding-left:0.6rem;padding-bottom:0.45rem;">
+                    <div style="font-size:0.54rem;font-weight:bold;">
+                        {{textRes.items['可转入金额']}}
+                    </div>
+                    <div class="flex-1" style="font-size:0.54rem;font-weight:bold;text-align:right;padding-right:0.6rem;">
+                        {{formatMoney(canTransAmount)}} USDT
+                    </div>
+                </div>
+                <div style="height:0.3rem;background-color:#FAFAFA;"></div>
+                <div class="display-flex flex-direction-row align-items-center">
+                    <input type="number" v-model="transAmount" class="flex-1"  :class="{err:validator.transAmount}" :placeholder="textRes.items['请输入转入金额']" style="height:1.26rem;-webkit-appearance:none;font-size:0.45rem;font-weight:500;padding-left:0.6rem;border:0;" />
+                    <div @click="transAmount=canTransAmount" style="font-size:0.45rem;padding-right:0.6rem;white-space:nowrap;">
+                        USDT | <span style="color:#2C60CE;">{{textRes.items['全部']}}</span>
+                    </div>
+                </div>
+                <div style="height:0.3rem;background-color:#FAFAFA;"></div>
+                <div class="display-flex flex-direction-row" style="margin-top:1.23rem;padding-left:0.6rem;padding-right:0.6rem;padding-bottom:1.2rem;">
+                    <div @click="isShowTransDialog=false" class="flex-1 display-flex flex-direction-column align-items-center justify-content-center" style="height:1.02rem;background-color:#F5F5F5;border-radius:999rem 0 0 999rem;font-size:0.42rem;">
+                        <div>{{textRes.items['取消']}}</div>
+                    </div>
+                    <div @click="trans2account" class="flex-1 display-flex flex-direction-column align-items-center justify-content-center" style="height:1.02rem;background-color:#EA3131;border-radius:0 999rem 999rem 0;font-size:0.42rem;">
+                        <div style="color:#fff;">{{textRes.items['确认转入']}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,354 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <script src="../../js/base.js"></script>
+    <script src="../../js/api.js"></script>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/flex.css">
+    <style>
+        .panel {
+            border-radius: 0.3rem;
+            margin: 0.33rem;
+            box-shadow: 0 0.06rem 0.18rem 0 rgba(230,230,230,0.5);
+            background-color: #fff;
+            padding: 0.33rem 0.6rem 0 0.6rem;
+        }
+        .ptitle {
+            font-size: 0.39rem;
+            color: #4A4A4A;
+            height: 0.9rem;
+            border-bottom: 1px solid #F5F5F5;
+            font-weight:bold;
+            position:relative;
+        }
+        .chk1 {
+            width: 0.45rem;
+            height: 0.45rem;
+            border: 1px solid #D8D8D8;
+            border-radius:99rem;
+            margin-right:0.22rem;
+        }
+        .chk2 {
+            width: 0.45rem;
+            height: 0.45rem;
+            background-image:url(../../imgs/chk_y.svg);
+            background-size:95% 95%;
+            background-repeat:no-repeat;
+            margin-right: 0.22rem;
+        }
+        .panel input{
+
+            border:0;
+            width:100%;
+            height:100%;
+            font-size:0.36rem;
+            padding-left:0.12rem;
+            padding-right:0.12rem;
+        }
+        .sec {
+            margin-top: 0.45rem;
+            margin-bottom: 0.45rem;
+        }
+        .reset {
+            font-size: 0.42rem;
+            font-weight: bold;
+            color: #4A4A4A;
+        }
+    </style>
+</head>
+<body>
+    <div class="display-flex flex-direction-column" style="width:100%;height:100%;background-color:#fff;">
+        <div style="position:relative;width:100%;">
+            <pageheader :title="textRes.items['指标设置']"></pageheader>
+            <div @click.stop="save" style="position:absolute;right:0.48rem;bottom:0.4rem;font-size:0.4rem;color:#fff;">{{textRes.items['保存']}}</div>
+            <div v-show="isBusy" style="position:absolute;width:1rem;height:1rem;left:5.125rem;">
+                <loading style="width:1rem;height:1rem;margin-top:1rem;" bgcolor="#eee"></loading>
+            </div>
+        </div>
+
+        <div class="flex-shrink-0 display-flex flex-direction-row" style="padding:0.45rem 0.75rem 0 0.75rem;color:#858585;font-size:0.45rem;font-weight:bold;background-color:#F5F5F5;">
+            <template v-for="tab,index in tabs">
+                <div @click="clickTab(tab)" style="height:0.6rem;" :class="{maincolor:tab.selected}" :style="{borderBottom:tab.selected?'0.06rem solid #EA3131':'',marginLeft:index===0?'':'0.57rem'}">{{tab.text}}</div>
+            </template>
+
+        </div>
+        <div class="flex-1 canscroll" style="width:100%;position:relative;background-color:#F5F5F5;">
+            <!--ma-->
+            <div v-if="selectedTab.text==='MA'" class="panel">
+                <div class="ptitle">
+                    MA
+                    <div class="ptitle" style="border:0;position:absolute;right:0;top:0;font-size:0.35rem;font-weight:normal;" v-html="selectedMaText"></div>
+                </div>
+                <div style="padding-top:0.45rem;">
+                    <div style="" class="display-flex flex-direction-row">
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div @click="maItemSelect(0)" :class="{chk2:option.maItemSelects[0],chk1:!option.maItemSelects[0]}"></div>
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.maItems[0]" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">MA</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div @click="maItemSelect(1)" :class="{chk2:option.maItemSelects[1],chk1:!option.maItemSelects[1]}"></div>
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.maItems[1]" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">MA</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sec display-flex flex-direction-row">
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div @click="maItemSelect(2)" :class="{chk2:option.maItemSelects[2],chk1:!option.maItemSelects[2]}"></div>
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.maItems[2]" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">MA</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div @click="maItemSelect(3)" :class="{chk2:option.maItemSelects[3],chk1:!option.maItemSelects[3]}"></div>
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.maItems[3]" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">MA</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sec display-flex flex-direction-row">
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div @click="maItemSelect(4)" :class="{chk2:option.maItemSelects[4],chk1:!option.maItemSelects[4]}"></div>
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.maItems[4]" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">MA</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;visibility:hidden;">
+                            <div @click="maItemSelect(5)" :class="{chk2:option.maItemSelects[5],chk1:!option.maItemSelects[5]}"></div>
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.maItems[5]" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">MA</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div @click="resetMa" style="margin-top:0.7rem;" class="sec  display-flex flex-direction-row">
+                        <img src="../../imgs/reset.svg" style="width:0.54rem;height:0.54rem;margin-right:0.51rem;" />
+                        <div class="reset">
+                            {{textRes.items['重置']}} {{selectedTab.text}}
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border-top:1px solid #F5F5F5;padding-bottom:0.5rem;">
+                    <div style="margin-top:0.45rem;color:#B9B9B9;font-size:0.42rem;font-weight:bold;">{{textRes.items['提示']}}</div>
+                    <div style="word-break:break-all;color:#B9B9B9;font-size:0.39rem;margin-top:0.21rem;">{{textRes.items['MA指标设置提示']}}</div>
+                </div>
+            </div>
+
+            <!--boll-->
+            <div v-if="selectedTab.text==='BOLL'" class="panel">
+                <div class="ptitle">
+                    BOLL
+                    <div class="ptitle" style="border:0;position:absolute;right:0;top:0;font-size:0.35rem;font-weight:normal;" v-html="selectedBollText"></div>
+                </div>
+                <div style="padding-top:0.45rem;">
+                    <div style="" class="display-flex flex-direction-row">
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.boll_n" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">N</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.boll_k" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">K</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div @click="resetBoll" style="margin-top:0.7rem;" class="sec  display-flex flex-direction-row">
+                        <img src="../../imgs/reset.svg" style="width:0.54rem;height:0.54rem;margin-right:0.51rem;" />
+                        <div class="reset">
+                            {{textRes.items['重置']}} {{selectedTab.text}}
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border-top:1px solid #F5F5F5;padding-bottom:0.5rem;">
+                    <div style="margin-top:0.45rem;color:#B9B9B9;font-size:0.42rem;font-weight:bold;">{{textRes.items['提示']}}</div>
+                    <div style="word-break:break-all;color:#B9B9B9;font-size:0.39rem;margin-top:0.21rem;">{{textRes.items['BOLL指标设置提示']}}</div>
+                </div>
+            </div>
+
+            <!--MACD-->
+            <div v-if="selectedTab.text==='MACD'" class="panel">
+                <div class="ptitle">
+                    MACD
+                    <div class="ptitle" style="border:0;position:absolute;right:0;top:0;font-size:0.35rem;font-weight:normal;" v-html="selectedMacdText"></div>
+                </div>
+                <div style="padding-top:0.45rem;">
+                    <div style="" class="display-flex flex-direction-row">
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.macd_s" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">S</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.macd_l" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">L</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.macd_m" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">M</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div @click="resetMacd" style="margin-top:0.7rem;" class="sec  display-flex flex-direction-row">
+                        <img src="../../imgs/reset.svg" style="width:0.54rem;height:0.54rem;margin-right:0.51rem;" />
+                        <div class="reset">
+                            {{textRes.items['重置']}} {{selectedTab.text}}
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border-top:1px solid #F5F5F5;padding-bottom:0.5rem;">
+                    <div style="margin-top:0.45rem;color:#B9B9B9;font-size:0.42rem;font-weight:bold;">{{textRes.items['提示']}}</div>
+                    <div style="word-break:break-all;color:#B9B9B9;font-size:0.39rem;margin-top:0.21rem;">{{textRes.items[selectedTab.text + '指标设置提示']}}</div>
+                </div>
+            </div>
+
+            <!--KDJ-->
+            <div v-if="selectedTab.text==='KDJ'" class="panel">
+                <div class="ptitle">
+                    KDJ
+                    <div class="ptitle" style="border:0;position:absolute;right:0;top:0;font-size:0.35rem;font-weight:normal;"></div>
+                </div>
+                <div style="padding-top:0.45rem;">
+                    <div style="" class="display-flex flex-direction-row">
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.kdj_cycle" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">N</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div @click="resetKdj" style="margin-top:0.7rem;" class="sec  display-flex flex-direction-row">
+                        <img src="../../imgs/reset.svg" style="width:0.54rem;height:0.54rem;margin-right:0.51rem;" />
+                        <div class="reset">
+                            {{textRes.items['重置']}} {{selectedTab.text}}
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border-top:1px solid #F5F5F5;padding-bottom:0.5rem;">
+                    <div style="margin-top:0.45rem;color:#B9B9B9;font-size:0.42rem;font-weight:bold;">{{textRes.items['提示']}}</div>
+                    <div style="word-break:break-all;color:#B9B9B9;font-size:0.39rem;margin-top:0.21rem;">{{textRes.items[selectedTab.text + '指标设置提示']}}</div>
+                </div>
+            </div>
+
+            <!--RSI-->
+            <div v-if="selectedTab.text==='RSI'" class="panel">
+                <div class="ptitle">
+                    RSI
+                    <div class="ptitle" style="border:0;position:absolute;right:0;top:0;font-size:0.35rem;font-weight:normal;" v-html="selectedRsiText"></div>
+                </div>
+                <div style="padding-top:0.45rem;">
+                    <div style="" class="display-flex flex-direction-row">
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div @click="rsiSelect(0)" :class="{chk2:option.rsiSelects[0],chk1:!option.rsiSelects[0]}"></div>
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.rsi_N[0]" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">N</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div @click="rsiSelect(1)" :class="{chk2:option.rsiSelects[1],chk1:!option.rsiSelects[1]}"></div>
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.rsi_N[1]" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">N</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="" class="sec display-flex flex-direction-row">
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div @click="rsiSelect(2)" :class="{chk2:option.rsiSelects[2],chk1:!option.rsiSelects[2]}"></div>
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.rsi_N[2]" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">N</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;visibility:hidden;">
+                            <div @click="rsiSelect(3)" :class="{chk2:option.rsiSelects[3],chk1:!option.rsiSelects[3]}"></div>
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.rsi_N[3]" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">N</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div @click="resetRsi" style="margin-top:0.7rem;" class="sec  display-flex flex-direction-row">
+                        <img src="../../imgs/reset.svg" style="width:0.54rem;height:0.54rem;margin-right:0.51rem;" />
+                        <div class="reset">
+                            {{textRes.items['重置']}} {{selectedTab.text}}
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border-top:1px solid #F5F5F5;padding-bottom:0.5rem;">
+                    <div style="margin-top:0.45rem;color:#B9B9B9;font-size:0.42rem;font-weight:bold;">{{textRes.items['提示']}}</div>
+                    <div style="word-break:break-all;color:#B9B9B9;font-size:0.39rem;margin-top:0.21rem;">{{textRes.items[selectedTab.text+'指标设置提示']}}</div>
+                </div>
+            </div>
+
+            <!--WR-->
+            <div v-if="selectedTab.text==='WR'" class="panel">
+                <div class="ptitle">
+                    WR
+                    <div class="ptitle" style="border:0;position:absolute;right:0;top:0;font-size:0.35rem;font-weight:normal;" v-html="selectedWrText"></div>
+                </div>
+                <div style="padding-top:0.45rem;">
+                    <div style="" class="display-flex flex-direction-row">
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div @click="wrSelect(0)" :class="{chk2:option.wrSelects[0],chk1:!option.wrSelects[0]}"></div>
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.wr_N[0]" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">N</div>
+                            </div>
+                        </div>
+                        <div class="flex-1 display-flex flex-direction-row align-items-center" style="margin-right:0.45rem;">
+                            <div @click="wrSelect(1)" :class="{chk2:option.wrSelects[1],chk1:!option.wrSelects[1]}"></div>
+                            <div class="flex-1 display-flex flex-direction-row align-items-center" style="border:1px solid #D8D8D8;height:0.78rem;border-radius:0.06rem;">
+                                <input v-model="option.wr_N[1]" class="flex-1" type="tel" />
+                                <div style="font-size:0.36rem;color:#B9B9B9;margin-right:0.15rem;">N</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div @click="resetWr" style="margin-top:0.7rem;" class="sec  display-flex flex-direction-row">
+                        <img src="../../imgs/reset.svg" style="width:0.54rem;height:0.54rem;margin-right:0.51rem;" />
+                        <div class="reset">
+                            {{textRes.items['重置']}} {{selectedTab.text}}
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border-top:1px solid #F5F5F5;padding-bottom:0.5rem;">
+                    <div style="margin-top:0.45rem;color:#B9B9B9;font-size:0.42rem;font-weight:bold;">{{textRes.items['提示']}}</div>
+                    <div style="word-break:break-all;color:#B9B9B9;font-size:0.39rem;margin-top:0.21rem;">{{textRes.items[selectedTab.text+'指标设置提示']}}</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

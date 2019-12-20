@@ -1,0 +1,26 @@
+﻿@import "../basic.scss";
+
+.pages-withdraw {
+    color: #4A4A4A;
+
+    .tab {
+        color: #333333;
+        font-size: 0.51rem;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .tabselected {
+        color: $main-color;
+    }
+
+    .box {
+        border: 1px solid #B8B8B8;
+        margin-left: 0.45rem;
+        margin-right: 0.45rem;
+        margin-top: 0.45rem;
+        height: 1.17rem;
+        border-radius: 0.15rem;
+    }
+}
+

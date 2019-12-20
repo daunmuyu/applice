@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    
+    
+    <script src="../../js/base.js"></script>
+    <script src="../../js/api.js"></script>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/flex.css">
+    <style>
+        td {
+            white-space: nowrap;
+            font-size: 0.34rem;
+        }
+        .dialogBtn {
+            height: 1.1rem;
+            line-height: 1.1rem;
+            font-size: 0.46rem;
+            color: #fff;
+            border-radius: 0.1rem;
+            padding: 0;
+            text-align: center;
+            width: 4.23rem;
+        }
+        .td2 {
+        }
+
+            .td2 td {
+                padding-top: 0.22rem;
+                color: #565656;
+                font-size: 0.32rem;
+            }
+
+        .listBtnClicked {
+            background-color: #f99755;
+        }
+
+        .btn {
+            width:2.37rem;
+            height: 0.99rem;
+            text-align: center;
+            border: 1px solid #EA3131;
+            color:#ea3131;
+            border-radius: 0.08rem;
+            font-size: 0.37rem;
+        }
+        .btn2 {
+            border: 1px solid #eeeeee;
+            color: #eeeeee;
+        }
+    </style>
+</head>
+<body>
+    <div class="canscroll" style="width:100%;height:100%;position:absolute;left:0;top:0;background-color:#fff;">
+        <div v-if="showTitle" @click="titleClick" style="position:relative;width:100%;">
+            <pageheader  :showback="false" :title="textRes.items['交易']"></pageheader>
+            <div @click.stop="tradeHistoryClick" style="position:absolute;right:0.48rem;bottom:0.4rem;font-size:0.4rem;color:#fff;">{{textRes.items['交易记录']}}</div>
+            <div v-show="isBusy" style="position:absolute;width:1rem;height:1rem;left:5.125rem;">
+                <loading style="width:1rem;height:1rem;margin-top:1rem;" bgcolor="#eee"></loading>
+            </div>
+        </div>
+        <div style="position:relative;font-size:0.41rem;margin-top:0.27rem;margin-left:0.61rem;margin-right:0.61rem;color:#4f4f4f;">
+            <div style="">{{textRes.items['账户总资产']}}(USDT)</div>
+            <div style="margin-top:0.38rem;font-size:0.63rem;color:#d7433b;font-weight:bold;">{{formatMoney(toFixed(ListInfo.totalamount,2))}}</div>
+            <div style="margin-top:0.38rem;border-top:1px solid #ededed;height:1px;"></div>
+            <div style="position:absolute;right:0;top:0;">
+                {{textRes.items['持仓盈亏']}}
+                <div style="font-size:0.39rem;margin-top:0.3rem;text-align:right;" :style="{color:ListInfo.totalprofit>=0?textRes.items['TextColor涨']:textRes.items['TextColor跌']}">{{ListInfo.totalprofit.formatMoney('+')}}</div>
+            </div>
+            <table cellpadding="0" cellspacing="0" style="margin-top:0.24rem;margin-bottom:0.24rem;color:#4f4f4f;">
+                <tr>
+                    <td>{{textRes.items['账户余额']}}</td>
+                    <td style="width:100%;padding-left:0.31rem;color:#d53931;">{{formatMoney(toFixed(ListInfo.canusedamount,2))}}</td>
+                    <td>{{textRes.items['持仓保证金']}}</td>
+                    <td style="padding-left:0.31rem;color:#d53931;">{{formatMoney(toFixed(ListInfo.totalposprice,2))}}</td>
+                </tr>
+                <tr>
+                    <td style="padding-top:0.2rem;">{{textRes.items['冻结保证金']}}</td>
+                    <td style="padding-top:0.2rem;padding-left:0.31rem;color:#d53931;">{{formatMoney(toFixed(ListInfo.frozenamout,2))}}</td>
+                    <td style="padding-top:0.2rem;">{{textRes.items['融资额']}}</td>
+                    <td style="padding-top:0.2rem;padding-left:0.31rem;color:#d53931;">{{formatMoney(toFixed(ListInfo.toatlfinancingamount,2))}}</td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="display-flex flex-direction-row align-items-center" style="height:1.58rem;background-color:#f8f8f8;position:relative;">
+            <div class="mainbgcolor display-flex flex-direction-row align-items-center justify-content-center" style="width:2.75rem;height:0.99rem;color:#fff;font-weight:bold;border-radius:0.06rem;margin-left:0.61rem;font-size:0.36rem;">{{textRes.items['持仓']}}</div>
+            <div @click="delegateClick" class="maincolor display-flex flex-direction-row align-items-center justify-content-center" style="width:2.75rem;font-weight:bold;height:0.99rem;border-radius:0.06rem;background-color:#fff;margin-left:0.31rem;font-size:0.36rem;">{{textRes.items['委托']}}</div>
+            <div class="flex-1"></div>
+            <div v-show="canCloseAllOrder" @click="closeAllOrder" touchmode="listBtnClicked" class="btn display-flex flex-direction-row align-items-center justify-content-center" style="margin-right:0.61rem;color:#F8BA69;border:1px solid #F8BA69;font-weight:bold;height:0.99rem;">{{textRes.items['一键平仓']}}</div>
+        </div>
+        <div v-if="ListInfo.list.length===0" class="display-flex flex-direction-column align-items-center" style="margin-top:0.72rem;">
+            <img src="../../imgs/noposition.svg" style="height:6.53rem;margin-left:-1rem;" />
+            <div @click="go2quotation" class="mainbgcolor" style="width:3.92rem;height:1.06rem;color:#fff;text-align:center;line-height:1.12rem;border-radius:5px;margin-top:0.62rem;font-size:0.36rem;">{{textRes.items['开仓盈利']}}</div>
+
+        </div>
+        <template v-for="item in ListInfo.list">
+            <div style="margin-left:0.55rem;margin-right:0.55rem;">
+                <div style="height:1.71rem;border-bottom:1px solid #eeeeee;position:relative;">
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;">
+                        <div @click="go2CommodityClick(item)" style="color:#3f3f3f;font-weight:bold;font-size:0.46rem;">{{item.symbolname}}</div>
+                        <div :style="{lineHeight:getFontSize(0.42),fontSize:getFontSize(0.19)}" style="border:1px solid #919191;padding-left:0.22rem;padding-right:0.22rem;border-radius:999rem;margin-left:0.16rem;">{{item.leverage}}x</div>
+                        <div v-if="item.bstype==1" class="display-flex flex-direction-column align-items-center" style="width:0.55rem;height:0.55rem;margin-left:0.16rem;border-radius:999rem;" :style="{backgroundColor:textRes.items['行情列表-涨']}">
+                            <svg style="height:0.3rem;width:0.3rem;margin-top:0.11rem;" viewBox="0 0 11 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon id="Path-2" fill="#ffffff" points="0 5.24584961 5.3918457 0 10.8137207 5.24584961 7.61242676 5.24584961 7.61242676 12 3.10449219 12 3.10449219 5.24584961"></polygon>
+                                </g>
+                            </svg>
+                        </div>
+                        <div v-if="item.bstype==2" class="display-flex flex-direction-column align-items-center" style="width:0.55rem;height:0.55rem;margin-left:0.16rem;border-radius:999rem;" :style="{backgroundColor:textRes.items['行情列表-跌']}">
+                            <svg style="height:0.3rem;width:0.3rem;margin-top:0.13rem;" viewBox="0 0 11 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon id="Path-2" fill="#ffffff" transform="translate(5.406860, 6.000000) scale(1, -1) translate(-5.406860, -6.000000) " points="0 5.24584961 5.3918457 0 10.8137207 5.24584961 7.61242676 5.24584961 7.61242676 12 3.10449219 12 3.10449219 5.24584961"></polygon>
+                                </g>
+                            </svg>
+                        </div>
+                        <div style="font-size:0.24rem;color:#5b5b5b;">
+                            &nbsp;&nbsp;X{{textRes.getItem('n手' , item.quantity , 's')}}
+                        </div>
+                        <div v-if="item.opType===2" style="font-size:0.24rem;color:#5b5b5b;">
+                            &nbsp;&nbsp;({{textRes.items['跟单-简']}})
+                        </div>
+                    </div>
+
+                    <div style="position:absolute;top:0;right:0;color:#EA3131;font-weight:bold;">
+                        <div style="text-align:right;font-weight:bold;line-height:0.63rem;font-size:0.48rem;" :style="{color:item.profit>=0?textRes.items['TextColor涨']:textRes.items['TextColor跌']}">
+                            {{formatMoney(item.profit,'+')}} USDT
+                            <br />
+                            {{formatMoneyFixed(item.profitRate, 2 ,'+')}}%
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <table class="td2" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td>{{textRes.items['开仓价']}}</td>
+                            <td style="width:100%;padding-left:0.42rem;padding-right:0.2rem;">{{formatMoney(item.buyprice)}}</td>
+                            <td>{{textRes.items['平仓价']}}</td>
+                            <td style="width:100%;padding-left:0.42rem;">{{formatMoney(item.newprice)}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{textRes.items['止盈价']}}</td>
+                            <td style="padding-left:0.42rem;padding-right:0.2rem;">{{formatMoney(item.stopprofitprice)}}</td>
+                            <td>{{textRes.items['止损价']}}</td>
+                            <td style="padding-left:0.42rem;">{{formatMoney(item.stoplossprice)}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{textRes.items['融资额']}}</td>
+                            <td style="padding-left:0.42rem;padding-right:0.2rem;">{{formatMoney(item.financingamount)}}</td>
+                            <td>{{textRes.items['保证金']}}</td>
+                            <td style="padding-left:0.42rem;">{{formatMoney(item.margin+item.marginplus)}}</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align:top;">{{textRes.items['强平价格']}}</td>
+                            <td style="vertical-align:top;padding-left:0.42rem;padding-right:0.2rem;">{{formatMoney(item.forcecloseprice)}}</td>
+                            <td>
+                                <div @click="expandedClick(item)" style="padding-left:0.3rem;padding-right:0.3rem;height:0.6rem;margin-bottom:0.27rem;background-color:#EA3131;border-radius:999rem;" class="display-flex flex-direction-row align-items-center justify-content-center">
+                                    <div style="color:#fff;font-size:0.3rem;">{{item.expanded?textRes.items['收起']:textRes.items['详情']}}</div>
+                                </div>
+                            </td>
+                            <td style="padding-left:0.42rem;">
+
+                                <div v-if="!isDemoMode" style="width:1.29rem;height:0.6rem;margin-bottom:0.27rem;background-color:#EA3131;border-radius:999rem;" class="display-flex flex-direction-row align-items-center justify-content-center">
+                                    <img v-if="!item.isBusy" @click="share(item)" style="width:0.42rem;height:0.32rem;" src="../../imgs/fenxiang.svg" />
+                                    <loading v-if="item.isBusy" style="width:0.5rem;height:0.5rem;" bgcolor="#eee"></loading>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr v-show="item.expanded">
+                            <td colspan="4" style="border-bottom:1px solid #eeeeee;"></td>
+                        </tr>
+                        <tr v-show="item.expanded">
+                            <!--<td>{{textRes.items['手续费率']}}</td>
+    <td style="width:100%;padding-left:0.42rem;padding-right:0.2rem;">{{item.traderate*100}}%</td>-->
+                            <!--<td style="vertical-align:top;">{{textRes.items['隔夜息']}}</td>
+    <td style="width:100%;padding-left:0.42rem;padding-right:0.2rem;vertical-align:top;">{{isDemo?'--':formatMoney(item.totalInterest)}}</td>-->
+
+
+                            <td style="vertical-align:top;">{{textRes.items['持仓单号']}}</td>
+                            <td style="width:100%;padding-left:0.42rem;padding-right:0.2rem;vertical-align:top;">{{item.posid}}</td>
+                            <td>{{textRes.items['开仓时间']}}</td>
+                            <td style="padding-left:0.42rem;" v-html="showUTCTime(item.postime)"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="display-flex flex-direction-row justify-content-center" style="margin-top:0.59rem;color:#333;margin-bottom:0.32rem;">
+                <div @click="recordAction('Position_追加保证金');isAdditionalMargin=item" touchmode="listBtnClicked" class="btn display-flex flex-direction-row align-items-center justify-content-center">{{textRes.items['追加保证金']}}</div>
+                <div @click="recordAction('Position_减少保证金');if(item.marginplus>0){isReductionMargin=item;}" touchmode="listBtnClicked" class="btn display-flex flex-direction-row align-items-center justify-content-center" style="margin-left:0.3rem;" :class="{btn2:item.marginplus==0}">{{textRes.items['减少保证金']}}</div>
+                <div @click="recordAction('Position_限价平仓');setProfitClick(item)" touchmode="listBtnClicked" class="btn display-flex flex-direction-row align-items-center justify-content-center" style="margin-left:0.3rem;">{{textRes.items['限价平仓']}}</div>
+                <div @click="recordAction('Position_市价平仓');closeOrder(event,item)" touchmode="listBtnClicked" class="btn display-flex flex-direction-row align-items-center justify-content-center" style="margin-left:0.3rem;color:#F8BA69;border:1px solid #F8BA69;">{{textRes.items['市价平仓']}}</div>
+            </div>
+            <div style="height:0.32rem;background-color:#f8f8f8;"></div>
+        </template>
+
+
+    </div>
+
+    <!--追加保证金面板-->
+    <div v-if="isAdditionalMargin" class="display-flex flex-direction-column align-items-center justify-content-center canscroll" style="position:absolute;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.3);color:#4a4a4a;">
+        <div class="display-flex flex-direction-column align-items-center" style="background-color:#fff;border-radius:0.16rem;width:10rem;">
+            <div style="font-size:0.45rem;font-weight:bold;margin-top:0.4rem;margin-bottom:0.4rem;">{{textRes.items['追加保证金']}}</div>
+
+            <input type="tel" maxlength="8" v-model="additionalMargin" :class="{err:validator.additionalMargin}" :placeholder="textRes.items['输入追加金额']" style="text-align:center;width:4.7rem;height:0.83rem;background-color:#e8ebf4;border:0;border-radius:9999rem;" />
+
+            <div style="margin-top:0.4rem;font-size:0.4rem;color:#565656;line-height:0.7rem;" v-html="textRes.getItem('追加保证金提示',toFixed(ListInfo.canusedamount,0,true,true),formatMoney(targetPrice)).replace(/\n/g,'<br>')">
+            </div>
+
+            <div class="display-flex flex-direction-row justify-content-center" style="margin-top:0.85rem;margin-bottom:0.54rem;">
+                <div @click="isAdditionalMargin=false;additionalMargin='';" class="dialogBtn" style="background-color:#777;">{{textRes.items["取消"]}}</div>
+                <div @click="additionalMarginClick" class="dialogBtn" style="margin-left:0.6rem;position:relative;" v-bind:style="{backgroundColor:textRes.items['超级链接颜色']}">
+                    {{isBusy2?'':textRes.items["确定"]}}
+                    <loading v-show="isBusy2" style="position:absolute;left:1.615rem;width:1rem;height:1rem;top:0.05rem;"></loading>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--减少保证金面板-->
+    <div v-if="isReductionMargin" class="display-flex flex-direction-column align-items-center justify-content-center canscroll" style="position:absolute;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.3);color:#4a4a4a;">
+        <div class="display-flex flex-direction-column align-items-center" style="background-color:#fff;border-radius:0.16rem;width:10rem;">
+            <div style="font-size:0.45rem;font-weight:bold;margin-top:0.4rem;margin-bottom:0.4rem;">{{textRes.items['减少保证金']}}</div>
+
+            <input type="tel" maxlength="8" v-model="additionalMargin" :class="{err:validator.additionalMargin}" :placeholder="textRes.items['输入减少金额']" style="text-align:center;width:4.7rem;height:0.83rem;background-color:#e8ebf4;border:0;border-radius:9999rem;" />
+
+            <div style="margin-top:0.4rem;font-size:0.4rem;color:#565656;line-height:0.7rem;" v-html="textRes.getItem('减少保证金提示',isReductionMargin.reducableMarin,formatMoney(targetPrice)).replace(/\n/g,'<br>')">
+            </div>
+
+            <div class="display-flex flex-direction-row justify-content-center" style="margin-top:0.85rem;margin-bottom:0.54rem;">
+                <div @click="isReductionMargin=false;additionalMargin='';" class="dialogBtn" style="background-color:#777;">{{textRes.items["取消"]}}</div>
+                <div @click="reduceMarginClick" class="dialogBtn" style="margin-left:0.6rem;position:relative;" v-bind:style="{backgroundColor:textRes.items['超级链接颜色']}">
+                    {{isBusy2?'':textRes.items["确定"]}}
+                    <loading v-show="isBusy2" style="position:absolute;left:1.615rem;width:1rem;height:1rem;top:0.05rem;"></loading>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

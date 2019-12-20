@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .text {
+            font-size: 0.43rem;
+            color: #4a4a4a;
+            font-weight: bold;
+        }
+        .err{
+            color:red;
+        }
+    </style>
+</head>
+<body>
+    <div style="width:100%;position:relative;">
+        <div class="text" style="height:1.18rem;line-height:1.18rem;padding-left:0.46rem;position:relative;">
+            {{textRes.items['币种']}}
+            <div class="display-flex flex-direction-row align-items-center" style="position:absolute;right:0;top:0;height:100%;padding-right:0.51rem;font-weight:normal;">
+                <div>{{selectedCurrency}}</div>
+                <img src="../../../imgs/arrowdown.svg" style="width:0.41rem;height:0.24rem;margin-left:0.2rem;margin-top:-0.1rem;" />
+                <select v-model="selectedCurrency" style="position:absolute;left:0;top:0;height:100%;width:100%;opacity:0;">
+                    <option v-for="op in currencyItems" :value="op.name">{{op.name}}</option>
+                </select>
+            </div>
+
+            <loading v-show="isBusy" style="position:absolute;top:0.09rem;left:5.125rem;width:1rem;height:1rem;"></loading>
+        </div>
+        <div style="background-color:#f5f5f5;height:0.15rem;"></div>
+
+        <loading v-show="isBusy" style="position:absolute;top:0.09rem;left:5.125rem;width:1rem;height:1rem;"></loading>
+
+        <div style="margin-top:0.5rem;">
+            <div v-show="!isBusy" class="display-flex flex-direction-column align-items-center">
+                <canvas id="canvgQrcode"></canvas>
+            </div>
+            <!--<div @click="screenShot" style="margin-top:0.4rem;color:#ea3131;font-size:0.42rem;text-align:center;">{{textRes.items['保存到相册']}}</div>-->
+            <div @click="copyAddress" class="display-flex flex-direction-row justify-content-center" style="margin-top:0.3rem;margin-bottom:0.37rem;color:#4a4a4a;height:0.54rem;line-height:0.54rem;">
+                <div style="margin-left:0.54rem;">{{address}}</div>
+                <svg style="height:100%;margin-left:0.3rem;" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="改版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="OTC充值-又改-Copy" transform="translate(-285.000000, -336.000000)">
+                            <g id="copy" transform="translate(285.000000, 336.000000)">
+                                <path d="M16.1517857,17.9758929 L5.18303571,17.9758929 C4.17254464,17.9758929 3.34888393,17.1542411 3.34888393,16.1417411 L3.34888393,14.315625 L4.0921875,14.315625 L4.0921875,16.1417411 C4.0921875,16.7424107 4.58236607,17.2325893 5.18303571,17.2325893 L16.1517857,17.2325893 C16.7524554,17.2325893 17.2426339,16.7424107 17.2426339,16.1417411 L17.2426339,4.44375 C17.2426339,3.84308036 16.7524554,3.35290179 16.1517857,3.35290179 L13.6145089,3.35290179 L13.6145089,2.60959821 L16.1517857,2.60959821 C17.1622768,2.60959821 17.9859375,3.43325893 17.9859375,4.44375 L17.9859375,16.14375 C17.9859375,17.1542411 17.1642857,17.9758929 16.1517857,17.9758929 Z" id="路径" fill="#3063CF"></path>
+                                <path d="M10.040625,10.4142857 L4.09419643,10.4142857 C3.88928571,10.4142857 3.72254464,10.2475446 3.72254464,10.0426339 C3.72254464,9.83772321 3.88928571,9.67098214 4.09419643,9.67098214 L10.0426339,9.67098214 C10.2475446,9.67098214 10.4142857,9.83772321 10.4142857,10.0426339 C10.4142857,10.2475446 10.2475446,10.4142857 10.040625,10.4142857 Z M10.040625,7.44107143 L4.09419643,7.44107143 C3.88928571,7.44107143 3.72254464,7.27433036 3.72254464,7.06941964 C3.72254464,6.86450893 3.88928571,6.69776786 4.09419643,6.69776786 L10.0426339,6.69776786 C10.2475446,6.69776786 10.4142857,6.86450893 10.4142857,7.06941964 C10.4142857,7.27433036 10.2475446,7.44107143 10.040625,7.44107143 Z M10.040625,4.46785714 L4.09419643,4.46785714 C3.88928571,4.46785714 3.72254464,4.30111607 3.72254464,4.09620536 C3.72254464,3.89129464 3.88928571,3.72455357 4.09419643,3.72455357 L10.0426339,3.72455357 C10.2475446,3.72455357 10.4142857,3.89129464 10.4142857,4.09620536 C10.4122768,4.30111607 10.2475446,4.46785714 10.040625,4.46785714 Z" id="形状" fill="#2E61CE" fill-rule="nonzero"></path>
+                                <path d="M12.6421875,0.751339286 C13.0520089,0.751339286 13.3854911,1.08482143 13.3854911,1.49464286 L13.3854911,13.3895089 C13.3854911,13.7993304 13.0520089,14.1328125 12.6421875,14.1328125 L1.49263393,14.1328125 C1.0828125,14.1328125 0.749330357,13.7993304 0.749330357,13.3895089 L0.749330357,1.49464286 C0.749330357,1.08482143 1.0828125,0.751339286 1.49263393,0.751339286 L12.6421875,0.751339286 Z M12.6421875,0.00803571429 L1.49263393,0.00803571429 C0.670982143,0.00803571429 0.00602678571,0.672991071 0.00602678571,1.49464286 L0.00602678571,13.3895089 C0.00602678571,14.2111607 0.670982143,14.8761161 1.49263393,14.8761161 L12.6441964,14.8761161 C13.4658482,14.8761161 14.1308036,14.2111607 14.1308036,13.3895089 L14.1308036,1.49464286 C14.1308036,0.672991071 13.4638393,0.00803571429 12.6421875,0.00803571429 Z" id="形状" fill="#2E61CE" fill-rule="nonzero"></path>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <div v-show="selectedCurrency==='EOS'"  style="border-top:1px solid #f5f5f5;margin-left:0.46rem;margin-right:0.51rem;padding-top:0.39rem;font-size:0.33rem;color:#4a4a4a;">
+            <!--{{textRes.items['USDT完成提示']}}-->
+            <div style="color:#4a4a4a;font-size:0.42rem;font-weight:bold;line-height:0.97rem;">
+                <!--<div class="display-flex flex-direction-row" style="margin-top:0.36rem;">
+                    <div style="width:2.22rem;" :class="{err:validator.txid}">{{textRes.items['交易ID']}}</div>
+                    <numberpanel v-model="txid" :shownumber="true" :ispassword="false" :itemwidth="getFontSize(0.68)" style="width:6.33rem;height:0.97rem;"></numberpanel>
+                </div>-->
+                <div class="display-flex flex-direction-row" style="margin-top:0.36rem;" :class="{err:validator.amount}">
+                    <div style="width:2.22rem;">{{textRes.items['充值金额']}}</div>
+                    <input v-model="amount" type="number" style="border:1px solid #979797;width:6.33rem;height:0.97rem;border-radius:3px;padding-left:0.14rem;-webkit-appearance:none;color:#333;" :placeholder="textRes.items['请输入充值金额']" />
+                </div>
+            </div>
+            <div style="height:0.82rem;line-height:0.82rem;font-size:0.3rem;padding-left:2.33rem;">
+                {{selectedCurrency=='USDT'?'=':'≈'}}{{usdtValue}} USDT
+            </div>
+        </div>
+
+        <div style="background-color:#f5f5f5;height:0.15rem;"></div>
+        <div style="margin-top:0.64rem;font-size:0.33rem;line-height:0.6rem;color:#b9b9b9;padding-left:0.47rem;padding-right:0.47rem;" v-html="textRes.getItem('USDT重要提示',selectedCurrency,calculatorText).replace(/\n/g,'<br>')">
+        </div>
+
+        <div v-show="selectedCurrency==='EOS'" @click="submit" style="box-shadow:0px 3px 6px #ea5455;height:1.19rem;line-height:1.19rem;background-color:#ea3031;border-radius:999rem;margin-left:0.5rem;margin-right:0.5rem;margin-top:0.51rem;color:#fff;text-align:center;">
+            {{textRes.items['我已付款']}}
+        </div>
+
+        <div style="height:1rem;"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+	"currentVersion": 990,
+	"minVersion": 959,
+	"android": {
+		"appVersion": "2.0.82",
+		"appMinVersion": "2.0.75"
+	},
+	"ios": {
+		"appVersion": "2.0.82",
+		"appMinVersion": "2.0.75"
+	},
+	"source_android": "https://adapk.bitcoinwin.io/bitcoinwin/bitwin.apk",
+	"source_ios": "https://nameinstall.bitcoinwin.io/4.zh_CN.html?appid=2",
+	"tips": { "zh-CN": "发现新版本,即将进行安装。\r\n\r\n版本修正K线在BOLL线模式下的Bug。" },
+	"iosAppStore": {
+		"appVersion": "2.0.66",
+		"appMinVersion": "2.0.55",
+		"tips": "",
+		"source_ios": "https://apps.apple.com/cn/app/id1470898082"
+	}
+}

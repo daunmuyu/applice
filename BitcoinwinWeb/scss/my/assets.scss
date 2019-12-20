@@ -1,0 +1,53 @@
+﻿@import "../basic.scss";
+
+.pages-assets {
+
+    .btn {
+        height: 1.14rem;
+        line-height: 1.14rem;
+        background-color: #f6f7fb;
+        color: #555557;
+        font-size: 0.39rem;
+        text-align: center;
+        border-radius: 5px;
+    }
+
+    .btnclick {
+        border: 2px solid #2b61ce;
+        color: #2b61ce;
+    }
+
+    .borderBottom {
+        border-bottom: 1px solid #f6f6f6;
+    }
+
+    .itemtitle {
+        font-size: 0.45rem;
+        font-weight: bold;
+        color: #EA3131;
+        position: relative;
+    }
+
+    .itembtn {
+        position: absolute;
+        right: 0;
+        top: 1.05rem;
+        width: 2.28rem;
+        height: 0.68rem;
+        font-size: 0.34rem;
+        color: #fff;
+        text-align: center;
+        line-height: 0.68rem;
+        background-color: #f8b969;
+        border-radius: 999rem;
+    }
+
+    td {
+        white-space: nowrap;
+    }
+
+    td > div {
+        white-space: nowrap;
+    }
+}
+

@@ -1,0 +1,42 @@
+﻿@import "../basic.scss";
+
+.pages-my {
+    .myheader {
+        background-color: $main-color;
+        width: 100%;
+        box-shadow: 0 1px 20px #ee7070;
+        position: relative;
+    }
+
+    .item {
+        height: 1.3rem;
+        margin-left: 0.47rem;
+        margin-right: 0.47rem;
+        position: relative;
+    }
+
+    .itemborder {
+        border-bottom: 0.06rem solid #fafafa;
+    }
+
+    .itemtext {
+        font-size: 0.4rem;
+        color: #4a4a4a;
+        position: absolute;
+        left: 1.36rem;
+        top: 0;
+        height: 1.3rem;
+        line-height: 1.3rem;
+    }
+
+    .itemtext2 {
+        font-size: 0.4rem;
+        color: #4a4a4a;
+        position: absolute;
+        left: 0.36rem;
+        top: 0;
+        height: 1.3rem;
+        line-height: 1.3rem;
+    }
+}
+

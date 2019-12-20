@@ -1,0 +1,55 @@
+﻿$main-color: #ea3031;
+$btn-shadow-color: #ea5455;
+$title-shadow-color: #ee7070;
+$item-shadow-color: #f6a9a9;
+//我的图标里面圆圈的渐变色
+$stop-color0: #EE5A5A;
+
+.submitbtn {
+    box-shadow: 0px 3px 6px $btn-shadow-color;
+    background-color: $main-color;
+    border-radius: 999rem;
+    text-align: center;
+    color:#fff;
+    font-size:0.44rem;
+    font-weight:bold;
+}
+.btnshadow {
+    box-shadow: 0px 3px 6px $btn-shadow-color;
+}
+.itemshadow {
+    box-shadow: 0px 3px 6px $item-shadow-color;
+}
+.mainfillcolor{
+    fill:$main-color;
+}
+.mainstrokecolor {
+    stroke: $main-color;
+}
+.mainbgcolor{
+    background-color:$main-color;
+}
+.maincolor{
+    color:$main-color;
+}
+.titleshadow {
+    box-shadow: 0 1px 20px $title-shadow-color;
+}
+
+.mainstopcolor0 {
+    stop-color: $stop-color0;
+}
+.mainstopcolor1 {
+    stop-color: $main-color;
+}
+.err{
+    color:red;
+}
+.err::-webkit-input-placeholder {
+    color: red;
+    opacity: 1;
+}
+.err input::-webkit-input-placeholder {
+    color: red;
+    opacity: 1;
+}

@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <div class="box display-flex flex-direction-row align-items-center" style="position:relative;">
+            <div style="font-size:0.42rem;margin-left:0.36rem;font-weight:bold;" :class="{err:validator.selectedPayChannel}">{{textRes.items['提现渠道']}}：</div>
+            <div class="flex-1" style="font-size:0.42rem;margin-left:0.12rem;">{{selectedPayChannelDesc}}</div>
+            <img src="../../../imgs/arrowdown.svg" style="width:0.41rem;height:0.24rem;margin-right:0.36rem;" />
+            <select v-model="selectedPayChannel" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;">
+                <option :value="item.id" v-for="item in payChannels">{{item.name}}</option>
+            </select>
+        </div>
+
+        <div v-if="selectedPayChannel==1" class="box display-flex flex-direction-row align-items-center" style="position:relative;">
+            <div style="font-size:0.42rem;margin-left:0.36rem;font-weight:bold;" :class="{err:validator.selectedBankId}">{{textRes.items['收款账户']}}：</div>
+            <div class="flex-1" style="font-size:0.42rem;margin-left:0.12rem;">{{selectedBankDesc}}</div>
+            <img src="../../../imgs/arrowdown.svg" style="width:0.41rem;height:0.24rem;margin-right:0.36rem;" />
+            <select v-model="selectedBankId" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;">
+                <option :value="item.id" v-for="item in banks">{{item.bankName + ' ' + hidePhone(item.bankNo)}}</option>
+            </select>
+        </div>
+
+        <div class="box display-flex flex-direction-row align-items-center">
+            <div style="font-size:0.42rem;margin-left:0.36rem;font-weight:bold;">{{textRes.items['可提数量']}}：</div>
+            <div class="flex-1" style="font-size:0.42rem;margin-left:0.12rem;color:#EA3131;">{{formatMoney(canWithdrawAmout)}}</div>
+            <div style="font-size:0.39rem;margin-right:0.36rem;color:#B8B8B8;">USDT</div>
+        </div>
+
+        <div style="white-space:nowrap;" class="box display-flex flex-direction-row align-items-center">
+            <div style="font-size:0.42rem;margin-left:0.36rem;font-weight:bold;" :class="{err:validator.amount}">{{textRes.items['提现数量']}}：</div>
+            <div class="flex-1" style="font-size:0.42rem;margin-left:0.12rem;color:#EA3131;">
+                <input v-model="amount" type="number" style="height:100%;width:100%;-webkit-appearance:none;border:0;" />
+            </div>
+            <div style="font-size:0.39rem;margin-right:0.36rem;color:#B8B8B8;">USDT</div>
+            <div style="width:0.06rem;height:0.54rem;background-color:#B8B8B8;margin-right:0.36rem;"></div>
+            <div @click="amount=canWithdrawAmout" style="font-size:0.39rem;margin-right:0.36rem;color:#2C60CE;">{{textRes.items['全部']}}</div>
+        </div>
+
+        <div class="box display-flex flex-direction-row align-items-center">
+            <div style="font-size:0.42rem;margin-left:0.36rem;font-weight:bold;">{{textRes.items['提现手续费']}}：</div>
+            <div class="flex-1" style="font-size:0.42rem;margin-left:0.12rem;color:#B8B8B8;">{{fee}}</div>
+            <div style="font-size:0.39rem;margin-right:0.36rem;color:#B8B8B8;">USDT</div>
+        </div>
+
+        <div class="box display-flex flex-direction-row align-items-center">
+            <div class="flex-shrink-0" style="font-size:0.42rem;margin-left:0.36rem;font-weight:bold;">{{textRes.items['实际到账']}}：</div>
+            <div class="flex-1" style="font-size:0.39rem;margin-right:0.36rem;color:#B8B8B8;">≈{{arrive}} CNY</div>
+        </div>
+
+        <div style="height:0.6rem;"></div>
+        <div style="height:0.3rem;background-color:#F5F5F5;position:relative;">
+            <loading v-show="isBusy" style="position:absolute;width:1rem;height:1rem;left:5.125rem;top:-0.35rem;"></loading>
+        </div>
+        <div @click="submit" class="submitbtn" style="height:1.2rem;margin-left:0.45rem;margin-right:0.45rem;line-height:1.2rem;margin-top:0.75rem;">{{textRes.items['提交']}}</div>
+        <div style="font-size:0.42rem;margin-left:0.45rem;margin-top:0.63rem;color:#B9B9B9;font-weight:bold;">{{textRes.items['注意事项']}}</div>
+        <div style="font-size:0.36rem;margin-left:0.45rem;margin-top:0.23rem;color:#B9B9B9;" v-html="textRes.getItem('提现注意事项_法币' , fee , minWithdraw).replace(/\n/g,'<br>')">
+
+        </div>
+
+        <waiting v-if="successedSeconds>0" v-on:back="backToPersonCenter" :title="textRes.items['审核中']" :backtitle="textRes.items['个人中心']" :seconds="successedSeconds" style="position:absolute;left:0;top:0;width:100%;height:100%;"></waiting>
+    </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .item {
+            height: 100%;
+            text-align: center;
+            font-size: 0.40%;
+            color: #d8d8d8;
+        }
+    </style>
+</head>
+<body>
+    <div class="display-flex flex-direction-row justify-content-space-between" style="width:100%;height:100%;position:relative;">
+        <div v-for="n in itemcount" class="item display-flex flex-direction-column align-items-center justify-content-center" :style="{border:'1px solid ' + bordercolor,width:itemwidth,borderRadius:borderradius}">
+            <div :style="{color:value.length>=n?'#000':''}">{{value.length>=n?(ispassword?'●':value.substr(n-1,1)):(shownumber?n:'')}}</div>
+        </div>
+        <input _numberpanel="1" v-model="textvalue" v-on:keydown="keydown" :type="keyboardtype" style="position:absolute;left:0;top:0;width:100%;height:100%;border:0;outline:none;caret-color:transparent;opacity:0;" />
+    </div>
+</body>
+</html>

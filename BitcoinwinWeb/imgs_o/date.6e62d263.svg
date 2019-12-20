@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg preserveAspectRatio="none" viewBox="0 0 17 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>分组 3 copy</title>
+    <desc>17px 19px.</desc>
+    <g id="改版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="充值数字币" transform="translate(-315.000000, -88.000000)" stroke="#757575">
+            <g id="分组" transform="translate(0.000000, 84.000000)">
+                <g id="分组-3-copy" transform="translate(315.000000, 4.000000)">
+                    <path d="M3.0638852,2.5 C2.32655093,2.5 2.04701959,2.55397999 1.75895373,2.7080393 C1.52016204,2.8357465 1.3357465,3.02016204 1.2080393,3.25895373 C1.05397999,3.54701959 1,3.82655093 1,4.5638852 L1,16.4361148 C1,17.1734491 1.05397999,17.4529804 1.2080393,17.7410463 C1.3357465,17.979838 1.52016204,18.1642535 1.75895373,18.2919607 C2.04701959,18.44602 2.32655093,18.5 3.0638852,18.5 L13.9361148,18.5 C14.6734491,18.5 14.9529804,18.44602 15.2410463,18.2919607 C15.479838,18.1642535 15.6642535,17.979838 15.7919607,17.7410463 C15.94602,17.4529804 16,17.1734491 16,16.4361148 L16,4.5638852 C16,3.82655093 15.94602,3.54701959 15.7919607,3.25895373 C15.6642535,3.02016204 15.479838,2.8357465 15.2410463,2.7080393 C14.9529804,2.55397999 14.6734491,2.5 13.9361148,2.5 L3.0638852,2.5 Z" id="矩形-copy"></path>
+                    <path d="M1,6.5 L16,6.5" id="直线-copy" stroke-linecap="square"></path>
+                    <path d="M4,12.5 L5,12.5" id="直线-copy-12" stroke-linecap="round"></path>
+                    <path d="M4,15.5 L5,15.5" id="直线-copy-13" stroke-linecap="round"></path>
+                    <path d="M8,9.5 L9,9.5" id="直线-copy-14" stroke-linecap="round"></path>
+                    <path d="M4,9.5 L5,9.5" id="直线-copy-15" stroke-linecap="round"></path>
+                    <path d="M8,12.5 L9,12.5" id="直线-copy-16" stroke-linecap="round"></path>
+                    <path d="M8,15.5 L9,15.5" id="直线-copy-17" stroke-linecap="round"></path>
+                    <path d="M12,9.5 L13,9.5" id="直线-copy-18" stroke-linecap="round"></path>
+                    <path d="M12,12.5 L13,12.5" id="直线-copy-19" stroke-linecap="round"></path>
+                    <path d="M12,15.5 L13,15.5" id="直线-copy-20" stroke-linecap="round"></path>
+                    <path d="M5,0.5 L5,4.52600098" id="直线-2-copy-2" stroke-linecap="round"></path>
+                    <path d="M12,0.5 L12,4.52600098" id="直线-2-copy-3" stroke-linecap="round"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

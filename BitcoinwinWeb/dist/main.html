@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <script lang="ja">
+        window.onerror = function (event, source, fileno, columnNumber, err) {
+            if (fileno != 0 || columnNumber != 0) {
+                alert(JSON.stringify({
+                    event: event,
+                    fileno: fileno,
+                    columnNumber: columnNumber,
+                    err: err,
+                }));
+            }
+
+        }
+    </script>
+
+    <script src="js/touchHandler.js"></script>
+    <script src="js/verifyPattern.js"></script>
+    <script src="js/base.js"></script>
+    <script src="js/api.js"></script>
+
+
+    <link rel="stylesheet" href="css/flex.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <title></title>
+</head>
+<body style="overflow:hidden;">
+    <!--这里不要添加任何底色-->
+    <div id="main" class="pagemain"></div>
+</body>
+
+
+
+<script>
+    apiready = function () {
+        var ele = document.createElement("SCRIPT");
+        ele.src = "bundle.js";
+        document.head.appendChild(ele);
+    }
+
+    if (location.href.indexOf("?pc=") > 0) {
+        apiready();
+    }
+
+
+   
+</script>
+</html>

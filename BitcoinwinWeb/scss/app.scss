@@ -1,0 +1,19 @@
+﻿@import "main.scss";
+@import "my/my.scss";
+@import "my/personInfo.scss";
+@import "my/realname.scss";
+@import "my/assets.scss";
+@import "my/withdraw.scss";
+.msgbox
+{
+    position:absolute;
+    border-radius:3px;
+    background-color:rgba(66, 64, 64,0.8);
+    color:#fff;
+    font-size:0.4rem;
+    padding-left:0.3rem;
+    padding-top:0.1rem;
+    padding-right:0.3rem;
+    padding-bottom:0.15rem;
+    font-size:0.4rem;
+}

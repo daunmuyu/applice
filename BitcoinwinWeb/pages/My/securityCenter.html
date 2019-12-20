@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div class="canscroll" style="width:100%;height:100%;background-color:#fff;">
+        <pageheader :title="textRes.items['安全中心']" :withloading="true" :showloading="isBusy"></pageheader>
+        <div style="color: #4A4A4A;">
+            <div style="font-size:0.48rem;font-weight:bold;margin-top:1.14rem;margin-left:0.45rem;">
+                {{textRes.items['安全等级']}}：&nbsp;&nbsp;<span v-if="safetyLevel<=40" style="color:#EA3131;font-size:0.48rem;font-weight:bold;">{{textRes.items['低']}}</span>
+                <span v-if="safetyLevel>40&&safetyLevel<=70" style="color:#EA3131;font-size:0.48rem;font-weight:bold;">{{textRes.items['中']}}</span>
+                <span v-if="safetyLevel>70" style="color:#EA3131;font-size:0.48rem;font-weight:bold;">{{textRes.items['高']}}</span>
+            </div>
+            <div style="margin:0.6rem 0.45rem 0 0.45rem;">
+                <div style="width:100%;height:0.12rem;background-color:#F1F1F1;border-radius:999rem;position:relative;">
+                    <div style="left:0;top:0;height:100%;height:0.12rem;background-color:#EA3131;border-radius:999rem;position:absolute;" :style="{width:safetyLevel + '%'}"></div>
+                    <div style="width:0.36rem;height:0.36rem;border-radius:999rem;position:absolute;top:-0.12rem;background-color:#EA3131;" :style="{left:safetyLevel + '%'}"></div>
+                </div>
+
+                <div class="display-flex flex-direction-row align-items-center" style="margin-top:1.02rem;padding-bottom:0.45rem;border-bottom:0.06rem solid #FAFAFA;">
+                    <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['手机号']}}</div>
+                    <div class="flex-shrink-0" style="color:#BCBCBC;font-size:0.39rem;">{{phone_number}}</div>
+                </div>
+                <div @click="realNameClick" class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;padding-bottom:0.45rem;border-bottom:0.3rem solid #FAFAFA;">
+                    <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['实名认证']}}</div>
+                    <div class="flex-shrink-0" v-if="certificationSuccess" style="color:#EA3131;font-size:0.39rem;padding:0.1rem 0.18rem 0.1rem 0.18rem;border:1px solid #EA3131;">{{certificationstatus}}</div>
+                    <div class="flex-shrink-0" v-if="canCertification||certificationAuditing" style="color:#4371D3;font-size:0.39rem;">{{certificationstatus}}</div>
+                    <svg class="flex-shrink-0 " v-if="canCertification" style="width:0.12rem;height:0.27rem;margin-left:0.2rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                        <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+                    </svg>
+                </div>
+                <!--<div class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;padding-bottom:0.45rem;border-bottom:0.3rem solid #FAFAFA;">
+                    <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['高级认证']}}</div>
+                    <div class="flex-shrink-0" style="color:#4371D3;font-size:0.39rem;">{{textRes.items['去认证']}}</div>
+                    <svg class="flex-shrink-0 " style="width:0.12rem;height:0.27rem;margin-left:0.2rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                        <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+                    </svg>
+                </div>-->
+
+                <div @click="setPayPwdClick" class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;padding-bottom:0.45rem;border-bottom:0.06rem solid #FAFAFA;">
+                    <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['支付密码']}}</div>
+                    <div class="flex-shrink-0" v-if="!isSetedPayPassword" style="color:#4371D3;font-size:0.39rem;">{{textRes.items['未设置']}}</div>
+                    <div class="flex-shrink-0" v-if="isSetedPayPassword" style="color:#4371D3;font-size:0.39rem;">{{textRes.items['设置']}}</div>
+                    <svg class="flex-shrink-0 " style="width:0.12rem;height:0.27rem;margin-left:0.2rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                        <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+                    </svg>
+                </div>
+                <div @click="modifyPwdClick" class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;padding-bottom:0.45rem;border-bottom:0.06rem solid #FAFAFA;">
+                    <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['登录密码']}}</div>
+                    <div class="flex-shrink-0" style="color:#4371D3;font-size:0.39rem;">{{textRes.items['修改']}}</div>
+                    <svg class="flex-shrink-0 " style="width:0.12rem;height:0.27rem;margin-left:0.2rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                        <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+                    </svg>
+                </div>
+                <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;padding-bottom:0.45rem;border-bottom:0.06rem solid #FAFAFA;">
+                    <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['指纹验证']}} {{textRes.items['(苹果支持面部验证)']}}</div>
+                    <div @click="activeFingerClick" class="flex-shrink-0">
+                        <switcher v-model="activeFinger" :clickchange="false" activecolor="#4371D3" style="width:0.98rem;height:0.49rem;"></switcher>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+      
+    </div>
+</body>
+</html>

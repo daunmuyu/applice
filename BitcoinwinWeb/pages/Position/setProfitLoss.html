@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    
+    
+    <script src="../../js/base.js"></script>
+    <script src="../../js/api.js"></script>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/flex.css">
+    <style>
+        td {
+            color: #494949;
+            font-size:0.39rem;
+            white-space:nowrap;
+        }
+        .dialogBtn {
+            height: 1.1rem;
+            line-height: 1.1rem;
+            font-size: 0.46rem;
+            color: #fff;
+            border-radius: 0.1rem;
+            padding: 0;
+            text-align: center;
+            width: 4.23rem;
+        }
+        .inputItem {
+            width: 3rem;
+            height: 0.9rem;
+            border-radius: 0.12rem;
+            text-align: center;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="display-flex flex-direction-column justify-content-center canscroll" style="width:100%;height:100%;background-color:rgba(0,0,0,0.3)">
+       <div @click="backClick" style="position:absolute;left:0;top:0;width:100%;height:100%;"></div>
+       <div style="position:relative;background-color:#fff;border-radius:0.16rem;padding-left:0.64rem;padding-right:0.64rem;margin-left:0.55rem;margin-right:0.55rem;">
+           <div class="display-flex flex-direction-row align-items-center" style="height:1.28rem;position:relative;">
+               <div style="color:#3f3f3f;font-weight:bold;font-size:0.46rem;">{{item.symbolname}}</div>
+               <div :style="{lineHeight:getFontSize(0.42),fontSize:getFontSize(0.19)}" style="border:1px solid #919191;padding-left:0.22rem;padding-right:0.22rem;border-radius:999rem;margin-left:0.16rem;">{{item.leverage}}x</div>
+               <div v-if="item.bstype==1" class="display-flex flex-direction-column align-items-center" style="width:0.55rem;height:0.55rem;margin-left:0.16rem;border-radius:999rem;" :style="{backgroundColor:textRes.items['行情列表-涨']}">
+                   <svg style="height:0.3rem;width:0.3rem;margin-top:0.11rem;" viewBox="0 0 11 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                       <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                           <polygon id="Path-2" fill="#ffffff" points="0 5.24584961 5.3918457 0 10.8137207 5.24584961 7.61242676 5.24584961 7.61242676 12 3.10449219 12 3.10449219 5.24584961"></polygon>
+                       </g>
+                   </svg>
+               </div>
+               <div v-if="item.bstype==2" class="display-flex flex-direction-column align-items-center" style="width:0.55rem;height:0.55rem;margin-left:0.16rem;border-radius:999rem;" :style="{backgroundColor:textRes.items['行情列表-跌']}">
+                   <svg style="height:0.3rem;width:0.3rem;margin-top:0.13rem;" viewBox="0 0 11 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                       <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                           <polygon id="Path-2" fill="#ffffff" transform="translate(5.406860, 6.000000) scale(1, -1) translate(-5.406860, -6.000000) " points="0 5.24584961 5.3918457 0 10.8137207 5.24584961 7.61242676 5.24584961 7.61242676 12 3.10449219 12 3.10449219 5.24584961"></polygon>
+                       </g>
+                   </svg>
+               </div>
+               <div style="font-size:0.24rem;color:#5b5b5b;">
+                   &nbsp;&nbsp;X{{textRes.getItem('n手',item.quantity,item.quantity>1?'s':'')}}
+               </div>
+
+           </div>
+
+           <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:0.88rem;">
+               <tr>
+                   <td style="width:1px;">{{textRes.items['开仓价']}}</td>
+                   <td style="padding-left:0.45rem;">{{item.buyprice.formatMoney()}}</td>
+                   <td>{{textRes.items['平仓价']}}</td>
+                   <td style="text-align:right;">{{item.newprice.formatMoney()}}</td>
+               </tr>
+               <tr>
+                   <td style="padding-top:0.42rem;">{{textRes.items['浮动盈亏']}}</td>
+                   <td style="padding-left:0.45rem;padding-top:0.42rem;" :style="{color:item.profit>=0?textRes.items['TextColor涨']:textRes.items['TextColor跌']}">{{formatMoney(item.profit,'+')}}</td>
+                   <td style="padding-top:0.42rem;">{{textRes.items['盈亏比例']}}</td>
+                   <td style="text-align:right;padding-top:0.42rem;">{{formatMoneyFixed(item.profitRate, 2 ,'+')}}%</td>
+
+               </tr>
+               <tr>
+                   <td style="padding-top:0.42rem;">{{textRes.items['保证金']}}</td>
+                   <td style="padding-left:0.45rem;padding-top:0.42rem;">{{formatMoney(item.margin+item.marginplus)}}</td>
+                   <td style="padding-top:0.42rem;">{{textRes.items['融资额']}}</td>
+                   <td style="text-align:right;padding-top:0.42rem;">{{formatMoney(item.financingamount)}}</td>
+               </tr>
+           </table>
+
+
+           <div>
+               <div class="display-flex flex-direction-row align-items-center" style="height:1.18rem;line-height:1.18rem;position:relative;font-size:0.36rem;color:#111;">
+                   <div>{{textRes.items["止盈价格"]}}</div>
+                   <div class="flex-1" style="text-align:right;">{{textRes.items["止盈金额"]}}</div>
+               </div>
+               <div class="borderBottom display-flex flex-direction-row align-items-center" style="padding-bottom:0.36rem;">
+                   <div class="flex-1 display-flex flex-direction-row align-items-center">
+                       <div touchmode @click="jianProfitPrice" style="color:#4aa137;font-weight:bold;font-size:0.6rem;" :style="{color:textRes.items['TextColor涨']}">-&nbsp;&nbsp;</div>
+                       <input type="number"  v-model="stopProfit" @keyup="calculatorProfitAmount" :placeholder="textRes.items['点击设置']" class="inputItem" :style="{border:'1px solid ' + textRes.items['TextColor涨']}"></input>
+                       <div touchmode @click="jiaProfitPrice" style="color:#4aa137;font-weight:bold;font-size:0.6rem;" :style="{color:textRes.items['TextColor涨']}">&nbsp;&nbsp;+&nbsp;&nbsp;</div>
+                   </div>
+                   <div class="flex-1 display-flex flex-direction-row align-items-center justify-content-end">
+                       <div touchmode @click="jianProfitAmount" style="color:#4aa137;font-weight:bold;font-size:0.6rem;" :style="{color:textRes.items['TextColor涨']}">&nbsp;&nbsp;-&nbsp;&nbsp;</div>
+                       <input type="number" v-model="stopProfitAmount" @keyup="calculatorProfit" :placeholder="textRes.items['点击设置']" class="inputItem" :style="{border:'1px solid ' + textRes.items['TextColor涨']}"></input>
+                       <div touchmode @click="jiaProfitAmount" style="color:#4aa137;font-weight:bold;font-size:0.6rem;" :style="{color:textRes.items['TextColor涨']}">&nbsp;&nbsp;+</div>
+                   </div>
+               </div>
+
+               <div class="display-flex flex-direction-row align-items-center" style="height:1.18rem;line-height:1.18rem;position:relative;font-size:0.36rem;color:#111;">
+                   <div>{{textRes.items["止损价格"]}}</div>
+                   <div class="flex-1" style="text-align:right;">{{textRes.items["止损金额"]}}</div>
+               </div>
+               <div class="display-flex flex-direction-row align-items-center" style="padding-bottom:0.36rem;">
+                   <div class="flex-1 display-flex flex-direction-row align-items-center">
+                       <div touchmode @click="jianLossPrice" style="color:#4aa137;font-weight:bold;font-size:0.6rem;" :style="{color:textRes.items['TextColor跌']}">-&nbsp;&nbsp;</div>
+                       <input type="number"  v-model="stopLoss" @keyup="calculatorLossAmount"  v-bind:placeholder="textRes.items['点击设置']" class="inputItem" :style="{border:'1px solid ' + textRes.items['TextColor跌']}"></input>
+                       <div touchmode @click="jiaLossPrice" style="color:#4aa137;font-weight:bold;font-size:0.6rem;" :style="{color:textRes.items['TextColor跌']}">&nbsp;&nbsp;+&nbsp;&nbsp;</div>
+                   </div>
+                   <div class="flex-1 display-flex flex-direction-row align-items-center justify-content-end">
+                       <div touchmode @click="jianLossAmount" style="color:#4aa137;font-weight:bold;font-size:0.6rem;" :style="{color:textRes.items['TextColor跌']}">&nbsp;&nbsp;-&nbsp;&nbsp;</div>
+                       <input type="number" v-model="stopLossAmount" @keyup="calculatorLoss"  v-bind:placeholder="textRes.items['点击设置']" class="inputItem" :style="{border:'1px solid ' + textRes.items['TextColor跌']}"></input>
+                       <div touchmode @click="jiaLossAmount" style="color:#4aa137;font-weight:bold;font-size:0.6rem;" :style="{color:textRes.items['TextColor跌']}">&nbsp;&nbsp;+</div>
+                   </div>
+               </div>
+           </div>
+
+
+           <div class="display-flex flex-direction-row justify-content-center" style="margin-top:0.85rem;margin-bottom:0.54rem;">
+               <div @click="backClick" class="dialogBtn" style="background-color:#777;">{{textRes.items["取消"]}}</div>
+               <div @click="submit" class="dialogBtn" style="margin-left:0.6rem;position:relative;" v-bind:style="{backgroundColor:textRes.items['超级链接颜色']}">
+                   {{isBusy?'':textRes.items["确定"]}}
+                   <loading v-show="isBusy" style="position:absolute;left:1.615rem;width:1rem;height:1rem;top:0.05rem;"></loading>
+               </div>
+           </div>
+
+
+       </div>
+        
+    </div>
+</body>
+<script>
+    var global = require("../../Global");
+    //global.setLanguage("en-US");
+    var obj = require("SetProfitLoss");
+    var page = new obj.SetProfitLoss();
+    page.setParent(document.body);
+</script>
+</html>

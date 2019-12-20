@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div class="pages-my canscroll" style="position:absolute;left:0;top:0;width:100%;height:100%;background-color:#fff;">
+        <div class="myheader" :style="{paddingTop:safeTop}">
+            <!--右边底图-->
+            <svg style="position:absolute;right:0;top:0;width:5.43rem;height:100%;" viewBox="0 0 192 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <defs>
+                    <linearGradient x1="105.140701%" y1="53.0756978%" x2="2.39064048%" y2="47.2457757%" id="my-linearGradient-1">
+                        <stop stop-color="#FEB873" stop-opacity="0.84655231" offset="0%"></stop>
+                        <stop stop-color="#FDA069" offset="100%"></stop>
+                    </linearGradient>
+                    <linearGradient x1="0%" y1="50%" x2="100%" y2="29.0845788%" id="my-linearGradient-2">
+                        <stop stop-color="#F77D75" stop-opacity="0.742357337" offset="0%"></stop>
+                        <stop stop-color="#F8773D" stop-opacity="0.973986639" offset="100%"></stop>
+                    </linearGradient>
+                </defs>
+                <g id="改版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.275227865">
+                    <g id="Group-2" transform="translate(-183.000000, 0.000000)">
+                        <g id="Group-31" transform="translate(183.000000, -80.000000)">
+                            <circle id="椭圆形-copy-3" fill="url(#my-linearGradient-1)" cx="171.5" cy="150.5" r="116.5"></circle>
+                            <circle id="椭圆形-copy-4" fill="url(#my-linearGradient-2)" cx="75" cy="75" r="75"></circle>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+
+            <div style="height:4.17rem;position:relative;">
+                <!--圆头图标-->
+                <div style="position:absolute;top:0.66rem;left:0.84rem;">
+                    <svg @click="loginClick" style="width:1.2rem;height:1.2rem;" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="改版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Group-Copy" transform="translate(0.000000, -58.000000)">
+                                <g id="Group-3-Copy-4" transform="translate(0.000000, 58.000000)">
+                                    <g id="分组-6">
+                                        <circle id="椭圆形" fill="#FFFFFF" :stroke="isVip?'#FFB501':'#ffffff'" stroke-width="2" st cx="20" cy="20" r="18"></circle>
+                                        <g id="wode-2-copy" transform="translate(9.090909, 7.272727)" class="mainfillcolor" fill-rule="nonzero">
+                                            <path d="M21.0757037,17.7008177 C20.6049822,16.7479787 19.9401488,15.8913397 19.0909091,15.1492247 C17.3875768,13.6558327 15.1116144,12.7991938 12.8453575,12.7991938 L8.97282433,12.7991938 C6.70656745,12.7991938 4.43060498,13.6558327 2.72727273,15.1492247 C1.878033,15.8913397 1.21319961,16.7525596 0.742478162,17.7008177 C0.247492721,18.6994663 0,19.7530864 0,20.8296113 C0,22.2359651 1.20834681,23.3766234 2.69815594,23.3766234 L19.1200259,23.3766234 C20.609835,23.3766234 21.8181818,22.2359651 21.8181818,20.8296113 C21.8181818,19.7530864 21.5706891,18.6994663 21.0757037,17.7008177 Z" id="路径"></path>
+                                            <path d="M19.1200259,21.9382029 L2.69815594,21.9382029 C2.04788094,21.9382029 1.52377871,21.4388786 1.52377871,20.8296113 C1.52377871,19.0934286 2.32934325,17.4397032 3.79974118,16.1707781 C5.22161113,14.9430816 7.10449693,14.2376142 8.97282433,14.2376142 L12.8453575,14.2376142 C14.7136849,14.2376142 16.6014235,14.9430816 18.0184406,16.1707781 C19.4839858,17.4397032 20.2944031,19.0934286 20.2944031,20.8296113 C20.2944031,21.4434595 19.7703009,21.9382029 19.1200259,21.9382029 Z" id="路径"></path>
+                                            <path d="M10.9090909,12.4098124 C14.5341313,12.4098124 17.47978,9.62459058 17.47978,6.20719668 C17.47978,2.78980279 14.5341313,0 10.9090909,0 C7.28405047,0 4.33840181,2.78522183 4.33840181,6.20261573 C4.33840181,9.62000962 7.28405047,12.4098124 10.9090909,12.4098124 Z" id="路径"></path>
+                                            <path d="M10.9090909,1.43842049 C13.6945972,1.43842049 15.9560013,3.57772739 15.9560013,6.20261573 C15.9560013,8.82750407 13.6897444,10.966811 10.9090909,10.966811 C8.1235846,10.966811 5.86218052,8.82750407 5.86218052,6.20261573 C5.86218052,3.57772739 8.1235846,1.43842049 10.9090909,1.43842049 Z" id="路径"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                    <img v-if="isVip" @click="loginClick" src="imgs/vip.svg" style="position:absolute;top:-0.36rem;left:0.85rem;width:0.96rem;height:0.91rem;" />
+                    <div @click="loginClick" style="font-size:0.81rem;margin-top:0.15rem;color:#fff;font-weight:bold;">{{phone_number}}</div>
+                    <div @click="loginClick" class="display-flex flex-direction-row" style="margin-top:0.06rem;">
+                        <div style="color:#fff;font-size:0.45rem;white-space:nowrap;">{{certificationSuccess?textRes.items['已认证']:(phone_number?textRes.items['未认证']:textRes.items['未登录'])}}</div>
+                        <img v-if="isVip" src="imgs/vip2.svg" style="height:0.58rem;margin-left:0.2rem;"/>
+                    </div>
+                </div>
+
+                <div v-show="phone_number" @click="showPopularize" class="maincolor" style="width:1.14rem;height:0.87rem;position:absolute;top:0.84rem;right:1.93rem;">
+                    <img src="imgs/fenxiang-2.svg" style="width:100%;height:100%;"/>
+                    <div class="maincolor" style="position:absolute;white-space:nowrap;left:1.05rem;bottom:0.57rem;background-color:#fff;padding-left:0.27rem;padding-right:0.27rem;height:0.6rem;border-radius:0.9rem 0.6rem 0.6rem 0;font-size:0.36rem;text-align:center;line-height:0.6rem;">
+                        {{textRes.items['返利']}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top:0.58rem;">
+            <!--<div @click="personInfoClick" class="item itemborder">
+        <img style="width:0.66rem;height:0.66rem;margin-left:0.39rem;margin-top:0.31rem;" src="imgs/grzl.svg" />
+        <div class="itemtext">
+            {{textRes.items['个人资料']}}
+        </div>
+        <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.475rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+            <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+        </svg>
+    </div>-->
+            <div @click="messageCenterClick" class="item">
+                <img style="width:0.66rem;height:0.66rem;margin-left:0.39rem;margin-top:0.31rem;" src="imgs/xxtx.svg" />
+                <div class="itemtext">
+                    {{textRes.items['消息提醒']}}
+                </div>
+                <div v-show="unreadCount>0" class="mainbgcolor" style="position:absolute;right:0.82rem;width:0.65rem;height:0.65rem;top:0.325rem;border-radius:88rem;color:#fff;font-size:0.22rem;line-height:0.65rem;text-align:center;">
+                    {{unreadCount>99?"...":unreadCount}}
+                </div>
+                <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.475rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                    <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+                </svg>
+            </div>
+            <div style="height:0.3rem;background-color:#fafafa;"></div>
+            <div @click="accountClick" class="item itemborder">
+                <img style="width:0.66rem;height:0.66rem;margin-left:0.39rem;margin-top:0.31rem;" src="imgs/bdskzh.svg" />
+                <div class="itemtext">
+                    {{textRes.items['绑定收款账户']}}
+                </div>
+                <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.475rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                    <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+                </svg>
+            </div>
+            <div @click="beginnerGuideClick" class="item itemborder">
+                <img style="width:0.66rem;height:0.66rem;margin-left:0.39rem;margin-top:0.31rem;" src="imgs/xsjx.svg" />
+                <div class="itemtext">
+                    {{textRes.items['新手教学']}}
+                </div>
+                <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.475rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                    <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+                </svg>
+            </div>
+            <div @click="demoTradeClick" class="item">
+                <img style="width:0.66rem;height:0.66rem;margin-left:0.39rem;margin-top:0.31rem;" src="imgs/mnjy.svg" />
+                <div class="itemtext">
+                    {{textRes.items['模拟交易']}}
+                </div>
+                <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.475rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                    <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+                </svg>
+                <loading v-show="isBusy" style="width:1rem;height:1rem;position:absolute;left:5.125rem;top:0;"></loading>
+            </div>
+            <div style="height:0.3rem;background-color:#fafafa;"></div>
+            <div @click="questionsClick" class="item itemborder">
+                <img style="width:0.66rem;height:0.66rem;margin-left:0.39rem;margin-top:0.31rem;" src="imgs/cjwt.svg" />
+                <div class="itemtext">
+                    {{textRes.items['常见问题']}}
+                </div>
+                <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.475rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                    <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+                </svg>
+            </div>
+
+            <div style="height:0.3rem;background-color:#fafafa;"></div>
+
+            <div @click="aboutUsClick" class="item itemborder">
+                <img style="width:0.66rem;height:0.66rem;margin-left:0.39rem;margin-top:0.31rem;" src="imgs/gywm.svg" />
+                <div class="itemtext">
+                    {{textRes.items['关于我们']}}
+                </div>
+                <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.475rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                    <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+                </svg>
+            </div>
+
+            <div @click="securityCenterClick" class="item itemborder">
+                <img style="width:0.66rem;height:0.66rem;margin-left:0.39rem;margin-top:0.31rem;" src="imgs/sz.svg" />
+                <div class="itemtext">
+                    {{textRes.items['安全中心']}}
+                </div>
+                <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.475rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                    <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+                </svg>
+            </div>
+            <div @click="serviceClick" class="item itemborder">
+                <img style="width:0.66rem;height:0.66rem;margin-left:0.39rem;margin-top:0.31rem;" src="imgs/zxkf.svg" />
+                <div class="itemtext">
+                    {{textRes.items['在线客服']}}
+                </div>
+                <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.475rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                    <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+                </svg>
+            </div>
+            <div @click="settingClick" class="item itemborder">
+                <img style="width:0.66rem;height:0.66rem;margin-left:0.39rem;margin-top:0.31rem;" src="imgs/sz.svg" />
+                <div class="itemtext">
+                    {{textRes.items['设置']}}
+                </div>
+                <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.475rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                    <path d="M0,0 L100,50 L0,100" stroke="#4d4d4d" stroke-width="8" fill="none"></path>
+                </svg>
+            </div>
+
+            <div style="height:1rem;"></div>
+        </div>
+    </div>
+    
+</body>
+</html>

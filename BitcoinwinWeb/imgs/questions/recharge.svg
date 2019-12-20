@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 37</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#F65F5F" offset="0%"></stop>
+            <stop stop-color="#EA3131" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="改版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="常见问题" transform="translate(-32.000000, -267.000000)">
+            <g id="Group-37" transform="translate(32.000000, 267.000000)">
+                <g id="交易-2-copy-3" fill="url(#linearGradient-1)" fill-rule="nonzero">
+                    <path d="M12.4950009,24.9999783 C6.55031188,24.9960525 1.43049154,20.8072544 0.25015212,14.9818142 C-0.930187305,9.15637395 2.15541756,3.30551717 7.62985737,0.988577679 C13.9901177,-1.69795574 21.3243264,1.27939938 24.011271,7.63868645 C26.6982156,13.9979735 23.7204048,21.3310599 17.3601445,24.0175933 C15.8210439,24.668971 14.1663008,25.0031019 12.4950009,24.9999783 Z" id="Shape"></path>
+                </g>
+                <g id="分组-4-copy" transform="translate(5.882353, 1.000000)" fill="#FFFFFF" font-family="PingFangSC-Regular, PingFang SC" font-size="15" font-weight="normal">
+                    <g id="Group-2">
+                        <text id="$">
+                            <tspan x="2.11764706" y="16.7272727">$</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

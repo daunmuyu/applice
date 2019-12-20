@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .item0 {
+            background-color: #fff;
+            padding-top: 0.66rem;
+            
+        }
+        .item1 {
+            background-color: #F5F5F5;
+            padding-top: 0.66rem;
+        }
+        .tab {
+            text-align: center;
+            height: 0.81rem;
+            line-height: 0.81rem;
+            font-weight: bold;
+        }
+        .btn {
+            text-align: center;
+            height: 1.02rem;
+            line-height: 1.02rem;
+            font-weight: bold;
+        }
+        input{
+            -webkit-appearance:none;
+            border:0;
+        }
+    </style>
+</head>
+<body>
+    <div class="canscroll display-flex flex-direction-column" style="width:100%;height:100%;position:absolute;left:0;top:0;background-color:#fff;color: #4A4A4A;">
+        <div class="flex-shrink-0" style="position:relative;width:100%;">
+            <pageheader :title="textRes.items['还款']"></pageheader>
+            <div @click="listClick" style="position:absolute;right:0.48rem;bottom:0.4rem;font-size:0.4rem;color:#fff;">{{textRes.items['还款明细']}}</div>
+            <div v-show="isBusy" style="position:absolute;width:1rem;height:1rem;left:5.125rem;">
+                <loading style="width:1rem;height:1rem;margin-top:1rem;" bgcolor="#eee"></loading>
+            </div>
+        </div>
+
+        <div class="flex-1">
+            <template v-for="item in datas">
+                <div :class="{item1:item.urgent,item0:!item.urgent}">
+                    <div style="margin-left:0.6rem;margin-right:0.6rem;font-weight:bold;position:relative;">
+                        <span style="font-size:0.45rem;" v-html="textRes.getItem('{0}前需还款金额','<span style=font-size:0.51rem;color:#EA3131;>'+ showUTCTime(item.extData.InterestFreeTime,true) +'</span>&nbsp;&nbsp;')"></span>
+                        <div @click="repay(item)" style="position:absolute;width:1.89rem;height:0.72rem;top:0.18rem;right:0;background-color:#EA3131;color:#fff;text-align:center;line-height:0.72rem;border-radius:999rem;">
+                            {{textRes.items['还款']}}
+                        </div>
+                    </div>
+                    <div style="margin-left:0.6rem;margin-top:0.18rem;font-size:0.66rem;color:rgba(74,74,74,1);font-weight:bold;">{{formatMoney(item.amount)}} USDT</div>
+                    <div v-if="item.extData.CreditOverdueDay>0" style="margin-top:0.3rem;background-color:#fff;height:0.03rem;"></div>
+                    <div v-if="item.extData.CreditOverdueDay>0" class="display-flex flex-direction-row align-items-center" style="padding:0.3rem 0.6rem 0 0.6rem;">
+                        <div style="font-size:0.36rem;">{{textRes.items['逾期天数']}}</div>
+                        <div class="flex-1" style="color:#EA3131;font-size:0.36rem;margin-left:0.45rem;">{{textRes.getItem('n天',getOverdays(item),'s')}}</div>
+                        <div style="font-size:0.36rem;">{{textRes.items['逾期费用']}}</div>
+                        <div style="color:#EA3131;font-size:0.36rem;margin-left:0.45rem;">{{formatMoney(item.interestAmount)}} USDT</div>
+                    </div>
+                    <div style="height:0.45rem;"></div>
+                </div>
+                <div style="height:0.18rem;" :style="{backgroundColor:item.urgent?'#fff':'#F5F5F5'}"></div>
+            </template>
+
+            <div @click="loadMore" style="color:#6c6c6e;text-align:center;line-height:1.3rem;font-size:0.3rem;">{{moretext}}</div>
+        </div>
+
+        <div v-if="datas.length>0" @click="repayall" class="submitbtn flex-shrink-0" style="height:1.19rem;line-height:1.19rem;margin:0.35rem 1.05rem 0.35rem 1.05rem;color:#fff;">{{textRes.items['一键还款']}}</div>
+
+        <!--还款窗口-->
+        <div v-if="repayItem" @click="repayItem=null" class="display-flex flex-direction-row align-items-center" style="position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);padding-left:1.05rem;padding-right:1.05rem;">
+            <div @click.stop="blankClick" class="canscroll" style="border-radius:0.18rem;background-color:#fff;width:100%;padding:0.78rem 0.6rem 0.72rem 0.6rem;max-height:100%;position:relative;">
+                <div class="display-flex flex-direction-row align-items-center">
+                    <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['借款数量']}}</div>
+                    <div style="font-size:0.48rem;font-weight:bold;">{{repayItem.amount}} USDT</div>
+                </div>
+
+                <!--余额还款-->
+                <div v-if="repayMode==1">
+                    <div class="display-flex flex-direction-row" style="margin-top:0.45rem;width:100%;">
+                        <div @click="recordAction('Credit_余额还款');repayMode=1" class="flex-1 tab mainbgcolor" style="border-radius:999rem 0 0 999rem;color:#fff;">{{textRes.items['余额还款']}}</div>
+                        <div @click="recordAction('Credit_信用资本还款');repayMode=2" class="flex-1 tab" style="border-radius:0 999rem 999rem 0;background-color:#F5F5F5;" :style="{color:selectedCurrency?'':'#a5a5a5'}">{{textRes.items['数字币还款']}}</div>
+                    </div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['可用余额']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{formatMoney(toFixed(available , 2 , true,true))}} USDT</div>
+                    </div>
+                    <div style="position:absolute;left:0;right:0;height:0.24rem;background-color:#FAFAFA;"></div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.72rem;margin-bottom:0.24rem;" :class="{err:validator.repayAmount}">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;"><input v-model="repayAmount" :placeholder="textRes.items['请输入还款数量']" /></div>
+                        <div @click="repayAmount=repayItem.amount" style="font-size:0.45rem;font-weight:bold;color:#B8B8B8;white-space:nowrap;">USDT&nbsp;&nbsp;|&nbsp;&nbsp;<span style="color:#2C60CE;">{{textRes.items['全部']}}</span></div>
+                    </div>
+                    <div style="position:absolute;left:0;right:0;height:0.24rem;background-color:#FAFAFA;"></div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.72rem;margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['免息截止日']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{showUTCTime(repayItem.extData.InterestFreeTime , true)}}</div>
+                    </div>
+                    <div v-if="repayItem.extData.CreditOverdueDay>0" style="position:absolute;left:0;right:0;height:0.06rem;background-color:#FAFAFA;"></div>
+                    <div v-if="repayItem.extData.CreditOverdueDay>0" class="display-flex flex-direction-row align-items-center" style="margin-top:0.51rem;margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['逾期天数']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{textRes.getItem('n天',getOverdays(repayItem),'s')}}</div>
+                    </div>
+                    <div v-if="repayItem.extData.CreditOverdueDay>0" style="position:absolute;left:0;right:0;height:0.06rem;background-color:#FAFAFA;"></div>
+                    <div v-if="repayItem.extData.CreditOverdueDay>0" class="display-flex flex-direction-row align-items-center" style="margin-top:0.51rem;margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['逾期费用']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{formatMoney(repayItem.interestAmount)}} USDT</div>
+                    </div>
+                </div>
+
+                <!--数字币还款-->
+                <div v-if="repayMode==2">
+                    <div class="display-flex flex-direction-row" style="margin-top:0.45rem;width:100%;">
+                        <div @click="repayMode=1" class="flex-1 tab" style="border-radius:999rem 0 0 999rem;background-color:#F5F5F5;">{{textRes.items['余额还款']}}</div>
+                        <div @click="repayMode=2" class="flex-1 tab mainbgcolor" style="border-radius:0 999rem 999rem 0;color:#fff;">{{textRes.items['数字币还款']}}</div>
+                    </div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;margin-bottom:0.24rem;position:relative;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['币种']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{selectedCurrency}}</div>
+                        <img src="../../imgs/arrowdown.svg" style="width:0.41rem;height:0.24rem;margin-left:0.2rem;margin-top:-0.1rem;" />
+
+                        <select v-model="selectedCurrency" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;">
+                            <option :value="item" v-for="item in currencies">{{item}}</option>
+                        </select>
+                    </div>
+                    <div style="position:absolute;left:0;right:0;height:0.06rem;background-color:#FAFAFA;"></div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['可用余额']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{available2}} {{selectedCurrency}}</div>
+                    </div>
+                    <div style="position:absolute;left:0;right:0;height:0.24rem;background-color:#FAFAFA;"></div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.72rem;margin-bottom:0.24rem;" :class="{err:validator.repayAmount}">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;"><input v-model="repayAmount" :placeholder="textRes.items['请输入还款数量']" /></div>
+                        <div @click="repayAmount=repayItem.amount" style="font-size:0.45rem;font-weight:bold;color:#B8B8B8;">USDT&nbsp;&nbsp;|&nbsp;&nbsp;<span style="color:#2C60CE;">{{textRes.items['全部']}}</span></div>
+                    </div>
+                    <div style="position:absolute;left:0;right:0;height:0.24rem;background-color:#FAFAFA;"></div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.72rem;margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['需支付']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{needToPayCoin}} {{selectedCurrency}}</div>
+                    </div>
+                    <div v-if="repayItem.extData.CreditOverdueDay>0" style="position:absolute;left:0;right:0;height:0.06rem;background-color:#FAFAFA;"></div>
+                    <div v-if="repayItem.extData.CreditOverdueDay>0" class="display-flex flex-direction-row align-items-center" style="margin-top:0.51rem;margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['逾期天数']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{textRes.getItem('n天',getOverdays(repayItem),'s')}}</div>
+                    </div>
+                    <div v-if="repayItem.extData.CreditOverdueDay>0" style="position:absolute;left:0;right:0;height:0.06rem;background-color:#FAFAFA;"></div>
+                    <div v-if="repayItem.extData.CreditOverdueDay>0" class="display-flex flex-direction-row align-items-center" style="margin-top:0.51rem;margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['逾期费用']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{formatMoney(repayItem.interestAmount)}} USDT</div>
+                    </div>
+                </div>
+
+                <div style="position:absolute;left:0;right:0;height:0.24rem;background-color:#FAFAFA;">
+                    <div v-show="isBusy" style="position:absolute;left:0;width:100%;top:0;" class="display-flex flex-direction-column align-items-center">
+                        <loading style="width:1rem;height:1rem;" bgcolor="#eee"></loading>
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row" style="margin-top:1.2rem;width:100%;">
+                    <div @click="repayItem=null" class="flex-1 btn" style="border-radius:999rem 0 0 999rem;background-color:#F5F5F5;">{{textRes.items['取消']}}</div>
+                    <div @click="submitRepay" class="flex-1 btn mainbgcolor" style="border-radius:0 999rem 999rem 0;color:#fff;">{{textRes.items['确定']}}</div>
+                </div>
+                <div style="color:#B9B9B9;margin-top:0.27rem;">
+                    <div style="font-size:0.36rem;line-height:0.65rem;">{{textRes.items['提示']}}</div>
+                    <div style="font-size:0.36rem;line-height:0.65rem;" v-html="textRes.items['还款提示'].replace(/\n/g,'<br>')"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!--一键还款窗口-->
+        <div v-if="isRepayingAll" class="display-flex flex-direction-row align-items-center" style="position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);padding-left:1.05rem;padding-right:1.05rem;">
+            <div @click.stop="blankClick" class="canscroll" style="border-radius:0.18rem;background-color:#fff;width:100%;padding:0.78rem 0.6rem 0.72rem 0.6rem;max-height:100%;position:relative;">
+                <div class="display-flex flex-direction-row align-items-center">
+                    <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['借款数量']}}</div>
+                    <div style="font-size:0.48rem;font-weight:bold;">{{formatMoney(loanAmount)}} USDT</div>
+                </div>
+
+                <!--余额还款-->
+                <div v-if="repayMode==1">
+                    <div class="display-flex flex-direction-row" style="margin-top:0.45rem;width:100%;">
+                        <div @click="repayMode=1" class="flex-1 tab mainbgcolor" style="border-radius:999rem 0 0 999rem;color:#fff;">{{textRes.items['余额还款']}}</div>
+                        <div @click="repayMode=2" class="flex-1 tab" style="border-radius:0 999rem 999rem 0;background-color:#F5F5F5;" :style="{color:selectedCurrency?'':'#a5a5a5'}">{{textRes.items['数字币还款']}}</div>
+                    </div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;padding-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['可用余额']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{formatMoney(toFixed( available , 2 , true,true))}} USDT</div>
+                    </div>
+                    <div style="position:absolute;left:0;right:0;height:0.24rem;background-color:#FAFAFA;"></div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['还款数量']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{formatMoney(loanAmount)}} USDT</div>
+                    </div>
+                </div>
+
+                <!--数字币还款-->
+                <div v-if="repayMode==2">
+                    <div class="display-flex flex-direction-row" style="margin-top:0.45rem;width:100%;">
+                        <div @click="repayMode=1" class="flex-1 tab" style="border-radius:999rem 0 0 999rem;background-color:#F5F5F5;">{{textRes.items['余额还款']}}</div>
+                        <div @click="repayMode=2" class="flex-1 tab mainbgcolor" style="border-radius:0 999rem 999rem 0;color:#fff;">{{textRes.items['数字币还款']}}</div>
+                    </div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;margin-bottom:0.24rem;position:relative;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['币种']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{selectedCurrency}}</div>
+                        <img src="../../imgs/arrowdown.svg" style="width:0.41rem;height:0.24rem;margin-left:0.2rem;margin-top:-0.1rem;" />
+
+                        <select v-model="selectedCurrency" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;">
+                            <option :value="item" v-for="item in currencies">{{item}}</option>
+                        </select>
+                    </div>
+                    <div style="position:absolute;left:0;right:0;height:0.06rem;background-color:#FAFAFA;"></div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;padding-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['可用余额']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{available2}} {{selectedCurrency}}</div>
+                    </div>
+                    <div style="position:absolute;left:0;right:0;height:0.24rem;background-color:#FAFAFA;"></div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.45rem;margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['还款数量']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{formatMoney(loanAmount)}} USDT</div>
+                    </div>
+                </div>
+
+                <div style="position:absolute;left:0;right:0;height:0.24rem;background-color:#FAFAFA;">
+                    <div v-show="isBusy" style="position:absolute;left:0;width:100%;top:0;" class="display-flex flex-direction-column align-items-center">
+                        <loading style="width:1rem;height:1rem;" bgcolor="#eee"></loading>
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row" style="margin-top:1.2rem;width:100%;">
+                    <div @click="isRepayingAll=false" class="flex-1 btn" style="border-radius:999rem 0 0 999rem;background-color:#F5F5F5;">{{textRes.items['取消']}}</div>
+                    <div @click="submitRepayAll" class="flex-1 btn mainbgcolor" style="border-radius:0 999rem 999rem 0;color:#fff;">{{textRes.items['确定']}}</div>
+                </div>
+                <div style="color:#B9B9B9;margin-top:0.27rem;">
+                    <div style="font-size:0.36rem;line-height:0.65rem;">{{textRes.items['提示']}}</div>
+                    <div style="font-size:0.36rem;line-height:0.65rem;" v-html="textRes.items['还款提示'].replace(/\n/g,'<br>')"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

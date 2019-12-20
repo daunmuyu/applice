@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="23px" viewBox="0 0 22 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 22</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="0%" y1="50%" x2="99.0561777%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#EE5A5A" offset="0%"></stop>
+            <stop stop-color="#EA3131" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="改版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="我的" transform="translate(-28.000000, -540.000000)">
+            <g id="分组-14-copy-3" transform="translate(28.000000, 540.000000)">
+                <g id="分组-19" transform="translate(0.000000, 0.375000)">
+                    <g id="Group-22">
+                        <g id="Group-21">
+                            <g id="Group-8" fill="url(#linearGradient-1)" fill-rule="nonzero">
+                                <circle id="椭圆形-copy-4" cx="11" cy="11" r="11"></circle>
+                            </g>
+                            <g id="fx-copy" transform="translate(6.000000, 5.625000)" stroke="#FFFFFF" stroke-width="0.8">
+                                <path d="M0,2.16251196 C1.56832837,2.04401307 3.01537698,1.49303651 4.22135417,0.628822545 C4.48896329,0.439768017 4.7485119,0.230078125 5,0 C5.37413194,0.346352838 5.76773313,0.646368782 6.18092758,0.899800702 C7.30109127,1.60782844 8.60243056,2.0569874 10,2.16251196 L10,4.51667331 C10,7.57268415 7.95498512,10.2535515 5,11.0714286 C2.04501488,10.2535515 1.76225877e-16,7.57268415 1.76225877e-16,4.51667331 L0,2.16251196 Z" id="Path"></path>
+                            </g>
+                        </g>
+                        <text id="$" font-family="PingFangSC-Medium, PingFang SC" font-size="6" font-weight="400" fill="#FDFDFD">
+                            <tspan x="9" y="13.625">$</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

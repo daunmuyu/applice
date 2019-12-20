@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg preserveAspectRatio="none" viewBox="0 0 108 76" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>分组 8</title>
+    <desc>Created with Sketch.</desc>
+    <g id="改版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="分组-8" transform="translate(0.000000, 1.000000)" stroke="#EA3131" stroke-width="2">
+            <g id="分组-6">
+                <g id="分组-4">
+                    <path d="M1.2459715,7 L1.2459715,0.508057" id="直线" transform="translate(1.245971, 3.754029) scale(-1, -1) translate(-1.245971, -3.754029) "></path>
+                    <path d="M5.2459715,3.7459715 L5.2459715,-2.7459715" id="直线-copy" transform="translate(5.245971, 0.500000) scale(-1, -1) rotate(-90.000000) translate(-5.245971, -0.500000) "></path>
+                </g>
+                <g id="分组-5" transform="translate(0.000000, 67.000000)">
+                    <path d="M1.2459715,6.491943 L1.2459715,-4.37871961e-13" id="直线" transform="translate(1.245971, 3.245971) scale(-1, 1) translate(-1.245971, -3.245971) "></path>
+                    <path d="M5.2459715,9.7459715 L5.2459715,3.2540285" id="直线-copy" transform="translate(5.245971, 6.500000) scale(-1, 1) rotate(-90.000000) translate(-5.245971, -6.500000) "></path>
+                </g>
+                <g id="分组-2" transform="translate(99.000000, 0.000000)">
+                    <path d="M7.7540285,7 L7.7540285,0.508057" id="直线" transform="translate(7.754029, 3.754029) scale(1, -1) translate(-7.754029, -3.754029) "></path>
+                    <path d="M3.7540285,3.7459715 L3.7540285,-2.7459715" id="直线-copy" transform="translate(3.754029, 0.500000) scale(1, -1) rotate(-90.000000) translate(-3.754029, -0.500000) "></path>
+                </g>
+                <g id="分组-3" transform="translate(99.000000, 67.000000)">
+                    <path d="M7.7540285,6.491943 L7.7540285,-4.37871961e-13" id="直线"></path>
+                    <path d="M3.7540285,9.7459715 L3.7540285,3.2540285" id="直线-copy" transform="translate(3.754029, 6.500000) rotate(-90.000000) translate(-3.754029, -6.500000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

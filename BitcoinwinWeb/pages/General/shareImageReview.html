@@ -1,0 +1,14 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div @click="cancelClick" class="display-flex flex-direction-column align-items-center justify-content-center" style="position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5)">
+        <img @click.stop="okClick" :src="img" style="height:50%;"/>
+
+        <div @click.stop="okClick" class="mainbgcolor" style="font-size:0.45rem;padding:10px 30px 10px 30px;border-radius:999rem;margin-top:1rem;color:#fff;">{{textRes.items['马上分享']}}</div>
+    </div>
+</body>
+</html>

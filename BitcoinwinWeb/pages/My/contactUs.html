@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <script src="../../js/base.js"></script>
+    <script src="../../js/api.js"></script>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/flex.css">
+</head>
+<body>
+    <div class="display-flex flex-direction-column" style="width:100%;height:100%;background-color:#fff;">
+        <pageheader class="flex-shrink-0" :title="textRes.items['联系客服']"></pageheader>
+        <div class="flex-1 canscroll" style="width:100%;position:relative;">
+            <!--中文版-->
+            <div v-if="textRes.langName==='zh-CN'" style="width:100%;margin-top:1.14rem;">
+                <div class="display-flex flex-direction-row justify-content-center align-items-center">
+                    <div style="width:1.15rem;background-color:#f9c582;height:0.04rem;"></div>
+                    <div style="font-size:0.46rem;margin-left:0.23rem;margin-right:0.23rem;">
+                        服务时间
+                    </div>
+                    <div style="width:1.15rem;background-color:#f9c582;height:0.04rem;"></div>
+                </div>
+
+                <div style="background-color:#fafafa;height:0.29rem;margin-top:0.68rem;"></div>
+                <div style="margin-top:0.73rem;font-size:0.36rem;text-align:center;">
+                    工作日&nbsp;&nbsp;&nbsp;&nbsp;香港时间： 9：00-18:00
+                </div>
+                <div style="margin-top:0.84rem;font-size:0.36rem;text-align:center;">
+                    工作日&nbsp;&nbsp;&nbsp;&nbsp;北美时间： 9：00-18:00
+                </div>
+                <div @click="copyEmail" style="margin-top:0.84rem;font-size:0.36rem;text-align:center;">
+                    邮箱地址：service@bitcoinwin.io
+                </div>
+                <div style="margin-top:1.02rem;height:0.99rem;color:#f9c582;line-height:0.99rem;font-size:0.36rem;text-align:center;background-color:#fafafa;">
+                    截屏保存二维码添加客服咨询
+                </div>
+                <div class="display-flex flex-direction-column align-items-center" style="margin-top:0.57rem;width:100%;">
+                    <canvas id="canvgQrcode" @click="screenShot" style="width:3.62rem;height:3.62rem;background-color:#ccc;margin-bottom:0.5rem;"></canvas>
+                    <div onclick="location.href='tel:0106139273690'" style="width:5.95rem;height:0.99rem;line-height:0.99rem;color:#fff;background-color:#ea3131;font-size:0.41rem;border-radius:999rem;text-align:center;">
+                        点击联系人工
+                    </div>
+                </div>
+                <div style="margin-top:0.3rem;height:0.3rem;background-color:#fafafa;"></div>
+                <div style="margin-top:0.5rem;margin-left:0.47rem;margin-right:0.47rem;font-size:0.29rem;color:#656565;">
+                    感谢您对Bitcoinwin的支持与鼓励，如您在投资过程中遇到任何问题，请及时 联系我们,我们诚挚为您服务。
+                </div>
+            </div>
+
+            <!--英文版-->
+            <div v-if="textRes.langName==='en-US'" style="width:100%;margin-top:1.14rem;">
+                <div class="display-flex flex-direction-row justify-content-center align-items-center">
+                    <div style="width:1.15rem;background-color:#f9c582;height:0.04rem;"></div>
+                    <div style="font-size:0.46rem;margin-left:0.23rem;margin-right:0.23rem;">
+                        Service Hongours
+                    </div>
+                    <div style="width:1.15rem;background-color:#f9c582;height:0.04rem;"></div>
+                </div>
+
+                <div style="background-color:#fafafa;height:0.29rem;margin-top:0.68rem;"></div>
+                <div style="margin-top:0.73rem;font-size:0.36rem;text-align:center;">
+                    Business Day : Hong Kong Time<br />
+                    9:00 AM - 6:00 PM
+                </div>
+                <div style="margin-top:0.84rem;font-size:0.36rem;text-align:center;">
+                    Business Day : North America<br />9:00 AM - 6:00 PM
+                </div>
+                <div @click="copyEmail" style="margin-top:0.84rem;font-size:0.36rem;text-align:center;">
+                    Email：service@bitcoinwin.io
+                </div>
+                <div style="margin-top:1.02rem;color:#f9c582;line-height:0.79rem;font-size:0.3rem;text-align:center;background-color:#fafafa;">
+                    Screen capture save QR code to add customer service consultation
+                </div>
+                <div class="display-flex flex-direction-column align-items-center" style="margin-top:0.57rem;width:100%;">
+                    <canvas id="canvgQrcode" @click="screenShot" style="width:3.62rem;height:3.62rem;background-color:#ccc;margin-bottom:0.5rem;"></canvas>
+                    <div onclick="location.href='tel:0106139273690'" style="width:5.95rem;height:0.99rem;line-height:0.99rem;color:#fff;background-color:#ea3131;font-size:0.41rem;border-radius:999rem;text-align:center;">
+                        Click to contact us
+                    </div>
+                </div>
+                <div style="margin-top:0.3rem;height:0.3rem;background-color:#fafafa;"></div>
+                <div style="margin-top:0.5rem;margin-left:0.47rem;margin-right:0.47rem;font-size:0.29rem;color:#656565;">
+                    Thank you for your support and encouragement to Bitcoinwin. If you encounter any problems during the investment process, please contact us in time, we sincerely serve you.
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

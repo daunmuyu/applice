@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 36</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#F65F5F" offset="0%"></stop>
+            <stop stop-color="#EA3131" offset="100%"></stop>
+        </linearGradient>
+        <polygon id="path-2" points="0 13.2352941 12.3225152 13.2352941 12.3225152 0 0 0"></polygon>
+    </defs>
+    <g id="改版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="常见问题" transform="translate(-32.000000, -389.000000)">
+            <g id="Group-36" transform="translate(32.000000, 389.000000)">
+                <g id="交易-2-copy" fill="url(#linearGradient-1)" fill-rule="nonzero">
+                    <path d="M12.4950009,24.9999783 C6.55031188,24.9960525 1.43049154,20.8072544 0.25015212,14.9818142 C-0.930187305,9.15637395 2.15541756,3.30551717 7.62985737,0.988577679 C13.9901177,-1.69795574 21.3243264,1.27939938 24.011271,7.63868645 C26.6982156,13.9979735 23.7204048,21.3310599 17.3601445,24.0175933 C15.8210439,24.668971 14.1663008,25.0031019 12.4950009,24.9999783 Z" id="Shape"></path>
+                </g>
+                <g id="Group" transform="translate(4.411765, 5.882353)">
+                    <g id="分组-copy-2">
+                        <polygon id="Fill-1" fill="#FFFFFF" points="7.35294118 13.2352941 8.82352941 13.2352941 8.82352941 8.82352941 7.35294118 8.82352941"></polygon>
+                        <g id="分组">
+                            <path d="M8.08823529,7.98681542 C3.75637255,7.98681542 0.245098039,7.37388438 0.245098039,6.61764706 C0.245098039,5.86140974 3.75637255,5.2484787 8.08823529,5.2484787 C12.420098,5.2484787 15.9313725,5.86140974 15.9313725,6.61764706 C15.9313725,7.37388438 12.420098,7.98681542 8.08823529,7.98681542 Z" id="Fill-2" stroke="#FFFFFF" stroke-width="0.8"></path>
+                            <polygon id="Fill-6" fill="#FFFFFF" points="1.96078431 1.47058824 14.2832995 1.47058824 14.2832995 2.73833671 6.04558824 2.73833671 1.96078431 2.73833671"></polygon>
+                            <mask id="mask-3" fill="white">
+                                <use xlink:href="#path-2"></use>
+                            </mask>
+                            <g id="Clip-9"></g>
+                            <polygon id="Fill-8" fill="#FFFFFF" mask="url(#mask-3)" points="7.35294118 7.50507099 8.86962936 7.50507099 8.86962936 1.47058824 7.35294118 1.47058824"></polygon>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

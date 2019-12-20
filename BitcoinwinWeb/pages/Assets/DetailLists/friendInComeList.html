@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .date {
+            color: #4A4A4A;
+            font-size: 0.45rem;
+            font-weight: bold;
+        }
+
+        .borderBottom {
+            border-bottom: 1px solid #F5F5F5;
+        }
+
+        .item {
+            height: 1.39rem;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .item div {
+            font-size: 0.4rem;
+            padding-left: 0.45rem;
+            padding-right: 0.45rem;
+        }
+
+        .tab {
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="canscroll" style="width:100%;height:100%;position:absolute;left:0;top:0;background-color:#fff;">
+        <div style="position:relative;width:100%;">
+            <pageheader :title="textRes.items['我的分享收入']"></pageheader>
+            <div v-show="isBusy" style="position:absolute;width:1rem;height:1rem;left:5.125rem;">
+                <loading style="width:1rem;height:1rem;margin-top:1rem;" bgcolor="#eee"></loading>
+            </div>
+        </div>
+        <div style="height:1.1rem;background-color:#fff;color:#4a4a4a;margin-top:0.21rem;" class="display-flex flex-direction-row align-items-center">
+            <div @click="level=tab.level" class="flex-1 tab" :class="{maincolor:tab.level==level}" v-for="tab in tabs">{{tab.name}}</div>
+        </div>
+        <div style="height:1.1rem;background-color:#f5f5f5;color:#927d45;" class="display-flex flex-direction-row align-items-center justify-content-center">
+            <div v-if="level==1">{{textRes.items['分享好友收获']}}：<span style="font-weight:bold;">{{incomeTotal}}</span></div>
+            <div v-if="level==2">{{textRes.items['好友分享获赠']}}：<span style="font-weight:bold;">{{incomeTotal}}</span></div>
+        </div>
+        <div style="background-color:#F5F5F5;height:0.12rem;"></div>
+        <div class="display-flex flex-direction-column align-items-center">
+            <div class="display-flex flex-direction-row align-items-center">
+                <div class="display-flex flex-direction-row align-items-center" style="position:relative;padding-top:0.6rem;padding-bottom:0.6rem;">
+                    <img src="imgs/date.svg" style="width:0.48rem;height:0.51rem" />
+                    <div class="date" style="margin-left:0.48rem;margin-right:0.66rem;">{{startDate}}</div>
+                    <input type="date" v-model="startDate" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;" />
+                </div>
+
+                <div style="font-size:0.36rem;font-weight:bold;">{{textRes.items['至']}}</div>
+
+                <div class="display-flex flex-direction-row align-items-center" style="position:relative;padding-top:0.6rem;padding-bottom:0.6rem;">
+                    <div class="date" style="margin-right:0.48rem;margin-left:0.66rem;">{{endDate}}</div>
+                    <img src="imgs/date.svg" style="width:0.48rem;height:0.51rem" />
+                    <input type="date" v-model="endDate" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;" />
+                </div>
+
+            </div>
+        </div>
+        <div style="background-color:#F5F5F5;height:0.3rem;"></div>
+        <template v-for="item in datas">
+            <div class="item display-flex flex-direction-row align-items-center">
+                <div class="flex-1">{{hidePhone(item.phone)}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d7423b;">{{formatMoney(item.amount)}}</span></div>
+                <div class="flex-shrink-0">{{showUTCTime(item.incomedate)}}</div>
+            </div>
+        </template>
+
+
+        <div @click="loadMore" style="color:#6c6c6e;text-align:center;line-height:1.3rem;font-size:0.3rem;">{{moretext}}</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <script src="../../js/base.js"></script>
+    <script src="../../js/api.js"></script>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/flex.css">
+    <style>
+        .td2 {
+        }
+        td {
+            white-space: nowrap;
+            font-size: 0.34rem;
+        }
+            .td2 td {
+                padding-top: 0.22rem;
+                color: #565656;
+                font-size: 0.32rem;
+            }
+    </style>
+</head>
+<body>
+    <div class="display-flex flex-direction-column" style="width:100%;height:100%;background-color:#fff;">
+        <pageheader class="flex-shrink-0" :title="textRes.items['高手排行榜']" :withloading="true" :showloading="isBusy"></pageheader>
+        
+        <div class="flex-1 canscroll" style="margin-left:0.55rem;margin-top:0.25rem;margin-right:0.55rem;">
+            <table cellspacing="0" style="width:100%;">
+                <tr style="font-weight:bold;text-align:center;height:1.29rem;">
+                    <td style="border-bottom:1px solid #f7f7f7;font-size:0.45rem;">{{textRes.items["排行"]}}</td>
+                    <td style="border-bottom:1px solid #f7f7f7;font-size:0.45rem;">{{textRes.items["用户"]}}</td>
+
+                    <td style="border-bottom:1px solid #f7f7f7;font-size:0.45rem;">{{textRes.items["收益率"]}}</td>
+                    <td style="border-bottom:1px solid #f7f7f7;font-size:0.45rem;color:#ea3131;">{{textRes.items["盈利金额"]}}</td>
+                </tr>
+                <tr style="text-align:center;height:1.29rem;" v-for="item in datas">
+                    <td style="border-bottom:1px solid #f7f7f7;font-size:0.42rem;">{{item.Number}}</td>
+                    <td style="border-bottom:1px solid #f7f7f7;font-size:0.42rem;">{{hidePhone(item.phone)}}</td>
+                    <td style="border-bottom:1px solid #f7f7f7;font-size:0.42rem;">{{(item.winRage*100).toFixed(2)}}%</td>
+                    <td style="border-bottom:1px solid #f7f7f7;font-size:0.42rem;color:#ea3131;">{{formatMoney(item.profit,"+")}}</td>
+                </tr>
+
+            </table>
+            <div @click="loadMore" style="color:#6c6c6e;text-align:center;line-height:1.3rem;font-size:0.3rem;">{{moretext}}</div>
+        </div>
+    </div>
+</body>
+<script>
+   
+</script>
+</html>

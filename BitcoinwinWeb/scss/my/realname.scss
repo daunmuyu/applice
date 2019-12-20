@@ -1,0 +1,30 @@
+﻿@import "../basic.scss";
+
+.pages-realname {
+    input {
+        position: absolute;
+        border: 0;
+        height: 100%;
+        left: 3.06rem;
+        width: 8rem;
+        color: #333;
+        background-color: transparent;
+    }
+
+    .texttitle {
+        font-size: 0.38rem;
+        color: #4a4a4a;
+        padding-left:0.46rem;
+        font-weight:bold;
+    }
+
+    select {
+        -webkit-appearance: none;
+        position: absolute;
+        border: 0;
+        height: 100%;
+        right: 0;
+        width: 8rem;
+        opacity: 0;
+    }
+}

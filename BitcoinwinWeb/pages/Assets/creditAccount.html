@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .borderBottom {
+            border-bottom: 1px solid #fafafa;
+        }
+        .btn {
+            width: 1.74rem;
+            height: 0.6rem;
+            line-height: 0.6rem;
+            border-radius: 0.09rem;
+            background-color: #f8ba69;
+            font-weight: bold;
+            font-size: 0.34rem;
+            text-align:center;
+           color:#fff;
+           margin-left:0.26rem;
+        }
+        .btn2 {
+            text-align: center;
+            height: 1.02rem;
+            line-height: 1.02rem;
+            font-weight: bold;
+        }
+
+        input {
+            -webkit-appearance: none;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="canscroll" style="width:100%;height:100%;position:absolute;left:0;top:0;background-color:#fff;">
+        <div style="position:relative;width:100%;">
+            <pageheader :title="textRes.items['信用资本']"></pageheader>
+            <div @click="creditRechargeList" style="position:absolute;right:0.48rem;bottom:0.4rem;font-size:0.4rem;color:#fff;">{{textRes.items['明细']}}</div>
+            <div v-show="isBusy" style="position:absolute;width:1rem;height:1rem;left:5.125rem;">
+                <loading style="width:1rem;height:1rem;margin-top:1rem;" bgcolor="#eee"></loading>
+            </div>
+        </div>
+        <div style="margin-left:0.45rem;margin-right:0.45rem;padding-top:0.69rem;">
+            <div style="font-size:0.4rem;font-weight:bold;color:#4a4a4a;position:relative;">
+                {{textRes.items['信用资本']}}
+                <svg @click="ruleClick" style="width:0.49rem;height:0.49rem;position:absolute;right:0;top:0;" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="12" class="mainfillcolor" fill-rule="nonzero">
+                            <g id="问题">
+                                <path d="M6.786,5.32963477 C6.71563477,5.40573047 6.66980859,5.45482617 6.63546094,5.49163477 C6.69926953,5.4229043 6.786,5.32963477 6.786,5.32963477 Z M9.91063477,5.9080957 C10.1446348,6.1960957 10.2608262,6.53563477 10.2608262,6.92673047 C10.2608262,7.20653906 10.1806348,7.47573047 10.0210957,7.7359043 C9.93355664,7.88317383 9.81817383,8.02553906 9.67417383,8.16136523 L9.19473047,8.6350957 C8.7349043,9.08673047 8.4379043,9.48682617 8.3020957,9.837 C8.16626953,10.1863652 8.09836523,10.647 8.09836523,11.2180957 L9.16526953,11.2180957 C9.16526953,10.7149043 9.22253906,10.3344434 9.33626953,10.0767305 C9.45,9.81901758 9.69873047,9.50482617 10.0824609,9.13253906 C10.6101738,8.62119141 10.9603652,8.23336523 11.1338086,7.96992188 C11.307252,7.70647852 11.3948262,7.36282617 11.3948262,6.939 C11.3948262,6.24026953 11.1583652,5.6659043 10.6846348,5.2159043 C10.2109043,4.7659043 9.5809043,4.54173047 8.79382617,4.54173047 C7.9429043,4.54173047 7.27363477,4.80434766 6.786,5.32963477 C6.29836523,5.8549043 6.05453906,6.54873047 6.05453906,7.4119043 L7.12146094,7.4119043 C7.1410957,6.89236523 7.22373047,6.49473047 7.3669043,6.219 C7.62217383,5.724 8.08363477,5.4760957 8.75126953,5.4760957 C9.29046094,5.4760957 9.67746094,5.6200957 9.91063477,5.9080957 Z M18,9 C18,4.02953906 13.9704609,0 9,0 C4.02953906,0 0,4.02953906 0,9 C0,13.9704609 4.02953906,18 9,18 C13.9704609,18 18,13.9704609 18,9 Z M0.818173828,9 C0.818173828,4.48119141 4.48119141,0.818173828 9,0.818173828 C13.5188086,0.818173828 17.1818262,4.48119141 17.1818262,9 C17.1818262,13.5188086 13.5188086,17.1818262 9,17.1818262 C4.48119141,17.1818262 0.818173828,13.5188086 0.818173828,9 Z M8.07382617,12.2121738 L9.26673047,12.2121738 L9.26673047,13.4582871 L8.07380859,13.4582871 L8.07380859,12.2121738 L8.07382617,12.2121738 Z" id="Shape"></path>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <div class="borderBottom" style="height:0.46rem;"></div>
+
+            <!--没有信用资本-->
+            <div v-if="!isBusy&&(!creditInfo.items||!creditInfo.items.length)" style="margin-top:0.45rem;margin-bottom:0.75rem;">
+                <img src="../../imgs/empty.svg" style="height:2.06rem;width:100%;" />
+                <div @click="recordAction('Credit_充值信用资本');recharge()" style="margin-top:0.48rem;text-align:center;font-size:0.48rem;font-weight:bold;color:rgba(168, 169, 170, 1);">
+                    {{textRes.items['您还没有信用资本']}},<span @click="recharge" class="maincolor">{{textRes.items['马上充值信用资本']}}</span>
+                </div>
+            </div>
+
+            <!--有信用资本-->
+            <div v-if="creditInfo.items&&creditInfo.items.length">
+                <template v-for="item,index in creditInfo.items">
+                    <div class="display-flex flex-direction-row align-items-center" :class="{borderBottom:index<creditInfo.items.length-1}" style="height:1.33rem;font-size:0.31rem;color:#4a4a4a;">
+                        <div style="font-weight:bold;">{{item.coin}}</div>
+                        <div class="flex-1" style="text-align:right;font-weight:bold;">{{item.coinNum}}<span style="color:#9B9B9B;font-weight:normal;">≈{{item.approximatelyUSDT}} USDT</span></div>
+                    </div>
+                </template>
+            </div>
+
+
+            <div class="display-flex flex-direction-row" style="height:1.14rem;line-height:1.14rem;text-align:center;font-size:0.39rem;font-weight:bold;margin-top:0.22rem;">
+                <div @click="recordAction('Credit_充值信用资本');recharge()" class="flex-1 mainbgcolor" style="color:#fff;border-radius:999rem 0 0 999rem;">{{textRes.items['充值信用资本']}}</div>
+                <div @click="recordAction('Credit_提现信用资本');withdraw()" class="flex-1" style="border-radius:0 999rem 999rem 0;background-color:#f5f5f5;">{{textRes.items['提现信用资本']}}</div>
+            </div>
+
+            <!--没有信用额度-->
+            <div v-if="!isBusy&&!creditInfo.totalCreditMoney" style="margin-top:0.75rem;">
+                <div style="font-size:0.4rem;font-weight:bold;color:#4a4a4a;">{{textRes.items['信用额度']}} （USDT）</div>
+                <div class="borderBottom" style="height:0.46rem;"></div>
+
+                <div style="margin-top:0.45rem;margin-bottom:0.75rem;">
+                    <img src="../../imgs/empty.svg" style="height:2.06rem;width:100%;" />
+                    <div @click="recordAction('Credit_马上提高信用额度');recharge()" style="margin-top:0.48rem;text-align:center;font-size:0.48rem;font-weight:bold;color:rgba(168, 169, 170, 1);">
+                        {{textRes.items['您还没有信用额度']}},<span class="maincolor">{{textRes.items['马上获取信用额度']}}！</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--有信用额度-->
+            <div v-if="creditInfo.totalCreditMoney">
+                <div style="background-color:#f5f5f5;border-radius:0.12rem 0.12rem 0 0;margin-top:0.6rem;padding-top:0.6rem;padding-left:0.38rem;padding-right:0.38rem;color:#4a4a4a;">
+                    <div class="display-flex flex-direction-row align-items-center">
+                        <div style="font-size:0.39rem;font-weight:bold;">{{textRes.items['信用额度']}} （USDT）</div>
+                        <div @click="rechargeHistory" class="flex-1" style="font-size:0.34rem;font-weight:bold;text-align:right;">{{textRes.items['历史记录']}}</div>
+                    </div>
+                    <div style="margin-top:0.32rem;font-size:0.55rem;font-weight:bold;padding-bottom:0.6rem;">{{formatMoney(toFixed(creditInfo.totalCreditMoney,2,true,true))}}</div>
+                </div>
+                <div style="background-color:#f5f5f5;border-radius:0 0 0.12rem 0.12rem;margin-top:0.06rem;padding-top:0.51rem;padding-left:0.38rem;padding-right:0.38rem;color:#4a4a4a;">
+                    <div class="display-flex flex-direction-row align-items-center" style="color:#eb4141;">
+                        <div style="font-size:0.43rem;width:5.52rem;">{{formatMoney(toFixed(creditInfo.canuseCreditMoney,2,true,true))}} USDT</div>
+                        <div class="flex-1" style="font-size:0.43rem;">{{formatMoney(toFixed(creditInfo.frozenCreditMoney,2))}} USDT</div>
+                    </div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.32rem;padding-bottom:0.6rem;">
+                        <div @click="recordAction('Credit_借款');showBorrowDialog()" style="width:5.52rem;">
+                            <div class="display-flex flex-direction-row align-items-end" style="font-size:0.55rem;height:0.6rem;">
+                                <div style="font-size:0.36rem;color:#666666;">{{textRes.items['可用额度']}}</div>
+                                <div class="btn">{{textRes.items['借款']}}</div>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div @click="recordAction('Credit_还款');repay()"  class="display-flex flex-direction-row align-items-end" style="font-size:0.55rem;height:0.6rem;">
+                                <div style="font-size:0.36rem;color:#666666;">{{textRes.items['已用额度']}}</div>
+                                <div class="btn">{{textRes.items['还款']}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div style="position:relative;margin-top:0.6rem;margin-left:0.42rem;">
+            <svg style="width:10.38rem;height:2.34rem;" viewBox="0 0 346 78" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <defs>
+                    <rect id="creaditaccount-path-1" x="0" y="0" width="346" height="78" rx="5"></rect>
+                    <path d="M14,0 L116,0 C123.731986,-1.42034288e-15 130,6.2680135 130,14 L130,14 C130,21.7319865 123.731986,28 116,28 L14,28 C6.2680135,28 9.46895252e-16,21.7319865 0,14 L0,14 C-9.46895252e-16,6.2680135 6.2680135,1.42034288e-15 14,0 Z" id="creaditaccount-path-3"></path>
+                    <filter x="-4.2%" y="-12.5%" width="108.5%" height="139.3%" filterUnits="objectBoundingBox" id="creaditaccount-filter-4">
+                        <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+                        <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+                        <feColorMatrix values="0 0 0 0 0.917647059   0 0 0 0 0.192156863   0 0 0 0 0.192156863  0 0 0 0.594570879 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+                    </filter>
+                </defs>
+                <g id="改版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="数字币信用卡" transform="translate(-14.000000, -509.000000)">
+                        <g id="Group-4" transform="translate(14.000000, 509.000000)">
+                            <g id="Group-3">
+                                <mask id="creaditaccount-mask-2" fill="white">
+                                    <use xlink:href="#creaditaccount-path-1"></use>
+                                </mask>
+                                <use id="Rectangle-Copy" fill="#F5F5F5" xlink:href="#creaditaccount-path-1"></use>
+                                <circle id="Oval" fill-opacity="0.8" fill="#EA3131" mask="url(#creaditaccount-mask-2)" cx="294" cy="105" r="50"></circle>
+                                <circle id="Oval-Copy" fill-opacity="0.8" fill="#EA3131" mask="url(#creaditaccount-mask-2)" cx="369.5" cy="57.5" r="69.5"></circle>
+                                <circle id="Oval-Copy-2" fill-opacity="0.8" fill="#EA3131" mask="url(#creaditaccount-mask-2)" cx="9" cy="12" r="26"></circle>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+
+            <div style="position:absolute;left:1.13rem;top:0.53rem;font-size:0.55rem;font-weight:bold;color:#4a4a4a;">
+                {{textRes.items['提高信用额度']}}
+            </div>
+            <div style="position:absolute;left:1.13rem;top:1.48rem;font-size:0.36rem;color:#4a4a4a;">
+                {{textRes.items['没钱也能做交易']}}
+            </div>
+            <div @click="recharge" style="position:absolute;left:5.76rem;top:0.99rem;width:3.91rem;height:0.84rem;padding-top:0.2rem;font-size:0.38rem;color:#ea3131;font-weight:bold;text-align:center;border-radius:999rem;background-color:#fff; box-shadow: 0px 0px 5px #f8a3a3;">
+                {{textRes.items['马上提高信用额度']}}
+            </div>
+        </div>
+
+
+        <!--借款窗口-->
+        <div v-if="isShowBorrowDialog" @click="isShowBorrowDialog=false" class="display-flex flex-direction-row align-items-center" style="position:absolute;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);padding-left:1.05rem;padding-right:1.05rem;">
+            <div @click.stop="blankClick" class="canscroll" style="border-radius:0.18rem;background-color:#fff;width:100%;padding:0.78rem 0.6rem 0.72rem 0.6rem;max-height:100%;position:relative;">
+
+                <!--余额还款-->
+                <div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['可用额度']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{formatMoney(toFixed( creditInfo.canuseCreditMoney , 2 , true,true))}} USDT</div>
+                    </div>
+                    <div style="position:absolute;left:0;right:0;height:0.24rem;background-color:#FAFAFA;"></div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.72rem;margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;"><input v-model="borrowAmount" :class="{err:validator.borrowAmount}" type="number" :placeholder="textRes.items['请输入借款数量']" /></div>
+                        <div @click="borrowAmount=toFixed(creditInfo.canuseCreditMoney,2,true,true)" style="font-size:0.45rem;font-weight:bold;color:#B8B8B8;white-space:nowrap;">USDT&nbsp;&nbsp;|&nbsp;&nbsp;<span style="color:#2C60CE;">{{textRes.items['全部']}}</span></div>
+                    </div>
+                    <div style="position:absolute;left:0;right:0;height:0.24rem;background-color:#FAFAFA;"></div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.72rem;margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['免息截止日']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{new Date(new Date().getTime() + creditInfo.overdueDayNum*24*60*60*1000).toLocaleDateString()}}</div>
+                    </div>
+                    <div style="position:absolute;left:0;right:0;height:0.06rem;background-color:#FAFAFA;"></div>
+                    <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.51rem;margin-bottom:0.24rem;">
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;">{{textRes.items['日逾期利息']}}</div>
+                        <div style="font-size:0.48rem;font-weight:bold;">{{creditInfo.overdueInterestRate*100}}%</div>
+                    </div>
+                </div>
+                              
+
+                <div style="position:absolute;left:0;right:0;height:0.24rem;background-color:#FAFAFA;">
+                    <div v-show="isBusy" style="position:absolute;left:0;width:100%;top:0;" class="display-flex flex-direction-column align-items-center">
+                        <loading style="width:1rem;height:1rem;" bgcolor="#eee"></loading>
+                    </div>
+                </div>
+                <div class="display-flex flex-direction-row" style="margin-top:1.2rem;width:100%;">
+                    <div @click="isShowBorrowDialog=false" class="flex-1 btn2" style="border-radius:999rem 0 0 999rem;background-color:#F5F5F5;">{{textRes.items['取消']}}</div>
+                    <div @click="submitBorrow" class="flex-1 btn2 mainbgcolor" style="border-radius:0 999rem 999rem 0;color:#fff;">{{textRes.items['确定']}}</div>
+                </div>
+                <div style="color:#B9B9B9;margin-top:0.27rem;">
+                    <div style="font-size:0.36rem;line-height:0.65rem;">{{textRes.items['提示']}}</div>
+                    <div style="font-size:0.36rem;line-height:0.65rem;" v-html="textRes.items['借款提示'].replace(/\n/g,'<br>')"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

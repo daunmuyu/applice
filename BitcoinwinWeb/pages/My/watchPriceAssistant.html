@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+</head>
+<body>
+    <div class="display-flex flex-direction-column" style="width:100%;height:100%;position:absolute;left:0;top:0;background-color:#fff;color: #4A4A4A;font-weight:bold;">
+        <div class="flex-shrink-0" style="position:relative;width:100%;">
+            <pageheader :title="textRes.items['盯盘助手']"  :withloading="true" :showloading="isBusy"></pageheader>
+            <div v-show="!isBusy" @click="addClick" style="position:absolute;right:0;bottom:0.2rem;color:#fff;">
+                <div style="font-size:0.8rem;font-weight:normal;width:1.5rem;text-align:center;">+</div>
+            </div>
+        </div>
+       
+        <div class="flex-1 canscroll">
+
+            <template v-for="item,index in list">
+                <!--间隔线-->
+                <div v-if="index" style="background-color:#F5F5F5;height:0.3rem;"></div>
+
+
+                <div style="padding:0.63rem 0.48rem 0.6rem 0.48rem; ">
+                    <div class="display-flex flex-direction-row align-items-end">
+                        <div style="font-size:0.48rem;font-weight:bold;">
+                            {{item.commodity.symbolname}}
+                        </div>
+                        <div style="font-size:0.54rem;font-weight:bold;margin-left:0.3rem;" :style="{color:item.commodity.isDown?textRes.items['行情列表-跌']:textRes.items['行情列表-涨']}">
+                            {{item.commodity.percent}}
+                        </div>
+                        <div class="flex-1" style="font-size:0.48rem;font-weight:bold;text-align:right;">
+                            {{formatMoney(toFixed(item.commodity.bidPrice,item.commodity.decimalplace))}}
+                        </div>
+                    </div>
+                    <div class="display-flex flex-direction-row align-items-end" style="margin-top:0.12rem;">
+                        <div style="color:#B9B9B9;font-size:0.36rem;font-weight:bold;">
+                            ( USDT )( {{item.notifyFrequency==1?textRes.items['每日仅提醒一次']:textRes.items['每次均提醒']}} )
+                        </div>
+                        <div v-if="false" class="flex-1" style="color:#B9B9B9;font-size:0.36rem;font-weight:bold;text-align:right;">
+                            ≈￥29292.31
+                        </div>
+                    </div>
+                    <!--间隔线-->
+                    <div v-if="item.expanded" style="background-color:#F5F5F5;height:0.3rem;margin-top:0.33rem;"></div>
+                    <div>
+
+                        <div v-if="item.expanded&&hasSubitmeType(item,[1,2])" style="margin-top:0.42rem;" class="display-flex flex-direction-row">
+                            <div style="width:4.56rem;">
+                                <div style="color:#BABABA;font-size:0.42rem;">{{textRes.items['价格上涨至']}}</div>
+                                <div style="color:#BABABA;width:100%;height:0.78rem;border:1px solid #BABABA;margin-top:0.3rem;padding:0.1rem 0.3rem 0 0.3rem;font-size:0.42rem;position:relative;">
+                                    {{getSubitemValue(item,1)}}
+                                    <div style="color:#BABABA;font-size:0.42rem;position:absolute;right:0.3rem;top:0.1rem;">USDT</div>
+                                </div>
+                            </div>
+                            <div style="margin-left:1.17rem;width:4.56rem;">
+                                <div style="color:#BABABA;font-size:0.42rem;">{{textRes.items['价格下跌至']}}</div>
+                                <div style="color:#BABABA;width:100%;height:0.78rem;border:1px solid #BABABA;margin-top:0.3rem;padding:0.1rem 0.3rem 0 0.3rem;font-size:0.42rem;position:relative;">
+                                    {{getSubitemValue(item,2)}}
+                                    <div style="color:#BABABA;font-size:0.42rem;position:absolute;right:0.3rem;top:0.1rem;">USDT</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--间隔线-->
+                        <div v-if="item.expanded&&hasSubitmeType(item,[1,2])&&hasSubitmeType(item,[3,4,5,6,7,8])"  style="height:0.06rem;background-color:#F5F5F5;margin-top:0.42rem;"></div>
+
+                        <div v-if="item.expanded&&hasSubitmeType(item,[3,4])" style="margin-top:0.42rem;" class="display-flex flex-direction-row">
+                            <div style="width:4.56rem;">
+                                <div style="color:#BABABA;font-size:0.42rem;">{{textRes.getItem('n分钟内涨幅超过',1,'')}}</div>
+                                <div style="color:#BABABA;width:100%;height:0.78rem;border:1px solid #BABABA;margin-top:0.3rem;padding:0.1rem 0.3rem 0 0.3rem;font-size:0.42rem;position:relative;">
+                                    {{getSubitemValue(item,3)}}
+                                    <div style="color:#BABABA;font-size:0.42rem;position:absolute;right:0.3rem;top:0.1rem;">%</div>
+                                </div>
+                            </div>
+                            <div style="margin-left:1.17rem;width:4.56rem;">
+                                <div style="color:#BABABA;font-size:0.42rem;">{{textRes.getItem('n分钟内跌幅超过',1,'')}}</div>
+                                <div style="color:#BABABA;width:100%;height:0.78rem;border:1px solid #BABABA;margin-top:0.3rem;padding:0.1rem 0.3rem 0 0.3rem;font-size:0.42rem;position:relative;">
+                                    {{getSubitemValue(item,4)}}
+                                    <div style="color:#BABABA;font-size:0.42rem;position:absolute;right:0.3rem;top:0.1rem;">%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div v-if="item.expanded&&hasSubitmeType(item,[5,6])"  style="margin-top:0.42rem;" class="display-flex flex-direction-row">
+                            <div style="width:4.56rem;">
+                                <div style="color:#BABABA;font-size:0.42rem;">{{textRes.getItem('n分钟内涨幅超过',5,'s')}}</div>
+                                <div style="color:#BABABA;width:100%;height:0.78rem;border:1px solid #BABABA;margin-top:0.3rem;padding:0.1rem 0.3rem 0 0.3rem;font-size:0.42rem;position:relative;">
+                                    {{getSubitemValue(item,5)}}
+                                    <div style="color:#BABABA;font-size:0.42rem;position:absolute;right:0.3rem;top:0.1rem;">%</div>
+                                </div>
+                            </div>
+                            <div style="margin-left:1.17rem;width:4.56rem;">
+                                <div style="color:#BABABA;font-size:0.42rem;">{{textRes.getItem('n分钟内跌幅超过',5,'s')}}</div>
+                                <div style="color:#BABABA;width:100%;height:0.78rem;border:1px solid #BABABA;margin-top:0.3rem;padding:0.1rem 0.3rem 0 0.3rem;font-size:0.42rem;position:relative;">
+                                    {{getSubitemValue(item,6)}}
+                                    <div style="color:#BABABA;font-size:0.42rem;position:absolute;right:0.3rem;top:0.1rem;">%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div v-if="item.expanded&&hasSubitmeType(item,[7,8])"  style="margin-top:0.42rem;" class="display-flex flex-direction-row">
+                            <div style="width:4.56rem;">
+                                <div style="color:#BABABA;font-size:0.42rem;">{{textRes.getItem('n小时内涨幅超过',24,'s')}}</div>
+                                <div style="color:#BABABA;width:100%;height:0.78rem;border:1px solid #BABABA;margin-top:0.3rem;padding:0.1rem 0.3rem 0 0.3rem;font-size:0.42rem;position:relative;">
+                                    {{getSubitemValue(item,7)}}
+                                    <div style="color:#BABABA;font-size:0.42rem;position:absolute;right:0.3rem;top:0.1rem;">%</div>
+                                </div>
+                            </div>
+                            <div style="margin-left:1.17rem;width:4.56rem;">
+                                <div style="color:#BABABA;font-size:0.42rem;">{{textRes.getItem('n小时内跌幅超过',24,'s')}}</div>
+                                <div style="color:#BABABA;width:100%;height:0.78rem;border:1px solid #BABABA;margin-top:0.3rem;padding:0.1rem 0.3rem 0 0.3rem;font-size:0.42rem;position:relative;">
+                                    {{getSubitemValue(item,8)}}
+                                    <div style="color:#BABABA;font-size:0.42rem;position:absolute;right:0.3rem;top:0.1rem;">%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div v-if="item.expanded" style="margin-top:0.6rem;" class="display-flex flex-direction-row justify-content-end">
+                            <div @click="deleteItem(item)" style="height:0.6rem;line-height:0.6rem;background-color:#EA3131;padding-left:0.33rem;padding-right:0.33rem;border-radius:999rem;font-size:0.3rem;color:#fff;font-weight:normal;">{{textRes.items['删除']}}</div>
+                            <div @click="modify(item)" style="height:0.6rem;line-height:0.6rem;border:1px solid #D8D8D8;padding-left:0.33rem;padding-right:0.33rem;border-radius:999rem;font-size:0.3rem;font-weight:normal;margin-left:0.36rem;">{{textRes.items['编辑']}}</div>
+                        </div>
+
+                        <div style="height:0.06rem;background-color:#F5F5F5;margin-top:0.3rem;"></div>
+                        <div class="display-flex flex-direction-column align-items-center">
+                            <img @click="item.expanded=!item.expanded" v-if="item.expanded" src="../../imgs/arrowup2.svg" style="width:3.24rem;height:0.66rem;" />
+                            <img @click="item.expanded=!item.expanded" v-if="!item.expanded" src="../../imgs/arrowdown2.svg" style="width:3.24rem;height:0.66rem;" />
+                        </div>
+                    </div>
+                </div>
+
+
+            </template>
+
+          
+
+           
+        </div>
+    </div>
+</body>
+</html>

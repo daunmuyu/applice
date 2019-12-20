@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .tab {
+            text-align: center;
+            line-height: 1.45rem;
+            font-size: 0.47rem;
+            color: #353535;
+            font-weight:bold;
+        }
+        .tabselected {
+            color: #ea3131;
+        }
+    </style>
+</head>
+<body>
+    <div class="display-flex flex-direction-column" style="width:100%;height:100%;background-color:#fff;">
+        <div style="position:relative;width:100%;">
+            <pageheader :title="title"></pageheader>
+            <div @click="billList" style="position:absolute;right:0.48rem;bottom:0.4rem;font-size:0.4rem;color:#fff;">{{textRes.items['明细']}}</div>
+        </div>
+
+        <div class="flex-1 canscroll">
+            <div v-if="tabs.length>1" class="display-flex flex-direction-row align-items-center" style="margin-top:0.3rem;height:1.45rem;">
+                <template v-for="tab,index in tabs">
+                    <div v-if="index>0" class="flex-shrink-0" style="width:0.06rem;height:0.54rem;background-color:#ea3131;"></div>
+                    <div @click="recordAction('Recharge_'+(index==0?'法币':'币币')+'充值');tabClick(tab)" class="flex-1 tab" :class="{tabselected:tab.selected}">{{tab.text}}</div>
+                </template>
+            </div>
+            <div v-if="tabs.length>1" style="background-color:#f5f5f5;height:0.15rem;"></div>
+            <component :is="tab.paneltype" v-show="tab.selected" v-for="tab in tabs"></component>
+
+            <div @click="helpClick" class="display-flex flex-direction-row justify-content-center align-items-center" style="width:2.61rem;position:fixed;bottom:0.57rem;right:0;height:1.02rem;border-radius:999rem 0 0 999rem;background-color:#2C60CE;color:#fff;">
+                
+                <div class="display-flex flex-direction-row align-items-center">
+                    <svg style="width:0.54rem;height:0.54rem;" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="12" fill="#ffffff" fill-rule="nonzero">
+                                <g id="问题">
+                                    <path d="M6.786,5.32963477 C6.71563477,5.40573047 6.66980859,5.45482617 6.63546094,5.49163477 C6.69926953,5.4229043 6.786,5.32963477 6.786,5.32963477 Z M9.91063477,5.9080957 C10.1446348,6.1960957 10.2608262,6.53563477 10.2608262,6.92673047 C10.2608262,7.20653906 10.1806348,7.47573047 10.0210957,7.7359043 C9.93355664,7.88317383 9.81817383,8.02553906 9.67417383,8.16136523 L9.19473047,8.6350957 C8.7349043,9.08673047 8.4379043,9.48682617 8.3020957,9.837 C8.16626953,10.1863652 8.09836523,10.647 8.09836523,11.2180957 L9.16526953,11.2180957 C9.16526953,10.7149043 9.22253906,10.3344434 9.33626953,10.0767305 C9.45,9.81901758 9.69873047,9.50482617 10.0824609,9.13253906 C10.6101738,8.62119141 10.9603652,8.23336523 11.1338086,7.96992188 C11.307252,7.70647852 11.3948262,7.36282617 11.3948262,6.939 C11.3948262,6.24026953 11.1583652,5.6659043 10.6846348,5.2159043 C10.2109043,4.7659043 9.5809043,4.54173047 8.79382617,4.54173047 C7.9429043,4.54173047 7.27363477,4.80434766 6.786,5.32963477 C6.29836523,5.8549043 6.05453906,6.54873047 6.05453906,7.4119043 L7.12146094,7.4119043 C7.1410957,6.89236523 7.22373047,6.49473047 7.3669043,6.219 C7.62217383,5.724 8.08363477,5.4760957 8.75126953,5.4760957 C9.29046094,5.4760957 9.67746094,5.6200957 9.91063477,5.9080957 Z M18,9 C18,4.02953906 13.9704609,0 9,0 C4.02953906,0 0,4.02953906 0,9 C0,13.9704609 4.02953906,18 9,18 C13.9704609,18 18,13.9704609 18,9 Z M0.818173828,9 C0.818173828,4.48119141 4.48119141,0.818173828 9,0.818173828 C13.5188086,0.818173828 17.1818262,4.48119141 17.1818262,9 C17.1818262,13.5188086 13.5188086,17.1818262 9,17.1818262 C4.48119141,17.1818262 0.818173828,13.5188086 0.818173828,9 Z M8.07382617,12.2121738 L9.26673047,12.2121738 L9.26673047,13.4582871 L8.07380859,13.4582871 L8.07380859,12.2121738 L8.07382617,12.2121738 Z" id="Shape"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <div style="color:#fff;font-weight:bold;font-size:0.45rem;margin-left:0.2rem;">
+                        {{textRes.items['帮助']}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type='text/javascript'>
+        var parseQuery = function (query) {
+        var reg = /([^=&\s]+)[=\s]*([^=&\s]*)/g;
+        var obj = {};
+        while (reg.exec(query)) {
+            obj[RegExp.$1] = decodeURIComponent(RegExp.$2);
+        }
+        return obj;
+    }
+
+    var jerry = parseQuery(location.search.substr(1));
+
+
+  (function(m, ei, q, i, a, j, s) {
+        m[i] = m[i] || function() {
+            (m[i].a = m[i].a || []).push(arguments)
+        };
+        j = ei.createElement(q),
+            s = ei.getElementsByTagName(q)[0];
+        j.async = true;
+        j.charset = 'UTF-8';
+        j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t';
+        s.parentNode.insertBefore(j, s);
+    })(window, document, 'script', '_MEIQIA');
+    _MEIQIA('entId', 179699);
+
+    if(jerry["lan"] == "en")
+        _MEIQIA('language', 'en');
+
+     // 传递顾客信息
+    _MEIQIA('metadata', {
+        tel: jerry["tel"], 
+        name: jerry["realname"]
+    });
+
+    _MEIQIA('getPanelVisibility', function (visibility) {
+        if (visibility === 'visible') {
+            
+        } else {
+            if (window.api) {
+                 window.api.execScript({
+                    frameName: 'main',
+                    script: "navigatorPop();"
+                });
+            }            
+        }
+    });
+
+
+     // 初始化成功后调用美洽 showPanel
+    _MEIQIA('allSet', function(){
+      _MEIQIA('showPanel');
+    });
+</script>
+</html>

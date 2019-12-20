@@ -1,0 +1,445 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{07C8C112-9EDD-4E37-8E09-83A9F9AD0FC0}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BitcoinwinWeb</RootNamespace>
+    <AssemblyName>BitcoinwinWeb</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>3.3</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="a.js" />
+    <Content Include="app资料\开机画面\1080X1920.png" />
+    <Content Include="app资料\开机画面\1125x2436.png" />
+    <Content Include="app资料\开机画面\1536x2048.png" />
+    <Content Include="buildScript\base.js" />
+    <Content Include="buildScript\checkPackage.js" />
+    <Content Include="buildScript\excelToJson.js" />
+    <Content Include="buildScript\package.appstore.js" />
+    <Content Include="buildScript\package.js" />
+    <Content Include="buildScript\zhTW.js" />
+    <Content Include="dist\css\animate.css" />
+    <Content Include="dist\css\flex.css" />
+    <Content Include="dist\image\loadingBg.png" />
+    <Content Include="dist\js\api.js" />
+    <Content Include="dist\js\base.js" />
+    <Content Include="dist\js\verifyPattern.js" />
+    <Content Include="dist\js\touchHandler.js" />
+    <Content Include="dist\main.html" />
+    <Content Include="app资料\文档\Component在Navigation的生命周期.pdf" />
+    <Content Include="app资料\文档\App页面显示时序.pdf" />
+    <Content Include="app资料\文档\双层窗口的切换时序（以下单为例）.pdf" />
+    <Content Include="app资料\文档\类图.pdf" />
+    <Content Include="app资料\文档\网络请求时序.pdf" />
+    <None Include="dist\version.json" />
+    <Content Include="dist\MeiQia.html" />
+    <Content Include="dist\version.txt" />
+    <Content Include="imgs\camera.svg" />
+    <Content Include="imgs\empty.svg" />
+    <Content Include="imgs\fenxiang2.svg" />
+    <Content Include="imgs\fenxiang.svg" />
+    <Content Include="imgs\chk_y.svg" />
+    <Content Include="imgs\hb_close.png" />
+    <Content Include="imgs\hb_open.png" />
+    <Content Include="imgs\home\news.svg" />
+    <Content Include="imgs\nosee.svg" />
+    <Content Include="imgs\realname\ico1.png" />
+    <Content Include="imgs\realname\close1.png" />
+    <Content Include="imgs\reset.svg" />
+    <Content Include="imgs\portrait.svg">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="imgs\banner\b1.jpg" />
+    <Content Include="imgs\banner\b2.jpg" />
+    <Content Include="imgs\banner\b3.jpg" />
+    <Content Include="imgs\arrowdown.svg">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="imgs\home\b1.png" />
+    <Content Include="imgs\home\b2.png" />
+    <Content Include="imgs\home\gsph.svg" />
+    <Content Include="imgs\home\hdzq.svg" />
+    <Content Include="imgs\home\sound.svg" />
+    <Content Include="imgs\home\wdtg.svg" />
+    <Content Include="imgs\home\xsjx.svg" />
+    <Content Include="imgs\home\service.svg" />
+    <Content Include="imgs\home\head.svg" />
+    <Content Include="imgs\position\s1.png" />
+    <Content Include="imgs\questions\account.svg" />
+    <Content Include="imgs\questions\friend.svg" />
+    <Content Include="imgs\questions\interest.svg" />
+    <Content Include="imgs\questions\platform.svg" />
+    <Content Include="imgs\questions\recharge.svg" />
+    <Content Include="imgs\questions\trade.svg" />
+    <Content Include="imgs\questions\withdraw.svg" />
+    <Content Include="imgs\see.svg" />
+    <Content Include="imgs\shizhong.svg" />
+    <Content Include="imgs\noposition.svg" />
+    <Content Include="imgs\zhiwen.svg" />
+    <Content Include="imgs\arrowdown2.svg" />
+    <Content Include="imgs\arrowup2.svg" />
+    <Content Include="imgs\fllow.zh_CN.svg" />
+    <Content Include="imgs\fllow.en_US.svg" />
+    <Content Include="pageComponents\check.html" />
+    <Content Include="pageComponents\waiting.html" />
+    <Content Include="pageComponents\pageHeader.html" />
+    <Content Include="pageComponents\numberPanel.html" />
+    <Content Include="pageComponents\switcher.html" />
+    <Content Include="pages\Assets\creditBorrowList.html" />
+    <Content Include="pages\Assets\creditAccount.html" />
+    <Content Include="pages\Assets\DetailLists\balanceList.html" />
+    <Content Include="pages\Assets\DetailLists\fllowOrderDetail.html" />
+    <Content Include="pages\Assets\DetailLists\billList.html" />
+    <Content Include="pages\Assets\DetailLists\billDetail.html" />
+    <Content Include="pages\Assets\DetailLists\friendInComeList.html" />
+    <Content Include="pages\Assets\DetailLists\balanceDetail.html" />
+    <Content Include="pages\Assets\DetailLists\creditFlowDetail.html" />
+    <Content Include="pages\Assets\DetailLists\withdrawDetail.html" />
+    <Content Include="pages\Assets\DetailLists\shareInComeDetail.html" />
+    <Content Include="pages\Assets\DetailLists\shareInComeList.html" />
+    <Content Include="pages\Assets\DetailLists\imgs\date.svg" />
+    <Content Include="pages\Assets\DetailLists\creditFlowList.html" />
+    <Content Include="pages\Assets\DetailLists\rechargeDetail.html" />
+    <Content Include="pages\Assets\DetailLists\rechargeCyptoCoinHistories.html" />
+    <Content Include="pages\Assets\Recharge\bbRecharge.html" />
+    <Content Include="pages\Assets\Recharge\fiatRecharge.html" />
+    <Content Include="pages\Assets\Recharge\recharge.html" />
+    <Content Include="pages\Assets\Withdraw\bbWithdraw.html" />
+    <Content Include="pages\Assets\Withdraw\fiatWithdraw.html" />
+    <Content Include="pages\Assets\Withdraw\withdraw.html" />
+    <Content Include="pages\CommodityDetail\commodityDetail.html" />
+    <Content Include="pages\CommodityDetail\commoditySelector.html" />
+    <Content Include="pages\CommodityDetail\klineSetting.html" />
+    <Content Include="pages\CommodityDetail\order_L.html" />
+    <Content Include="pages\CommodityDetail\order.html" />
+    <Content Include="pages\CommodityDetail\rule.html" />
+    <Content Include="pages\General\alertWindow.html" />
+    <Content Include="pages\General\confirmWindow.html" />
+    <Content Include="pages\General\enterPassword.html" />
+    <Content Include="pages\General\enterPayPassword.html" />
+    <Content Include="pages\General\shareImageReview.html" />
+    <Content Include="pages\home.html" />
+    <Content Include="pages\Home\activity.html" />
+    <Content Include="pages\Home\news.html" />
+    <Content Include="pages\Home\ranking.html" />
+    <Content Include="pages\hongBao.html" />
+    <Content Include="pages\mainPage.html" />
+    <Content Include="pages\Assets\assets.html" />
+    <Content Include="pages\My\bankAccount\epayAccount.html" />
+    <Content Include="pages\My\bankAccount\bankAccount.html" />
+    <Content Include="pages\My\bankAccount\bindingAccount.html" />
+    <Content Include="pages\My\bankAccount\accountList.html" />
+    <Content Include="pages\My\contactUs.html" />
+    <Content Include="pages\My\aboutus.html" />
+    <Content Include="pages\My\watchPriceAssistantEditor.html" />
+    <Content Include="pages\My\watchPriceAssistant.html" />
+    <Content Include="pages\My\friendList.html" />
+    <Content Include="pages\My\imgs\bdskzh.svg" />
+    <Content Include="pages\My\imgs\border.svg" />
+    <Content Include="pages\My\imgs\grzl.svg" />
+    <Content Include="pages\My\imgs\cjwt.svg" />
+    <Content Include="pages\My\imgs\diqiu.svg" />
+    <Content Include="pages\My\imgs\fenxiang-2.svg" />
+    <Content Include="pages\My\imgs\fxjs.svg" />
+    <Content Include="pages\My\imgs\gywm.svg" />
+    <Content Include="pages\My\imgs\lcfxjs.svg" />
+    <Content Include="pages\My\imgs\mnjy.svg" />
+    <Content Include="pages\My\imgs\sz.svg" />
+    <Content Include="pages\My\imgs\vip.svg" />
+    <Content Include="pages\My\imgs\vip2.svg" />
+    <Content Include="pages\My\imgs\wode.svg" />
+    <Content Include="pages\My\imgs\xsjx.svg" />
+    <Content Include="pages\My\imgs\xxtx.svg" />
+    <Content Include="pages\My\beginnerGuide.html" />
+    <Content Include="pages\My\imgs\zxkf.svg" />
+    <Content Include="pages\My\messageDetail.html" />
+    <Content Include="pages\My\messageList.html" />
+    <Content Include="pages\My\securityCenter.html" />
+    <Content Include="pages\My\questions.html" />
+    <Content Include="pages\My\my.html" />
+    <Content Include="pages\My\messageCenterPage.html" />
+    <Content Include="pages\My\demoTrade.html" />
+    <Content Include="pages\My\setting.html" />
+    <Content Include="pages\My\realname.html" />
+    <Content Include="pages\My\personInfo.html" />
+    <Content Include="pages\My\popularize.html" />
+    <Content Include="imgs\copy.svg" />
+    <Content Include="pages\My\setPayPassword.html" />
+    <Content Include="pages\Position\canceledOrders.html" />
+    <Content Include="pages\Position\delegateOrders.html" />
+    <Content Include="pages\Position\position.html" />
+    <Content Include="pages\Position\setProfitLoss.html" />
+    <Content Include="pages\Position\tradeHistory.html" />
+    <Content Include="pages\quotation.html" />
+    <Content Include="pages\RegisterLogin\forgetPwd.html" />
+    <Content Include="pages\RegisterLogin\login.html" />
+    <Content Include="pages\RegisterLogin\register.html" />
+    <Content Include="pages\StartGuide\2.html" />
+    <Content Include="pages\StartGuide\3.html" />
+    <Content Include="pages\StartGuide\1.html" />
+    <Content Include="pages\StartGuide\2.svg" />
+    <Content Include="pages\StartGuide\3.svg" />
+    <Content Include="pages\StartGuide\1.svg" />
+    <Content Include="pages\StartGuide\startGuide.html" />
+    <Content Include="pages\swiperTest.html" />
+    <Content Include="pages\translate.html" />
+    <Content Include="pages\webBrowser.html" />
+    <Content Include="Web.config" />
+    <Content Include="webpack.boot.config.js" />
+    <Content Include="webpack.production.appstore.config.js" />
+    <Content Include="webpack.appstore.config.js" />
+    <Content Include="webpack.production.test.config.js" />
+    <Content Include="webpack.test.config.js" />
+    <Content Include="webpack.production.boot.config.js" />
+    <Content Include="webpack.production.config.js" />
+    <Content Include="webpack.config.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="package.json" />
+    <Content Include="scss\app.scss" />
+    <Content Include="buildScript\data.xls" />
+    <None Include="packages.config" />
+    <Content Include="tsconfig.json" />
+    <Content Include="scss\main.scss" />
+    <Content Include="scss\basic.scss" />
+    <Content Include="scss\my\my.scss" />
+    <Content Include="scss\my\personInfo.scss" />
+    <Content Include="scss\my\realname.scss" />
+    <Content Include="scss\my\assets.scss" />
+    <Content Include="scss\my\withdraw.scss" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="app_boot\Boot_Main.ts" />
+    <TypeScriptCompile Include="app_boot\CompareServerVersion.ts" />
+    <TypeScriptCompile Include="app_boot\ConfigReader.ts" />
+    <TypeScriptCompile Include="app_boot\DownloadApp.ts" />
+    <TypeScriptCompile Include="app_boot\GlobalDefines.ts" />
+    <TypeScriptCompile Include="app_boot\Init.ts" />
+    <TypeScriptCompile Include="app_boot\IRunner.ts" />
+    <TypeScriptCompile Include="app_boot\LoadFromInternetDirect.ts" />
+    <TypeScriptCompile Include="app_boot\LoadFromLocalZip.ts" />
+    <TypeScriptCompile Include="app_boot\LoadLocalApp.ts" />
+    <TypeScriptCompile Include="app_boot\OpenAppWeb.ts" />
+    <TypeScriptCompile Include="app_boot\RequireAppPermission.ts" />
+    <TypeScriptCompile Include="app_boot\TestServerUrl.ts" />
+    <TypeScriptCompile Include="BaseComponent.ts" />
+    <TypeScriptCompile Include="Global.ts" />
+    <TypeScriptCompile Include="GlobalFunc.ts" />
+    <TypeScriptCompile Include="HideFrame.ts" />
+    <TypeScriptCompile Include="lang_en_US.ts" />
+    <TypeScriptCompile Include="lang_zh_TW.ts" />
+    <TypeScriptCompile Include="lang_zh_CN.ts" />
+    <TypeScriptCompile Include="Layer.ts" />
+    <TypeScriptCompile Include="libs\KLineDataRefresh.ts" />
+    <TypeScriptCompile Include="MainRun.ts" />
+    <TypeScriptCompile Include="MainAppStore.ts" />
+    <TypeScriptCompile Include="MainTest.ts" />
+    <TypeScriptCompile Include="Main.ts" />
+    <TypeScriptCompile Include="MessageCenter.ts" />
+    <TypeScriptCompile Include="pageComponents\Check.ts" />
+    <TypeScriptCompile Include="pageComponents\Waiting.ts" />
+    <TypeScriptCompile Include="pageComponents\PageHeader.ts" />
+    <TypeScriptCompile Include="pageComponents\NumberPanel.ts" />
+    <TypeScriptCompile Include="pageComponents\Switcher.ts" />
+    <TypeScriptCompile Include="pages\Assets\CreditBorrowList.ts" />
+    <TypeScriptCompile Include="pages\Assets\CreditAccount.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\BalanceList.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\FllowOrderDetail.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\BillList.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\BillDetail.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\CreditRechargeList.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\FriendInComeList.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\BalanceDetail.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\CreditFlowDetail.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\RepayList.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\WithdrawDetail.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\ShareInComeDetail.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\ShareInComeList.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\CreditFlowList.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\RechargeCyptoCoinHistories.ts" />
+    <TypeScriptCompile Include="pages\Assets\DetailLists\RechargeDetail.ts" />
+    <TypeScriptCompile Include="pages\Assets\Recharge\BbRecharge.ts" />
+    <TypeScriptCompile Include="pages\Assets\Recharge\FiatRecharge.ts" />
+    <TypeScriptCompile Include="pages\Assets\Recharge\Recharge.ts" />
+    <TypeScriptCompile Include="pages\Assets\Withdraw\BbWithdraw.ts" />
+    <TypeScriptCompile Include="pages\Assets\Withdraw\FiatWithdraw.ts" />
+    <TypeScriptCompile Include="pages\Assets\Withdraw\Withdraw.ts" />
+    <TypeScriptCompile Include="pages\CommodityDetail\CommodityDetail.ts" />
+    <TypeScriptCompile Include="pages\CommodityDetail\CommoditySelector.ts" />
+    <TypeScriptCompile Include="pages\CommodityDetail\KlineSetting.ts" />
+    <TypeScriptCompile Include="pages\CommodityDetail\Order_L.ts" />
+    <TypeScriptCompile Include="pages\CommodityDetail\Order.ts" />
+    <TypeScriptCompile Include="pages\CommodityDetail\Rule.ts" />
+    <TypeScriptCompile Include="pages\General\AlertWindow.ts" />
+    <TypeScriptCompile Include="pages\General\ConfirmWindow.ts" />
+    <TypeScriptCompile Include="pages\General\EnterPassword.ts" />
+    <TypeScriptCompile Include="pages\General\EnterPayPassword.ts" />
+    <TypeScriptCompile Include="pages\General\ShareImageReview.ts" />
+    <TypeScriptCompile Include="pages\Home\News.ts" />
+    <TypeScriptCompile Include="pages\My\AboutUs.ts" />
+    <TypeScriptCompile Include="pages\My\WatchPriceAssistantEditor.ts" />
+    <TypeScriptCompile Include="pages\My\WatchPriceAssistant.ts" />
+    <TypeScriptCompile Include="pages\My\SecurityCenter.ts" />
+    <TypeScriptCompile Include="pages\Translate.ts" />
+    <TypeScriptCompile Include="pages\Home.ts" />
+    <TypeScriptCompile Include="pages\Home\Activity.ts" />
+    <TypeScriptCompile Include="pages\Home\Ranking.ts" />
+    <TypeScriptCompile Include="pages\HongBao.ts" />
+    <TypeScriptCompile Include="pages\MainPage.ts" />
+    <TypeScriptCompile Include="pages\Assets\Assets.ts" />
+    <TypeScriptCompile Include="pages\My\bankAccount\EPayAcount.ts" />
+    <TypeScriptCompile Include="pages\My\bankAccount\BankAccount.ts" />
+    <TypeScriptCompile Include="pages\My\bankAccount\BindingAccount.ts" />
+    <TypeScriptCompile Include="pages\My\bankAccount\AccountList.ts" />
+    <TypeScriptCompile Include="pages\My\BeginnerGuide.ts" />
+    <TypeScriptCompile Include="pages\My\FriendList.ts" />
+    <TypeScriptCompile Include="pages\My\MessageDetail.ts" />
+    <TypeScriptCompile Include="pages\My\MessageList.ts" />
+    <TypeScriptCompile Include="pages\My\Questions.ts" />
+    <TypeScriptCompile Include="pages\My\MessageCenterPage.ts" />
+    <TypeScriptCompile Include="pages\My\DemoTrade.ts" />
+    <TypeScriptCompile Include="pages\My\Setting.ts" />
+    <TypeScriptCompile Include="pages\My\RealName.ts" />
+    <TypeScriptCompile Include="pages\My\SetPayPassword.ts" />
+    <TypeScriptCompile Include="pages\My\PersonInfo.ts" />
+    <TypeScriptCompile Include="pages\My\ContactUs.ts" />
+    <TypeScriptCompile Include="pages\My\My.ts" />
+    <TypeScriptCompile Include="pages\My\Popularize.ts" />
+    <TypeScriptCompile Include="pages\Position\CanceledOrders.ts" />
+    <TypeScriptCompile Include="pages\Position\DelegateOrders.ts" />
+    <TypeScriptCompile Include="pages\Position\Position.ts" />
+    <TypeScriptCompile Include="pages\Position\SetProfitLoss.ts" />
+    <TypeScriptCompile Include="pages\Position\TradeHistory.ts" />
+    <TypeScriptCompile Include="pages\Quotation.ts" />
+    <TypeScriptCompile Include="pages\RegisterLogin\ForgetPwd.ts" />
+    <TypeScriptCompile Include="pages\RegisterLogin\Login.ts" />
+    <TypeScriptCompile Include="pages\RegisterLogin\Register.ts" />
+    <TypeScriptCompile Include="pages\StartGuide\StartGuide.ts" />
+    <TypeScriptCompile Include="pages\SwiperTest.ts" />
+    <TypeScriptCompile Include="pages\WebBrowser.ts" />
+    <TypeScriptCompile Include="ServerApis\AccountApi.ts" />
+    <TypeScriptCompile Include="ServerApis\AccountCenterApi.ts" />
+    <TypeScriptCompile Include="ServerApis\ApiHelper.ts" />
+    <TypeScriptCompile Include="ServerApis\CoinDogApi.ts" />
+    <TypeScriptCompile Include="ServerApis\IndexApi.ts" />
+    <TypeScriptCompile Include="ServerApis\MarketApi.ts" />
+    <TypeScriptCompile Include="ServerApis\PayCenterApi.ts" />
+    <TypeScriptCompile Include="ServerApis\TradeApi.ts" />
+    <TypeScriptCompile Include="TextRes.ts" />
+    <TypeScriptCompile Include="types\index.d.ts" />
+    <TypeScriptCompile Include="Unit_Credit_Test.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49647</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:49647/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

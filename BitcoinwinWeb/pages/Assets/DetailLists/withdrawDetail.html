@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .borderBottom {
+            border-bottom: 1px solid #F5F5F5;
+        }
+    </style>
+</head>
+<body>
+   
+    <div class="canscroll" style="width:100%;height:100%;position:absolute;left:0;top:0;background-color:#fff;font-size:0.45rem;">
+        <pageheader :title="textRes.items['详情']"></pageheader>
+
+        <div v-if="typeObj.id==4" style="padding:0.87rem 0.45rem 0 0.45rem;color:#4A4A4A;">
+            <div class="display-flex flex-direction-row borderBottom align-items-center" style="padding-bottom:0.45rem;font-weight:bold;">
+                <div class="flex-1">{{textRes.items['提现']}}</div>
+                <div :style="{color:textRes.items['TextColor跌']}">-{{formatMoney(data.amount)}}</div>
+            </div>
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['状态']}}</div>
+                <div v-if="data.result==30||data.status==30" style="color:#EA3131;">{{textRes.items['失败']}}</div>
+                <div v-else-if="data.result==20||data.status==20" style="color:#1c9d36;">{{textRes.items['成功']}}</div>
+                <div v-else-if="data.result==15||data.status==15" style="color:#1c9d36;">{{textRes.items['打款中']}}</div>
+                <div v-else-if="data.result==10||data.status==10" style="color:#F8B052;">{{textRes.items['审核中']}}</div>
+            </div>
+            <div v-if="data.payouttype==2" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['类型']}}</div>
+                <div>{{textRes.items['法币']}}</div>
+            </div>
+            <div v-if="data.payouttype==1" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['类型']}}</div>
+                <div>{{textRes.items['币币']}}</div>
+            </div>
+
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['币种']}}</div>
+                <div>{{data.currenttype}}</div>
+            </div>
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['余额']}}</div>
+                <div>{{formatMoney(data.canusedamount)}}</div>
+            </div>
+            <div v-if="data.tradefee" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['手续费']}}</div>
+                <div>{{formatMoney(data.tradefee)}} {{data.payouttype==2?"USDT":data.currenttype}}</div>
+            </div>
+            <div v-if="data.result==20||data.status==20" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['实际到账']}}</div>
+                <div>{{formatMoney(data.amount-data.tradefee)}}</div>
+            </div>
+
+            <div style="padding-top:0.5rem;color:#9B9B9B;font-size:0.42rem;line-height:0.8rem;position:relative;">
+                <div>
+                    {{textRes.items['时间']}}&nbsp;&nbsp;&nbsp;&nbsp;{{showUTCTime(data.withdrawalstime||data.biztime)}}
+                </div>
+                <div v-if="data.serialnumber">
+                    {{textRes.items['流水号']}}&nbsp;&nbsp;&nbsp;&nbsp;{{showUTCTime(data.serialnumber)}}
+                </div>
+
+                <div v-if="false" style="border-radius:0.12rem;background-color:#EA3131;font-size:0.36rem;color:#fff;text-align:center;width:2.22rem;height:0.81rem;line-height:0.81rem;position:absolute;top:0.5rem;right:0rem;">
+                    重新发起
+                </div>
+            </div>
+        </div>
+
+
+        <div v-if="typeObj.id==9" style="padding:0.87rem 0.45rem 0 0.45rem;color:#4A4A4A;">
+            <div class="display-flex flex-direction-row borderBottom align-items-center" style="padding-bottom:0.45rem;font-weight:bold;">
+                <div class="flex-1">{{typeObj.name}}</div>
+                <div :style="{color:typeObj.color}">{{formatMoney(data.amount,typeObj.f)}} USDT</div>
+            </div>
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['状态']}}</div>
+                <div v-if="data.result==30||data.status==30" style="color:#EA3131;">{{textRes.items['失败']}}</div>
+                <div v-else-if="data.result==20||data.status==20" style="color:#1c9d36;">{{textRes.items['成功']}}</div>
+                <div v-else-if="data.result==15||data.status==15" style="color:#1c9d36;">{{textRes.items['打款中']}}</div>
+                <div v-else-if="data.result==10||data.status==10" style="color:#F8B052;">{{textRes.items['审核中']}}</div>
+            </div>
+
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['币种']}}</div>
+                <div>
+                    <span v-for="coinitem,index in data.extData">{{coinitem.Coin}}<span v-if="index<data.extData.length-1">、</span></span>
+                </div>
+            </div>
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['扣款数量']}}</div>
+                <div></div>
+            </div>
+            <div v-for="coinitem in data.extData" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{coinitem.Coin}}</div>
+                <div>{{formatMoney(coinitem.CoinNum)}} (1{{coinitem.Coin}}≈{{coinitem.Rate}}USDT)</div>
+            </div>
+
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['用途']}}</div>
+                <div>{{typeObj.name}}</div>
+            </div>
+
+            <div style="padding-top:0.5rem;color:#9B9B9B;font-size:0.42rem;line-height:0.8rem;position:relative;">
+                <div v-for="coinitem in data.extData">
+                    {{textRes.items['信用资本余额']}}&nbsp;&nbsp;&nbsp;&nbsp;{{coinitem.Surplus?coinitem.Surplus:0}} {{coinitem.Coin}}
+                </div>
+                <div>
+                    {{textRes.items['时间']}}&nbsp;&nbsp;&nbsp;&nbsp;{{showUTCTime(data.createTime)}}
+                </div>
+                <div>
+                    {{textRes.items['流水号']}}&nbsp;&nbsp;&nbsp;&nbsp;{{data.id}}
+                </div>
+            </div>
+        </div>
+
+        <!--[{\"Id\":54,\"UserId\":0,\"Coin\":\"BTC\",\"CoinNum\":0.04000000,\"Rate\":11364.32660000},{\"Id\":55,\"UserId\":0,\"Coin\":\"ETH\",\"CoinNum\":1.00000000,\"Rate\":303.12320000}]-->
+    </div>
+</body>
+</html>

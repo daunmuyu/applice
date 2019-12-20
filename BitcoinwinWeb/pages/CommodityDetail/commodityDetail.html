@@ -1,0 +1,328 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <script src="/js/base.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/base64.js"></script>
+    <script src="/js/MD5.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/flex.css">
+    <title></title>
+    <style>
+        .tabitem {
+            color: #656565;
+            font-size: 0.39rem;
+            line-height: 1.12rem;
+            text-align:center;
+        }
+        .moretabitem {
+            color: #fff;           
+            font-size: 0.39rem;
+            line-height: 1.12rem;
+            text-align: center;
+            white-space:nowrap;
+            padding-left:0.5rem;
+            padding-right:0.5rem;
+        }
+
+        .focustitle{
+            color:red;
+        }
+        .point {
+            border-radius: 999rem;
+            background-color: #6e6e6e;
+            width: 0.15rem;
+            height: 0.15rem;
+            margin-right:0.1rem;
+        }
+        .cell{
+            padding:0.21rem 0 0.21rem 0;
+            font-size:0.36rem;
+        }
+    </style>
+</head>
+<body>
+    <div @click="documentClick" style="width:100%;height:100%;position:relative;background-color:#fff;">
+        <div v-show="!isLandscape" class="display-flex flex-direction-column" style="position:absolute;left:0;bottom:0;right:0;" v-bind:style="{top:safeAreaTop}">
+            <!--头部标题区域-->
+            <div class="flex-shrink-0" style="position:relative;">
+                <div class="display-flex flex-direction-column align-items-center" style="margin-top:0.27rem;">
+                    <div @click.stop="titleClick" touchmode="focustitle" style="position:relative;font-size:0.54rem;font-weight:bold;padding-right:0.2rem;">
+                        {{commodity.symbolname}} <span style="font-size:0.39rem;">{{commodity.leverage}}x</span>
+                        <svg viewBox="0 0 11 11" style="position:absolute;left:100%;top:0.27rem;width:0.3rem;height:0.3rem;" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0 L10 0 L5 7 Z" fill="#999999"></path>
+                        </svg>
+                    </div>
+                    <!--<div style="margin-top:0.2rem;font-size:0.3rem;color:#6e6e6e;">{{textRes.items["交易时间"]}} {{tradetime}}</div>-->
+                </div>
+                <div @click="backClick" class="display-flex flex-direction-row align-items-center" style="position:absolute;left:0;top:0;height:100%;">
+                    <svg style="margin-left:0.59rem;width:0.46rem;height:0.46rem;" viewBox="0 0 11 11">
+                        <path d="M6 0 L0 5 L6 10" fill="none" stroke="#4c4c4c" stroke-width="1"></path>
+                    </svg>
+                </div>
+                <!--<div class="display-flex flex-direction-row" style="position:absolute;right:0.47rem;top:0.11rem;">
+                    <svg @click="ruleClick" style="width:0.69rem;height:0.69rem;" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="12" fill="#9B9B9B" fill-rule="nonzero">
+                                <g id="问题">
+                                    <path d="M6.786,5.32963477 C6.71563477,5.40573047 6.66980859,5.45482617 6.63546094,5.49163477 C6.69926953,5.4229043 6.786,5.32963477 6.786,5.32963477 Z M9.91063477,5.9080957 C10.1446348,6.1960957 10.2608262,6.53563477 10.2608262,6.92673047 C10.2608262,7.20653906 10.1806348,7.47573047 10.0210957,7.7359043 C9.93355664,7.88317383 9.81817383,8.02553906 9.67417383,8.16136523 L9.19473047,8.6350957 C8.7349043,9.08673047 8.4379043,9.48682617 8.3020957,9.837 C8.16626953,10.1863652 8.09836523,10.647 8.09836523,11.2180957 L9.16526953,11.2180957 C9.16526953,10.7149043 9.22253906,10.3344434 9.33626953,10.0767305 C9.45,9.81901758 9.69873047,9.50482617 10.0824609,9.13253906 C10.6101738,8.62119141 10.9603652,8.23336523 11.1338086,7.96992188 C11.307252,7.70647852 11.3948262,7.36282617 11.3948262,6.939 C11.3948262,6.24026953 11.1583652,5.6659043 10.6846348,5.2159043 C10.2109043,4.7659043 9.5809043,4.54173047 8.79382617,4.54173047 C7.9429043,4.54173047 7.27363477,4.80434766 6.786,5.32963477 C6.29836523,5.8549043 6.05453906,6.54873047 6.05453906,7.4119043 L7.12146094,7.4119043 C7.1410957,6.89236523 7.22373047,6.49473047 7.3669043,6.219 C7.62217383,5.724 8.08363477,5.4760957 8.75126953,5.4760957 C9.29046094,5.4760957 9.67746094,5.6200957 9.91063477,5.9080957 Z M18,9 C18,4.02953906 13.9704609,0 9,0 C4.02953906,0 0,4.02953906 0,9 C0,13.9704609 4.02953906,18 9,18 C13.9704609,18 18,13.9704609 18,9 Z M0.818173828,9 C0.818173828,4.48119141 4.48119141,0.818173828 9,0.818173828 C13.5188086,0.818173828 17.1818262,4.48119141 17.1818262,9 C17.1818262,13.5188086 13.5188086,17.1818262 9,17.1818262 C4.48119141,17.1818262 0.818173828,13.5188086 0.818173828,9 Z M8.07382617,12.2121738 L9.26673047,12.2121738 L9.26673047,13.4582871 L8.07380859,13.4582871 L8.07380859,12.2121738 L8.07382617,12.2121738 Z" id="Shape"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <img @click="share" style="position:absolute;right:0;top:0.96rem;width:0.79rem;height:0.79rem;margin-left:0.4rem;" src="../../imgs/fenxiang2.svg" />
+
+                    <svg @click="landscapeClick" style="width:0.79rem;height:0.79rem;margin-left:0.4rem;" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="放大" fill="#9B9B9B" fill-rule="nonzero">
+                                <path d="M15.75,0 L2.25,0 C1.0125,0 0,1.0125 0,2.25 L0,15.75 C0,16.9875 1.0125,18 2.25,18 L15.75,18 C16.9875,18 18,16.9875 18,15.75 L18,2.25 C18,1.0125 16.9875,0 15.75,0 Z M16.875,15.75 C16.875,16.36875 16.36875,16.875 15.75,16.875 L2.25,16.875 C1.63125,16.875 1.125,16.36875 1.125,15.75 L1.125,2.25 C1.125,1.63125 1.63125,1.125 2.25,1.125 L15.75,1.125 C16.36875,1.125 16.875,1.63125 16.875,2.25 L16.875,15.75 Z M7.875,14.625 L4.1625,14.625 L7.9875,10.8 L7.2,10.0125 L3.375,13.8375 L3.375,10.125 C3.375,9.7875 3.15,9.5625 2.8125,9.5625 C2.475,9.5625 2.25,9.7875 2.25,10.125 L2.25,15.1875 C2.25,15.35625 2.30625,15.46875 2.41875,15.58125 C2.53125,15.69375 2.7,15.75 2.8125,15.75 L7.875,15.75 C8.2125,15.75 8.4375,15.525 8.4375,15.1875 C8.4375,14.90625 8.2125,14.625 7.875,14.625 Z M15.1875,2.25 L10.125,2.25 C9.7875,2.25 9.5625,2.475 9.5625,2.8125 C9.5625,3.15 9.7875,3.375 10.125,3.375 L13.8375,3.375 L10.0125,7.2 L10.8,7.9875 L14.625,4.1625 L14.625,7.875 C14.625,8.2125 14.85,8.4375 15.1875,8.4375 C15.525,8.4375 15.75,8.2125 15.75,7.875 L15.75,2.8125 C15.75,2.64375 15.69375,2.53125 15.58125,2.41875 C15.46875,2.30625 15.35625,2.25 15.1875,2.25 Z" id="Shape"></path>
+                            </g>
+                        </g>
+                    </svg>
+                </div>-->
+
+                <div id="divMenu" @click="showMenu" style="position:absolute;right:0.27rem;top:0.11rem;">
+                    <div class="display-flex flex-direction-row" style="margin-top:0.3rem;">
+                        <div class="point"></div>
+                        <div class="point"></div>
+                        <div class="point"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!--价格区域-->
+            <div class="flex-shrink-0" style="margin-top:0.48rem;position:relative;">
+                <div style="font-size:0.78rem;font-weight:bold;margin-left:0.49rem;" v-bind:style="{color:priceColor}">{{formatMoney(toFixed( commodity.showPrice , commodity.decimalplace))}}</div>
+                <div style="margin-top:0.13rem;margin-left:0.49rem;font-size:0.4rem;" v-bind:style="{color:priceColor}">{{commodity.updownValue}}&nbsp;&nbsp;{{commodity.percent}}</div>
+
+                <div style="position:absolute;top:0.22rem;right:0.67rem;display:table;font-size:0.4rem;">
+                    <div style="display:table-row;">
+                        <div style="display:table-cell;">{{textRes.items["最高"]}}</div>
+                        <div style="display:table-cell;width:2.4rem;text-align:right;padding-right:0.35rem;" v-bind:style="{color:priceColor}">{{formatMoney(commodity.high.toFixed(commodity.decimalplace))}}</div>
+                        <div style="display:table-cell;">{{textRes.items["今开"]}}</div>
+                        <div style="display:table-cell;width:2.05rem;text-align:right;" v-bind:style="{color:priceColor}">{{formatMoney(commodity.open.toFixed(commodity.decimalplace))}}</div>
+                    </div>
+                    <div style="display:table-row;">
+                        <div style="display:table-cell;">{{textRes.items["最低"]}}</div>
+                        <div style="display:table-cell;text-align:right;padding-right:0.35rem;" v-bind:style="{color:priceColor}">{{formatMoney(commodity.low.toFixed(commodity.decimalplace))}}</div>
+                        <div style="display:table-cell;">{{textRes.items["昨收"]}}</div>
+                        <div style="display:table-cell;text-align:right;" v-bind:style="{color:priceColor}">{{formatMoney(commodity.preClose.toFixed(commodity.decimalplace))}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!--k线tabitems 分时选择-->
+            <div id="divtab" class="display-flex flex-direction-row flex-shrink-0" style="margin-top:0.43rem;background-color:#f5f5f5;height:1.12rem;position:relative;">
+                <div class="flex-1 display-flex flex-direction-row align-items-center justify-content-center tabitem" touchmode @click="tabClick(item)" v-bind:style="{color:item.selected?'#5aafb4':'',}" v-for="item in tabs">
+                    <div style="position:relative;">
+                        {{textRes.getItem(item.text,item.text1,item.text2)}}
+                        <div v-show="item.selected" style="height:0.06rem;background-color:#5aafb4;position:absolute;bottom:0;width:100%;"></div>
+
+                        <!--更多选项-->
+                        <div v-if="item.isMore" id="divMoreTabs" style="position:absolute;right:0;top:100%;">
+
+                        </div>
+                    </div>
+                    <svg v-if="item.isMore" style="width:0.36rem;height:0.36rem;margin-left:0.1rem;" viewBox="0 0 11 11">
+                        <path d="M0 3 L5 7 L10 3" fill="none" stroke="#4c4c4c" stroke-width="1"></path>
+                    </svg>
+                </div>
+
+                <div class="flex-1 display-flex flex-direction-row align-items-center justify-content-center tabitem" touchmode @click.stop="showConfig=!showConfig">
+                    <div style="position:relative;">
+                        {{textRes.items['指标']}}
+                    </div>
+                </div>
+
+                <div v-show="showConfig" @click.stop="showConfig=true" style="background-color:#fff;padding:0.21rem 0.45rem 0.21rem 0.45rem;position:absolute;left:0;bottom:100%;right:0;color:#4A4A4A;">
+                    <div style="display:table;border-collapse: collapse;font-size:0.36rem;width:100%;">
+                        <div style="display:table-row;padding-bottom:0.12rem;">
+                            <div class="cell" style="display:table-cell">
+                                {{textRes.items['主图']}}
+                            </div>
+                            <div class="cell" style="display:table-cell;width:1.6rem;" :style="{color:mainGragh==0?'#EA3131':''}" @click="setMainGragh(0)">
+                                MA
+                            </div>
+                            <div class="cell" style="display:table-cell;" :style="{color:mainGragh==1?'#EA3131':''}" @click="setMainGragh(1)">
+                                BOLL
+                            </div>
+                            <div class="cell" style="display:table-cell">
+
+                            </div>
+                            <div class="cell" style="display:table-cell">
+
+                            </div>
+                            <div class="cell" style="display:table-cell">
+
+                            </div>
+                            <div @click="setMainGragh(999)" class="cell" style="display:table-cell;text-align:right;">
+                                <img v-if="mainGragh==0||mainGragh==1" src="../../imgs/see.svg" style="width:0.54rem;height:0.36rem;" />
+                                <img v-if="mainGragh!=0&mainGragh!=1" src="../../imgs/nosee.svg" style="width:0.54rem;height:0.36rem;" />
+                            </div>
+                        </div>
+                        <div style="border-top:solid 1px #C6C6C6;display:table-row;padding-top:0.12rem;">
+                            <div class="cell" style="display:table-cell">
+                                {{textRes.items['副图']}}
+                            </div>
+                            <div class="cell" @click="setSubGragh(item)" style="display:table-cell;" :style="{color:item.selected==1?'#EA3131':''}" v-for="item in subGraghs">
+                                {{item.text}}
+                            </div>
+                            <div @click="setSubGragh(undefined)" class="cell" style="display:table-cell;text-align:right;">
+                                <img v-if="hasSub" src="../../imgs/see.svg" style="width:0.54rem;height:0.36rem;" />
+                                <img v-if="!hasSub" src="../../imgs/nosee.svg" style="width:0.54rem;height:0.36rem;" />
+                            </div>
+                        </div>
+                        <div @click="klineSettingClick" style="border-top:solid 1px #C6C6C6;display:table-row;padding-top:0.12rem;">
+                            <div class="cell" style="display:table-cell">
+                                {{textRes.items['指标设置']}}
+                            </div>
+                            <div class="cell" style="display:table-cell;" v-for="item in subGraghs">
+                                
+                            </div>
+                            <div class="cell" style="display:table-cell;text-align:right;padding-right:0.15rem;">
+                                <svg style="width:0.12rem;height:0.27rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                                    <path d="M0,0 L100,50 L0,100" class="mainstrokecolor" stroke-width="8" fill="none"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <svg @click.stop="showConfig=false" style="width:0.7rem;height:0.7rem;position:absolute;right:0;top:-0.35rem;" viewBox="0 0 100 100">
+                        <path d="M30 30 L70 70 M70 30 L30 70" fill="none" stroke="#666" stroke-width="2"></path>
+                    </svg>
+                </div>
+            </div>
+
+            
+
+            <!--kline area-->
+            <div id="imgkline" class="flex-1" style="margin-left:6px;margin-right:6px;position:relative;overflow:hidden;">
+                <div v-if="!klineready" class="display-flex flex-direction-row align-items-center justify-content-center" style="position:absolute;left:0;top:0;width:100%;height:100%;">
+                    <loading style="width:2rem;height:2rem;" bgcolor="#eee"></loading>
+                </div>
+            </div>
+
+            <!--买卖按钮-->
+            <div class="flex-shrink-0 display-flex flex-direction-row" style="height:1.41rem;color:#fff;position:relative;">
+                <!--<div @click="openWatchList" class="flex-shrink-0 display-flex flex-direction-column align-items-center justify-content-center" style="width:1.41rem;background-color:#ff9933;">
+                    <img src="../../imgs/shizhong.svg" style="width:0.8rem;height:0.8rem;" />
+                    
+                </div>-->
+                <div touchmode @click="buyLongClick" class="flex-1" style="font-size:0.46rem;text-align:center;line-height:1.41rem;" v-bind:style="{backgroundColor:textRes.items['行情列表-涨']}">{{textRes.items["买多"]}} {{formatMoney( toFixed( commodity.bidPrice , commodity.decimalplace) )}}</div>
+                <div class="flex-shrink-0" style="width:1px;"></div>
+                <div touchmode @click="buyShortClick" class="flex-1" style="font-size:0.46rem;text-align:center;line-height:1.41rem;" v-bind:style="{backgroundColor:textRes.items['行情列表-跌']}">{{textRes.items["卖空"]}} {{formatMoney( toFixed( commodity.offerPrice , commodity.decimalplace) )}}</div>
+
+            </div>
+        </div>
+
+        <!--横屏-->
+        <div class="display-flex flex-direction-row" style="position:absolute;right:0;" v-bind:style="{visibility:isLandscape?'':'hidden',top:isIPhoneX?'0px':safeAreaTop,left:isIPhoneX?safeAreaTop:'0px',bottom:isIPhoneX?safeAreaBottom:'0px'}">
+            <div class="flex-1 display-flex flex-direction-column">
+                <div class="flex-shrink-0 display-flex flex-direction-row align-items-center" style="position:relative;">
+                    <div @click="backClick" class="display-flex flex-direction-row align-items-center" style="height:100%;">
+                        <svg style="margin-left:0.59rem;width:0.46rem;height:0.46rem;" viewBox="0 0 11 11">
+                            <path d="M6 0 L0 5 L6 10" fill="none" stroke="#4c4c4c" stroke-width="1"></path>
+                        </svg>
+                    </div>
+
+                    <div class="display-flex flex-direction-column" style="margin-top:0.25rem;margin-left:0.3rem;">
+                        <div @click.stop="titleClick" touchmode="focustitle" style="position:relative;font-size:0.54rem;font-weight:bold;padding-right:0.2rem;">
+                            {{commodity.symbolname}} <span style="font-size:0.39rem;">{{commodity.leverage}}x</span>
+                            <svg viewBox="0 0 11 11" style="position:absolute;left:100%;top:0.17rem;width:0.3rem;height:0.3rem;" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 0 L10 0 L5 7 Z" fill="#999999"></path>
+                            </svg>
+                        </div>
+                        <div style="margin-top:0.2rem;font-size:0.3rem;color:#6e6e6e;">{{textRes.items["交易时间"]}} {{tradetime}}</div>
+                    </div>
+
+                    <div class="flex-1" style="margin-left:0.1rem;position:relative;">
+                        <div style="font-size:0.58rem;font-weight:bold;margin-left:0.49rem;" v-bind:style="{color:priceColor}">{{formatMoney(commodity.bidPrice.toFixed(commodity.decimalplace))}}</div>
+                        <div style="margin-top:0.13rem;margin-left:0.49rem;font-size:0.3rem;" v-bind:style="{color:priceColor}">{{commodity.updownValue}}&nbsp;&nbsp;{{commodity.percent}}</div>
+
+                        <div style="position:absolute;top:0;right:0.67rem;display:table;font-size:0.4rem;">
+                            <div style="display:table-row;">
+                                <div style="display:table-cell;">{{textRes.items["最高"]}}</div>
+                                <div style="display:table-cell;width:2.4rem;text-align:right;padding-right:0.35rem;" v-bind:style="{color:priceColor}">{{formatMoney(commodity.high.toFixed(commodity.decimalplace))}}</div>
+                                <div style="display:table-cell;">{{textRes.items["今开"]}}</div>
+                                <div style="display:table-cell;width:2.05rem;text-align:right;" v-bind:style="{color:priceColor}">{{formatMoney(commodity.open.toFixed(commodity.decimalplace))}}</div>
+                            </div>
+                            <div style="display:table-row;">
+                                <div style="display:table-cell;">{{textRes.items["最低"]}}</div>
+                                <div style="display:table-cell;text-align:right;padding-right:0.35rem;" v-bind:style="{color:priceColor}">{{formatMoney(commodity.low.toFixed(commodity.decimalplace))}}</div>
+                                <div style="display:table-cell;">{{textRes.items["昨收"]}}</div>
+                                <div style="display:table-cell;text-align:right;" v-bind:style="{color:priceColor}">{{formatMoney(commodity.preClose.toFixed(commodity.decimalplace))}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <svg v-if="false" @click="ruleClick" style="width:0.69rem;height:0.69rem;" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="12" fill="#9B9B9B" fill-rule="nonzero">
+                                <g id="问题">
+                                    <path d="M6.786,5.32963477 C6.71563477,5.40573047 6.66980859,5.45482617 6.63546094,5.49163477 C6.69926953,5.4229043 6.786,5.32963477 6.786,5.32963477 Z M9.91063477,5.9080957 C10.1446348,6.1960957 10.2608262,6.53563477 10.2608262,6.92673047 C10.2608262,7.20653906 10.1806348,7.47573047 10.0210957,7.7359043 C9.93355664,7.88317383 9.81817383,8.02553906 9.67417383,8.16136523 L9.19473047,8.6350957 C8.7349043,9.08673047 8.4379043,9.48682617 8.3020957,9.837 C8.16626953,10.1863652 8.09836523,10.647 8.09836523,11.2180957 L9.16526953,11.2180957 C9.16526953,10.7149043 9.22253906,10.3344434 9.33626953,10.0767305 C9.45,9.81901758 9.69873047,9.50482617 10.0824609,9.13253906 C10.6101738,8.62119141 10.9603652,8.23336523 11.1338086,7.96992188 C11.307252,7.70647852 11.3948262,7.36282617 11.3948262,6.939 C11.3948262,6.24026953 11.1583652,5.6659043 10.6846348,5.2159043 C10.2109043,4.7659043 9.5809043,4.54173047 8.79382617,4.54173047 C7.9429043,4.54173047 7.27363477,4.80434766 6.786,5.32963477 C6.29836523,5.8549043 6.05453906,6.54873047 6.05453906,7.4119043 L7.12146094,7.4119043 C7.1410957,6.89236523 7.22373047,6.49473047 7.3669043,6.219 C7.62217383,5.724 8.08363477,5.4760957 8.75126953,5.4760957 C9.29046094,5.4760957 9.67746094,5.6200957 9.91063477,5.9080957 Z M18,9 C18,4.02953906 13.9704609,0 9,0 C4.02953906,0 0,4.02953906 0,9 C0,13.9704609 4.02953906,18 9,18 C13.9704609,18 18,13.9704609 18,9 Z M0.818173828,9 C0.818173828,4.48119141 4.48119141,0.818173828 9,0.818173828 C13.5188086,0.818173828 17.1818262,4.48119141 17.1818262,9 C17.1818262,13.5188086 13.5188086,17.1818262 9,17.1818262 C4.48119141,17.1818262 0.818173828,13.5188086 0.818173828,9 Z M8.07382617,12.2121738 L9.26673047,12.2121738 L9.26673047,13.4582871 L8.07380859,13.4582871 L8.07380859,12.2121738 L8.07382617,12.2121738 Z" id="Shape"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                    <img v-if="false" @click="portraitClick" style="width:0.79rem;height:0.79rem;margin-left:0.4rem;margin-right:0.3rem;" src="../../imgs/portrait.svg" />
+
+                </div>
+
+                <!--kline area-->
+                <div id="imgkline2" class="flex-1" style="margin-left:6px;margin-right:6px;position:relative;overflow:hidden;">
+                    <div v-if="!klineready" class="display-flex flex-direction-row align-items-center justify-content-center" style="position:absolute;left:0;top:0;width:100%;height:100%;">
+                        <loading style="width:2rem;height:2rem;" bgcolor="#eee"></loading>
+                    </div>
+                </div>
+
+                <!--k线tabitems 分时选择-->
+                <div id="divtab2" class="display-flex flex-direction-row flex-shrink-0" style="margin-top:0.23rem;background-color:#f5f5f5;height:1.12rem;">
+                    <div class="flex-1 display-flex flex-direction-row align-items-center justify-content-center tabitem" touchmode @click="tabClick(item)" v-bind:style="{color:item.selected?'#5aafb4':'',}" v-for="item in landscapeTabs">
+                        <div style="position:relative;">
+                            {{textRes.getItem(item.text,item.text1,item.text2)}}
+                            <div v-show="item.selected" style="height:0.06rem;background-color:#5aafb4;position:absolute;bottom:0;width:100%;"></div>
+
+                            <!--更多选项-->
+                            <div v-if="item.isMore" id="divMoreTabs2" style="position:absolute;right:0;top:100%;">
+
+                            </div>
+                        </div>
+                        <svg v-if="item.isMore" style="width:0.36rem;height:0.36rem;margin-left:0.1rem;" viewBox="0 0 11 11">
+                            <path d="M0 3 L5 7 L10 3" fill="none" stroke="#4c4c4c" stroke-width="1"></path>
+                        </svg>
+                    </div>
+                </div>
+
+
+            </div>
+            <div v-if="false" class="flex-shrink-0 display-flex flex-direction-column" style="width:1.71rem;color:#fff;position:relative;height:100%;">
+                <!--买卖按钮-->
+                <div @click="buyLongClick" class="flex-1 display-flex flex-direction-column align-items-center justify-content-center" style="font-size:0.46rem;" v-bind:style="{backgroundColor:textRes.items['行情列表-涨']}">
+                    <div>{{textRes.items["做多"]}}</div>
+                </div>
+                <div class="flex-shrink-0" style="width:1px;"></div>
+                <div @click="buyShortClick" class="flex-1 display-flex flex-direction-column align-items-center justify-content-center" style="font-size:0.46rem;" v-bind:style="{backgroundColor:textRes.items['行情列表-跌']}">
+                    <div>{{textRes.items["做空"]}}</div>
+                </div>
+
+            </div>
+        </div>
+     </div>
+</body>
+<script>
+    var obj = require("../../lang_zh_CN");
+
+    window.textRes = obj.lang_zh_CN;
+
+    obj = require("CommodityDetail");
+    var page = new obj.CommodityDetail({
+        symbolname: "比特币/BTC",
+        leverage: 200,
+        tradetime:"00:00-00:00"
+    });
+    page.setParent(document.body);
+</script>
+</html>

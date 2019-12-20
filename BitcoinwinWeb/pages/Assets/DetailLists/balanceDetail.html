@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .borderBottom {
+            border-bottom: 1px solid #F5F5F5;
+        }
+    </style>
+</head>
+<body>
+   
+    <div class="canscroll" style="width:100%;height:100%;position:absolute;left:0;top:0;background-color:#fff;font-size:0.45rem;">
+        <pageheader :title="textRes.items['详情']"></pageheader>
+
+        <div v-if="typeid==undefined" style="padding:0.87rem 0.45rem 0 0.45rem;color:#4A4A4A;">
+            <div class="display-flex flex-direction-row borderBottom align-items-center" style="padding-bottom:0.45rem;font-weight:bold;">
+                <div class="flex-1">{{textRes.items['昨日收益']}}</div>
+                <div style="color:#EA3131;">{{formatMoney(amount , "+")}}</div>
+                <div style="color:#EA3131;margin-left:0.18rem;">USDT</div>
+            </div>
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['余额']}}</div>
+                <div>{{formatMoney(item.balance )}}</div>
+            </div>
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['余额利息']}}</div>
+                <div>{{formatMoney(data.balanceInterest , "+")}}</div>
+            </div>
+            <div v-if="data.margin>0" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['保证金']}}</div>
+                <div>{{formatMoney(data.margin )}}</div>
+            </div>
+            <div v-if="data.margin>0" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['保证金利息']}}</div>
+                <div>{{formatMoney(data.marginInterest , "+")}}</div>
+            </div>
+            <div v-if="data.creditAmount>0" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['信用资本']}}</div>
+                <div>{{formatMoney(data.creditAmount )}}</div>
+            </div>
+            <div v-if="data.creditAmount>0" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['信用资本利息']}}</div>
+                <div>{{formatMoney(data.creditInterest , "+")}}</div>
+            </div>
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['预计结算时间']}}</div>
+                <div>{{showUTCTime(data.estimatedSettlementDate,true)}}</div>
+            </div>
+        </div>
+
+        <div v-if="typeid==1" style="padding:0.87rem 0.45rem 0 0.45rem;color:#4A4A4A;">
+            <div class="display-flex flex-direction-row borderBottom align-items-center" style="padding-bottom:0.45rem;font-weight:bold;">
+                <div class="flex-1">{{textRes.items['保证金收益']}}</div>
+                <div style="color:#EA3131;">{{formatMoney(data.marginInterest , "+")}}</div>
+                <div style="color:#EA3131;margin-left:0.18rem;">USDT</div>
+            </div>
+            <div v-if="data.margin>0" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['保证金']}}</div>
+                <div>{{formatMoney(data.margin )}}</div>
+            </div>
+
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['年化收益率']}}</div>
+                <div>{{toFixed(data.marginAnnualRate,0)}}%</div>
+            </div>
+
+
+            <div v-if="data.balance>0" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['余额宝账户']}}</div>
+                <div>{{formatMoney(data.balance)}}</div>
+            </div>
+
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['预计结算时间']}}</div>
+                <div>{{showUTCTime(data.estimatedSettlementDate,true)}}</div>
+            </div>
+        </div>
+
+        <div v-if="typeid==2" style="padding:0.87rem 0.45rem 0 0.45rem;color:#4A4A4A;">
+            <div class="display-flex flex-direction-row borderBottom align-items-center" style="padding-bottom:0.45rem;font-weight:bold;">
+                <div class="flex-1">{{textRes.items['余额收益']}}</div>
+                <div style="color:#EA3131;">{{formatMoney(data.balanceInterest , "+")}}</div>
+                <div style="color:#EA3131;margin-left:0.18rem;">USDT</div>
+            </div>
+            <div v-if="data.margin>0" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['可用余额']}}</div>
+                <div>{{formatMoney(data.balanceInterest)}}</div>
+            </div>
+
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['年化收益率']}}</div>
+                <div>{{toFixed(data.balanceAnnualRate,0)}}%</div>
+            </div>
+
+
+            <div v-if="data.creditAmount>0" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['余额宝账户']}}</div>
+                <div>{{formatMoney(data.balance)}}</div>
+            </div>
+
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['预计结算时间']}}</div>
+                <div>{{showUTCTime(data.estimatedSettlementDate,true)}}</div>
+            </div>
+        </div>
+
+        <div v-if="typeid==3" style="padding:0.87rem 0.45rem 0 0.45rem;color:#4A4A4A;">
+            <div class="display-flex flex-direction-row borderBottom align-items-center" style="padding-bottom:0.45rem;font-weight:bold;">
+                <div class="flex-1">{{textRes.items['信用资本收益']}}</div>
+                <div style="color:#EA3131;">{{formatMoney(amount , "+")}}</div>
+                <div style="color:#EA3131;margin-left:0.18rem;">USDT</div>
+            </div>
+            <div v-if="data.margin>0" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['信用资本']}}</div>
+                <div>{{formatMoney(data.creditAmount )}}</div>
+            </div>
+
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['年化收益率']}}</div>
+                <div>{{toFixed(data.creditAnnualRate,0)}}%</div>
+            </div>
+
+
+            <div v-if="item.creditAmount>0" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['信用资本']}}</div>
+                <div>{{formatMoney(toFixed(item.creditAmount , 4))}}</div>
+            </div>
+
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['预计结算时间']}}</div>
+                <div>{{showUTCTime(data.estimatedSettlementDate,true)}}</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

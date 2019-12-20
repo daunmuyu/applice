@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <script src="../../js/base.js"></script>
+    <script src="../../js/api.js"></script>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/flex.css">
+    <title></title>
+    <style>
+        .buyBtn {
+            height: 0.93rem;
+            padding-left: 0.6rem;
+            padding-right: 0.6rem;
+            border-radius: 0.1rem;
+            background-color: #999999;
+            color:#fff;
+            font-size:0.39rem;
+            line-height:0.93rem;
+        }
+        .buyBtnSelected {
+            background-color: #f5221a;
+        }
+        .buyNumberBtn {
+            height: 0.93rem;
+            line-height: 0.93rem;
+            border-radius: 0.15rem;
+            border: 1px solid #d7423b;
+            color: #d7423b;
+            font-size: 0.33rem;
+            padding-left: 0.33rem;
+            padding-right: 0.33rem;
+        }
+        .buyNumberBtnSelected {
+            background-color: #f5221a;
+            color: #fff;
+        }
+        .buyNumberBtn2 {
+            margin-left: 0.29rem;
+        }
+        .borderBottom {
+            border-bottom: 1px solid #f6f6f6;
+        }
+        .okBtn {
+            height: 1.17rem;
+            line-height: 1.17rem;
+            font-size: 0.46rem;
+            color: #fff;
+            border-radius: 0.1rem;
+            padding: 0;
+            text-align: center;
+        }
+        .dialogBtn {
+            height: 1.17rem;
+            line-height: 1.17rem;
+            font-size: 0.46rem;
+            color: #fff;
+            border-radius: 0.1rem;
+            padding: 0;
+            text-align: center;
+            width:2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="canscroll display-flex flex-direction-column" style="background-color:rgba(0,0,0,0.3);width:100%;height:100%;position:relative;">
+        <div class="flex-1" @click="close"></div>
+        <div style="width:100%;background-color:#fff;padding-left:0.3rem;padding-right:0.3rem;">
+
+            <div class="display-flex flex-direction-row justify-content-center align-items-center borderBottom" style="height:1.59rem;">
+                <div class="display-flex flex-direction-row">
+                    <div class="buyBtn" @click="isMarkPrice=true" v-bind:class="{buyBtnSelected:isMarkPrice}">{{textRes.items["市价"]}}</div>
+                    <div style="margin-left:0.5rem;" @click="isMarkPrice=false" class="buyBtn" v-bind:class="{buyBtnSelected:!isMarkPrice}">{{textRes.items["限价"]}}</div>
+                </div>
+            </div>
+            <div v-show="!isMarkPrice" class="borderBottom" style="font-size:0.36rem;color:#111;">
+                <div class="display-flex flex-direction-column align-items-center" style="margin-top:0.34rem;margin-bottom:0.34rem;height:0.92rem;line-height:0.92rem;position:relative;">
+                    <div>
+                        <span @click="jianPrice" style="color:#4aa137;font-weight:bold;font-size:0.5rem;">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+                        <input type="number" v-model="customPrice" v-bind:placeholder="textRes.items['点击设置价格']" style="text-align:center;width:4.7rem;height:100%;background-color:#e8ebf4;border:0;border-radius:9999rem;" />
+                        <span @click="jiaPrice" style="color:#4aa137;font-weight:bold;font-size:0.5rem;">&nbsp;&nbsp;+&nbsp;&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="borderBottom" style="padding-bottom:0.33rem;">
+                <div style="font-size:0.36rem;color:#111;margin-top:0.33rem;margin-bottom:0.21rem;">{{textRes.items["交易数量"]}}</div>
+                <div class="display-flex flex-direction-row">
+                    <div class="buyNumberBtn flex-shrink-0" @click="handClick(item)" v-for="item,index in hands" v-bind:class="{buyNumberBtn2:index>0,buyNumberBtnSelected:selectedHand==item}">{{textRes.getItem("n手",item,item>1?"s":"")}}</div>
+                    <div class="flex-1 buyNumberBtn2">
+                        <input class="buyNumberBtn" v-model="customHand" style="width:100%;height:100%;text-align:center;-webkit-appearance:none;padding:0;" type="number" v-bind:placeholder="textRes.items['自定义']" />
+                    </div>
+                </div>
+            </div>
+            <div class="borderBottom display-flex flex-direction-row" style="height:1.18rem;line-height:1.18rem;position:relative;font-size:0.36rem;color:#111;">
+                <div class="flex-1" style="position:relative;">
+                    <div>{{textRes.items["下单价"]}}&nbsp;&nbsp;&nbsp;{{bstype==1?formatMoneyFixed(commodity.bidPrice , commodity.decimalplace):formatMoneyFixed(commodity.offerPrice , commodity.decimalplace)}}</div>
+                    <div style="position:absolute;right:0;top:0;height:100%;">{{textRes.items["融资额"]}}&nbsp;&nbsp;&nbsp;{{total_financingamount}}</div>
+                </div>
+                <div class="flex-1" style="position:relative;margin-left:0.3rem;">
+                    <div>{{textRes.items["保证金"]}}&nbsp;&nbsp;&nbsp;{{Perrmbmargin}}</div>
+                    <div style="position:absolute;right:0;top:0;height:100%;">{{textRes.items["余额"]}}&nbsp;&nbsp;&nbsp;{{buyinfo.balance}}&nbsp;&nbsp;&nbsp;<span v-if="!isDemoMode" @click="recharge" v-bind:style="{color:textRes.items['超级链接颜色']}">{{textRes.items['充值']}}</span></div>
+                </div>
+            </div>
+            <div class="borderBottom display-flex flex-direction-row" style="height:1.18rem;line-height:1.18rem;position:relative;font-size:0.36rem;color:#111;">
+                <div class="flex-1">
+                    <div>{{textRes.items["手续费率"]}}&nbsp;&nbsp;&nbsp;{{PerrmbfeeRate}}</div>
+                </div>
+                <div class="flex-1">
+                    
+                </div>
+            </div>
+            
+            <div class="borderBottom" style="height:1.18rem;line-height:1.18rem;position:relative;font-size:0.36rem;color:#111;">
+                <div>{{textRes.items["设置止盈/止损"]}}</div>
+                <div style="position:absolute;right:0;top:0.3rem;height:100%;">
+                    <switcher style="width:0.98rem;height:0.49rem;" v-model="setProfit"></switcher>
+                </div>
+            </div>
+            <div v-show="setProfit" class="borderBottom" style="font-size:0.36rem;color:#111;">
+                <div style="margin-top:0.34rem;height:0.92rem;line-height:0.92rem;position:relative;">
+                    <div>{{textRes.items["止盈价格"]}}</div>
+                    <div style="position:absolute;right:0;height:100%;top:0;">
+                        <span @click="jianProfit" style="color:#4aa137;font-weight:bold;font-size:0.5rem;">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+                        <input type="number" v-model="customProfit" :placeholder="textRes.items['点击设置']" style="text-align:center;width:4.7rem;height:100%;background-color:#e8ebf4;border:0;border-radius:9999rem;" />
+                        <span @click="jiaProfit" style="color:#4aa137;font-weight:bold;font-size:0.5rem;">&nbsp;&nbsp;+&nbsp;&nbsp;</span>
+                    </div>
+                </div>
+                <div style="margin-top:0.19rem;height:0.92rem;line-height:0.92rem;margin-bottom:0.34rem;position:relative;">
+                    <div>{{textRes.items["止损价格"]}}</div>
+                    <div style="position:absolute;right:0;height:100%;top:0;">
+                        <span @click="jianLoss" style="color:#4aa137;font-weight:bold;font-size:0.5rem;">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+                        <input type="number" v-model="customLoss" v-bind:placeholder="textRes.items['点击设置']" style="text-align:center;width:4.7rem;height:100%;background-color:#e8ebf4;border:0;border-radius:9999rem;" />
+                        <span @click="jiaLoss" style="color:#4aa137;font-weight:bold;font-size:0.5rem;">&nbsp;&nbsp;+&nbsp;&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div v-show="isBusy" class="display-flex flex-direction-column align-items-center justify-content-center" style="height:1.41rem;position:relative;">
+                <loading style="width:1rem;height:1rem;"></loading>
+            </div>
+            <div class="display-flex flex-direction-row" style="margin-bottom:0.47rem;">
+                <div @click="close" class="okBtn flex-1" style="background-color:#999999;">{{textRes.items["取消"]}}</div>
+                <div class="flex-shrink-0" style="width:0.3rem;"></div>
+                <div v-if="bstype==1&&!isBusy" @click="submit1" class="okBtn flex-1" v-bind:style="{backgroundColor:textRes.items['行情列表-涨']}">{{textRes.items["确定看涨做多"]}}</div>
+                <div v-if="bstype==2&&!isBusy" @click="submit1" class="okBtn flex-1" v-bind:style="{backgroundColor:textRes.items['行情列表-跌']}">{{textRes.items["确定看跌做空"]}}</div>
+            </div>
+          
+
+        </div>
+
+        <!--确认面板-->
+        <div v-show="isConfig" class="display-flex flex-direction-row justify-content-center align-items-center" style="position:absolute;left:0;top:0;width:100%;height:100%;">
+            <div style="border-radius:0.15rem;background-color:#fff;box-shadow:0px 0px 10px #333;padding:0.33rem 0.66rem 0.53rem 0.66rem;">
+                <div style="width:100%;text-align:center;font-size:0.43rem;color:#333;font-weight:bold;">{{commodity.symbolname}}</div>
+                <table style="font-size:0.33rem;color:#777;">
+                    <tr>
+                        <td>{{textRes.items["交易方式"]}}</td>
+                        <td style="padding-left:1rem;">{{isMarkPrice?textRes.items["市价"]:textRes.items["限价"]}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{textRes.items["交易Dialog.交易数量"]}}</td>
+                        <td style="padding-left:1rem;">{{textRes.getItem("n手",selectedHand)}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{textRes.items["保证金"]}}</td>
+                        <td style="padding-left:1rem;">{{Perrmbmargin}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{textRes.items["手续费率"]}}</td>
+                        <td style="padding-left:1rem;">{{PerrmbfeeRate}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{textRes.items["止盈"]}}</td>
+                        <td style="padding-left:1rem;">{{setProfit?(customProfit.length==0?"--":customProfit):"--"}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{textRes.items["止损"]}}</td>
+                        <td style="padding-left:1rem;">{{setProfit?(customLoss.length==0?"--":customLoss):"--"}}</td>
+                    </tr>
+                </table>
+                <div class="display-flex flex-direction-row justify-content-center" style="margin-top:0.47rem;">
+                    <div @click="isConfig=false;isBusy=false;" class="dialogBtn" style="background-color:#777;">{{textRes.items["取消"]}}</div>
+                    <div @click="submit2" class="dialogBtn" style="margin-left:0.6rem;" v-bind:style="{backgroundColor:textRes.items['超级链接颜色']}">{{textRes.items["确定"]}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    require("../../Global");
+    var obj = require("Order");
+    obj.OrderLoader.start();
+</script>
+</html>

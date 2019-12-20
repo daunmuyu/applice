@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+   
+    
+    <script src="../js/base.js"></script>
+    <script src="../js/api.js"></script>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/flex.css">
+    <title></title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="display-flex flex-direction-column" style="width:100%;height:100%;background-color:#fff;">
+        <pageheader :showback="true" class="flex-shrink-0" :withbg="false"></pageheader>
+        <div class="flex-1 canscroll">
+            <div style="margin-top:0.54rem;margin-bottom:1.53rem;color:#4c4c4c;font-size:0.55rem;text-align:center;font-weight:bold;">{{textRes.items["用户注册"]}}</div>
+            <div style="height:1.45rem;margin-left:1.05rem;margin-right:1.05rem;border-bottom:1px solid #d8d8d8;position:relative;">
+                <div style="position:absolute;left:0;height:100%;line-height:1.45rem;width:1.45rem;font-weight:bold;font-size:0.42rem;">
+                    {{selectedCountry?"+"+selectedCountry:""}}
+                </div>
+                <select v-model="selectedCountry" style="-webkit-appearance:none;border:0;position:absolute;left:0;height:100%;opacity:0;width:1.45rem;">
+                    <option :value="item.timeZone" v-for="item in countries">+{{item.timeZone}} {{item.countryName}}</option>
+                </select>                
+                <input :class="{redplaceholder:validator.username}" style="position:absolute;left:1.45rem;top:0;right:0;height:100%;border:0;-webkit-appearance:none;font-size:0.42rem;color:#333333;" :placeholder="textRes.items['请输入手机号']" type="tel" v-model="username" />
+            </div>
+            <div style="height:1.45rem;margin-left:1.05rem;margin-right:1.05rem;border-bottom:1px solid #d8d8d8;position:relative;">
+
+                <input :class="{redplaceholder:validator.verifyCode}" style="position:absolute;left:1.45rem;top:0;right:0;height:100%;border:0;-webkit-appearance:none;font-size:0.42rem;color:#333333;" :placeholder="textRes.items['请输入验证码']" type="tel" v-model="verifyCode" />
+                <div @click="sendsms" style="height:0.78rem;line-height:0.78rem;position:absolute;right:0;top:0.335rem;padding-left:0.7rem;padding-right:0.7rem;color:#fffefa;border-radius:999rem;" :style="{backgroundColor:canSendSms>0?'#808080':'#f7bc70'}">{{canSendSms>0?canSendSms:textRes.items['获取验证码']}}</div>
+            </div>
+            <div style="height:1.45rem;margin-left:1.05rem;margin-right:1.05rem;border-bottom:1px solid #d8d8d8;position:relative;">
+                <input :class="{redplaceholder:validator.pwd1}" style="position:absolute;left:1.45rem;top:0;right:0;height:100%;width:100%;border:0;-webkit-appearance:none;font-size:0.42rem;color:#333333;" :placeholder="textRes.items['请输入m密码']" type="password" v-model="pwd1" />
+            </div>
+            <div style="height:1.45rem;margin-left:1.05rem;margin-right:1.05rem;border-bottom:1px solid #d8d8d8;position:relative;">
+                <input style="position:absolute;left:1.45rem;top:0;right:0;height:100%;width:100%;border:0;-webkit-appearance:none;font-size:0.42rem;color:#333333;" :placeholder="textRes.items['请再次输入密码']" type="password" v-model="pwd2" />
+            </div>
+            <div class="display-flex flex-direction-row" style="margin-top:0.43rem;">
+                <check v-model="agree" :text="textRes.items['我阅读并同意']" style="margin-left:1.05rem;"></check>
+                <div @click="read_zc" style="margin-left:0.2rem;color:#e73130;">{{textRes.items['注册协议']}}</div>
+                <div @click="read_fx" style="color:#e73130;">{{textRes.items['风险揭示']}}</div>
+            </div>
+            <div class="display-flex flex-direction-column align-items-center" style="height:1.19rem;margin-top:0.2rem;">
+                <loading v-show="isBusy" bgcolor="#eee" style="width:1rem;height:1rem;"></loading>
+            </div>
+            <div @click="submit" class="submitbtn" v-show="!isBusy" style="height:1.19rem;line-height:1.19rem;margin-left:1.05rem;margin-right:1.05rem;">{{textRes.items['提交']}}</div>
+
+        </div>
+    </div>
+</body>
+<script>
+    var global = require("../Global");
+    global.navigation.setParent(document.body);
+
+    var obj = require("Register");
+    obj = new obj.Register();
+    global.navigation.push(obj, false);
+</script>
+</html>

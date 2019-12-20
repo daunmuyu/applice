@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div @click="documentClick" style="width:100%;height:100%;background-color:rgba(0,0,0,0.5);padding-left:1.05rem;padding-right:1.05rem;" class="display-flex flex-direction-column justify-content-center">
+        <div @click.stop="emptyClick" class="display-flex flex-direction-column align-items-center"  style="border-radius:0.13rem;background-color:#fff;padding:0.78rem 0.6rem 0.72rem 0.6rem;">
+
+            <div style="display:table;">
+                <div style="display:table-row" v-if="item!=null&&item!=undefined" v-for="item,index in captions">
+                    <div style="display:table-cell;font-size:0.42rem;font-weight:bold;">{{item}}</div>
+                    <div style="display:table-cell;font-size:0.42rem;padding-left:0.3rem;">{{contents[index]}}</div>
+                </div>
+            </div>
+
+            <div @click="submit" class="submitbtn" style="height:1.19rem;width:5rem;line-height:1.19rem;margin-top:0.55rem;color:#fff;">{{textRes.items['确定']}}</div>
+        </div>
+    </div>
+</body>
+</html>

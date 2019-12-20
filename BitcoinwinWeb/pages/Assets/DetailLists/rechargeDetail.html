@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .borderBottom {
+            border-bottom: 1px solid #F5F5F5;
+        }
+    </style>
+</head>
+<body>
+    <!--[{"id":27,"amount":30,"canusedamount":49.9,"payintype":1,"transerialnumber":"e6803c38-63f6-4f6a-9b04-d68e1777269d",
+        result(0=失败，1=成功,2=未支付)
+    "currenttype":"USDT","result":1,"sourcecurrency":"USDT","resulttime":"","tradetime":"2019-04-17 06:45:15","resultmoney":30,"paySource":0}]-->
+    <div class="canscroll" style="width:100%;height:100%;position:absolute;left:0;top:0;background-color:#fff;font-size:0.45rem;">
+        <pageheader :title="textRes.items['详情']"></pageheader>
+
+        <div style="padding:0.87rem 0.45rem 0 0.45rem;color:#4A4A4A;">
+            <div class="display-flex flex-direction-row borderBottom align-items-center" style="padding-bottom:0.45rem;font-weight:bold;">
+                <div class="flex-1">{{typeObj.name}}</div>
+                <div v-if="data.result==1" :style="{color:textRes.items['TextColor涨']}">{{formatMoney(data.amount , "+")}}</div>
+                <div v-else>{{formatMoney(data.amount)}}</div>
+            </div>
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['状态']}}</div>
+                <div v-if="data.result==0" style="color:#EA3131;">{{textRes.items['失败']}}</div>
+                <div v-if="data.result==1||data.result==undefined" style="color:#1c9d36;">{{textRes.items['成功']}}</div>
+                <div v-if="data.result==2">{{textRes.items['未支付']}}</div>
+            </div>
+            <div v-if="data.payintype==2" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['类型']}}</div>
+                <div>{{textRes.items['法币']}}</div>
+            </div>
+            <div v-if="data.payintype==1" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['类型']}}</div>
+                <div>{{textRes.items['币币']}}</div>
+            </div>
+            <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['币种']}}</div>
+                <div>{{data.currenttype}}</div>
+            </div>
+
+            <!--<div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+        <div class="flex-1">{{textRes.items['类型']}}</div>
+        <div v-if="">{{textRes.items['币币']}}</div>
+        <div>{{textRes.items['法币']}}</div>
+    </div>-->
+
+            <div v-if="data.result==1" class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                <div class="flex-1">{{textRes.items['实际到账']}}</div>
+                <div>{{data.resultmoney}}</div>
+            </div>
+            <div style="padding-top:0.5rem;color:#9B9B9B;font-size:0.42rem;line-height:0.8rem;position:relative;">
+                <div>
+                    {{textRes.items['余额']}}&nbsp;&nbsp;&nbsp;&nbsp;{{formatMoney(toFixed(data.canusedamount , 2 , true , true))}}
+                </div>
+                <div>
+                    {{textRes.items['时间']}}&nbsp;&nbsp;&nbsp;&nbsp;{{showUTCTime(data.tradetime||data.biztime)}}
+                </div>
+                <div v-if="data.serialnumber">
+                    {{textRes.items['流水号']}}&nbsp;&nbsp;&nbsp;&nbsp;{{showUTCTime(data.serialnumber)}}
+                </div>
+
+                <div v-if="false" style="border-radius:0.12rem;background-color:#EA3131;font-size:0.36rem;color:#fff;text-align:center;width:2.22rem;height:0.81rem;line-height:0.81rem;position:absolute;top:0.5rem;right:0rem;">
+                    重新发起
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

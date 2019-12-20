@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .borderBottom {
+            border-bottom: 1px solid #F5F5F5;
+        }
+    </style>
+</head>
+<body>
+    <div class="canscroll" style="width:100%;height:100%;position:absolute;left:0;top:0;background-color:#fff;font-size:0.45rem;">
+        <pageheader :title="textRes.items['详情']"></pageheader>
+
+        <div style="padding:0.87rem 0.45rem 0 0.45rem;color:#4A4A4A;">
+            <div class="display-flex flex-direction-row borderBottom align-items-center" style="padding-bottom:0.45rem;font-weight:bold;">
+                <div class="flex-1">{{item.typeObj.name}}</div>
+                <div :style="{color:item.typeObj.color}">{{formatMoney(item.amount , item.typeObj.f)}}</div>
+            </div>
+
+
+            <div>
+              
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                    <div class="flex-1">{{textRes.items['赔付金额']}}</div>
+                    <div>{{item.amount}}</div>
+                </div>
+
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                    <div class="flex-1">{{textRes.items['亏损金额']}}</div>
+
+                    <div>{{item.extData.PayForAmount?item.extData.PayForAmount:item.amount}}</div>
+                </div>
+
+                <div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                    <div class="flex-1">{{textRes.items['交易次数']}}</div>
+                    <div>{{textRes.getItem('{0}次',item.extData.TradeSectNum , 's')}}</div>
+                </div>
+
+                <!--<div class="display-flex flex-direction-row align-items-center borderBottom" style="height:1.23rem;font-size:0.36rem;">
+                    <div class="flex-1">{{textRes.items['交易时间']}}</div>
+                    <div>{{showUTCTime(item.biztime||item.tradetime||item.withdrawalstime)}}</div>
+                </div>-->
+
+                <div style="padding-top:0.5rem;color:#9B9B9B;font-size:0.42rem;line-height:0.8rem;position:relative;">
+                    <div>
+                        {{textRes.items['余额']}}&nbsp;&nbsp;&nbsp;&nbsp;{{formatMoney(item.canusedamount)}} USDT
+                    </div>
+                    <div>
+                        {{textRes.items['时间']}}&nbsp;&nbsp;&nbsp;&nbsp;{{showUTCTime(item.biztime||item.tradetime||item.withdrawalstime)}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

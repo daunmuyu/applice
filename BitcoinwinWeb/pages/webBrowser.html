@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div v-if="!fullScreen&&!isIOS" class="display-flex flex-direction-column" style="width:100%;height:100%;background-color:#fff;">
+        <pageheader v-if="title" :showback="backButtonColor!=''&&backButtonColor!=undefined" :title="title" :backcolor="backButtonColor" class="flex-shrink-0" :withbg="withbg"></pageheader>
+        <div v-if="!title" class="mainbgcolor" :style="{height:safeAreaTop}"></div>
+        <div class="flex-1" style="position:relative;background-color:#fff;">
+            <iframe style="position:absolute;left:0;top:0;width:100%;height:100%;border:0;" :src="trueSrc"></iframe><!--这里部分ios有问题-->
+            <div v-if="isBusy" style="position:absolute;left:0;top:0;width:100%;height:100%;" class="display-flex flex-direction-row justify-content-center align-items-center">
+                <loading bgcolor="#eee" style="width:2rem;height:2rem;"></loading>
+            </div>
+        </div>
+
+    </div>
+
+    <div v-if="fullScreen&&!isIOS" class="display-flex flex-direction-row justify-content-center align-items-center" style="width:100%;height:100%;background-color:#fff;position:relative;">
+        <div style="position:absolute;width:100%;height:100%;left:0;top:0;overflow-x:hidden;overflow-y:scroll;-webkit-overflow-scrolling:touch;">
+            <iframe style="position:absolute;left:0;top:0;width:100%;height:100%;border:0;" :src="trueSrc"></iframe>
+        </div>
+        <div v-if="isBusy" style="position:absolute;left:0;top:0;width:100%;height:100%;" class="display-flex flex-direction-row justify-content-center align-items-center">
+            <loading bgcolor="#eee" style="width:2rem;height:2rem;"></loading>
+        </div>
+        <pageheader :showback="backButtonColor!=''&&backButtonColor!=undefined" :backcolor="backButtonColor" style="position:absolute;left:0;top:0;right:0;" :withbg="false"></pageheader>
+
+    </div>
+
+
+
+    <div v-if="!fullScreen&&isIOS" class="display-flex flex-direction-column" style="width:100%;height:100%;background-color:#fff;">
+        <pageheader v-if="title" :showback="backButtonColor!=''&&backButtonColor!=undefined" :title="title" :backcolor="backButtonColor" class="flex-shrink-0" :withbg="withbg"></pageheader>
+        <div v-if="!title" class="mainbgcolor" :style="{height:safeAreaTop}"></div>
+        <div class="flex-1" style="position:relative;overflow-x:hidden;overflow-y:scroll;-webkit-overflow-scrolling:touch;">
+            <iframe style="width:100%;height:100%;border:0;" :src="trueSrc"></iframe><!--ios用这个样式设置比较好-->
+            <div v-if="isBusy" style="position:absolute;left:0;top:0;width:100%;height:100%;" class="display-flex flex-direction-row justify-content-center align-items-center">
+                <loading bgcolor="#eee" style="width:2rem;height:2rem;"></loading>
+            </div>
+        </div>
+
+    </div>
+
+    <div v-if="fullScreen&&isIOS" class="display-flex flex-direction-row justify-content-center align-items-center" style="width:100%;height:100%;background-color:#fff;position:relative;">
+        <div style="position:absolute;width:100%;height:100%;left:0;top:0;overflow-x:hidden;overflow-y:scroll;-webkit-overflow-scrolling:touch;">
+            <iframe style="width:100%;height:100%;border:0;" :src="trueSrc"></iframe>
+        </div>
+        <loading v-if="isBusy" bgcolor="#eee" style="width:2rem;height:2rem;"></loading>
+        <pageheader :showback="backButtonColor!=''&&backButtonColor!=undefined" :backcolor="backButtonColor" style="position:absolute;left:0;top:0;right:0;" :withbg="false"></pageheader>
+
+    </div>
+</body>
+</html>

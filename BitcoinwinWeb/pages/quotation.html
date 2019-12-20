@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .tabjg {
+            width: 0.06rem;
+            height: 0.54rem;
+            background-color: #ea3131;
+            margin-top: 0.69rem;
+        }
+        .tabitem {
+            text-align: center;
+            font-size: 0.45rem;
+            line-height: 1.15rem;
+            height: 1.15rem;
+            font-weight: bold;
+            position:relative;
+        }
+        .commodityItem {
+            margin-left: 0.58rem;
+            margin-right: 0.58rem;
+            height: 1.93rem;
+            border-bottom: 1px solid #f3f3f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="display-flex flex-direction-column" style="background-color:#fff;width:100%;height:100%;position:absolute;left:0;top:0;">
+        <pageheader v-if="showTitle" :showback="false" class="flex-shrink-0" :title="textRes.items['行情']" :withbg="false"></pageheader>
+        <div v-if="!showTitle" style="height:0.3rem;"></div>
+        <div class="flex-shrink-0" style="width:100%;height:1.15rem;position:relative;">
+            <div class="display-flex flex-direction-row" style="position:absolute;left:0.6rem;right:0.6rem;top:0;height:100%;">
+                <template v-for="item,index in commodityTypes">
+                    <div class="flex-1 tabitem" v-bind:style="{color:item.selected?'#fff':'#333333',backgroundColor:item.selected?'#ea3131':'#fff',borderRadius:index==0?'3px 0 0 3px':(index==commodityTypes.length-1?'0 3px 3px 0':''),border:item.selected?'':'1px solid #979797',}" @click="typeClick(item)">
+                    {{item.commoditytypename}}
+                        <div v-show="item.selected" style="position:absolute;top:1.15rem;left:0;right:0;height:0.2rem;width:100%;background:linear-gradient(to bottom, #f8bfbf 0%,#ffffff 100%);"></div>
+                    </div>
+                </template>
+            </div>            
+        </div>
+        <div class="flex-shrink-0" style="height:0.71rem;width:100%;margin-top:0.5rem;">
+            <div style="margin-left:0.58rem;margin-right:0.58rem;font-size:0.34rem;color:#9b9b9b;line-height:0.71rem;" class="display-flex flex-direction-row">
+                <div style="padding-left:0.51rem;width:5.045rem;">{{textRes.items["品种"]}}</div>
+                <div style="width:2.5rem;">{{textRes.items["最新价"]}}</div>
+                <div style="text-align:right;padding-right:0.29rem;width:2.545rem;">{{textRes.items["涨跌幅"]}}</div>
+            </div>
+        </div>
+
+        <div id="divlist" class="flex-1 canscroll" style="width:100%;">
+            <template v-for="item in commodities">
+                <div @click="itemClick(item)" class="display-flex flex-direction-row commodityItem">
+                    <div style="width:5.045rem;">
+                        <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.41rem;color:#333333;">
+                            <div style="font-weight:bold;font-size:0.45rem;">{{item.symbolname}}</div>
+                            <div v-bind:style="{fontSize:getFontSize(0.28),height:getFontSize(0.48,true),lineHeight:getFontSize(0.48,true)}" style="margin-left:0.22rem;width:1.26rem;background-color:#e8ecf5;border-radius:9rem;text-align:center;"><span style="margin-left:0.03rem;" :style="{fontSize:getFontSize(0.28)}">{{item.leverage}}</span>x</div>
+                        </div>
+                        <div style="margin-top:0.15rem;font-size:0.32rem;color:#9b9b9b;">{{item.status==2?textRes.items['未开盘']:(item.tradestatus==4?textRes.items['停止交易']:textRes.items['交易中'])}}</div>
+                    </div>
+                    <div v-bind:style="{color:item.isDown?textRes.items['行情列表-跌']:textRes.items['行情列表-涨']}" style="font-size:0.48rem;padding-top:0.43rem;width:2.5rem;font-weight:bold;">{{item.showPrice==undefined?'--':formatMoney(toFixed(item.showPrice,item.decimalplace))}}</div>
+                    <div style="position:relative;width:2.545rem;">
+                        <div v-bind:style="{backgroundColor:item.isDown?textRes.items['行情列表-跌']:textRes.items['行情列表-涨']}" style="position:absolute;top:0.43rem;font-size:0.4rem;text-align:center;line-height:0.9rem;right:0px;width:2.01rem;height:0.9rem;border-radius:0.08rem;color:#fff;">
+                            {{item.percent}}
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>    
+</body>
+</html>

@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <script src="js/base.js"></script>
+    <script src="js/api.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/flex.css">
+    <style>
+        .tab {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            padding-top: 0.18rem;
+        }
+        .tab > svg {
+            width:0.6rem;
+            height:0.6rem;
+        }
+        .textnormal {
+            color: #4a4a4a;
+        }
+        .textfill {
+            fill: #4a4a4a;
+            
+        }
+        .textstroke {
+            stroke: #4a4a4a;
+        }
+        .opacity6 {
+            opacity: 0.6;
+        }
+        .opacity5 {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div style="width:100%;height:100%;position:absolute;left:0;top:0;background-color:#fff;">
+        <div id="pageContainer" style="position:absolute;left:0;top:0;bottom:1.47rem;width:100%;">
+
+        </div>
+
+        <!--tab items -->
+        <div id="pageTab" class="display-flex flex-direction-row" style="position:absolute;left:0;right:0;bottom:0;height:1.47rem;background-color:#fff;background-color:#fff;box-shadow:0 0 10px #e6e6e6;">
+            <div v-if="item.enable" class="flex-1" @click="itemClick(index)" touchmode style="position:relative;" v-for="item,index in tabs">
+                <div v-show="!item.selected" class="tab display-flex flex-direction-column align-items-center" v-html="item.icon"></div>
+                <div v-show="item.selected" class="tab display-flex flex-direction-column align-items-center" v-html="item.icon2"></div>
+                <div :class="{maincolor:item.selected,textnormal:!item.selected}" style="text-align:center;position:absolute;left:0;width:100%;top:0.89rem;font-size:0.34rem;">{{textRes.items[item.text]}}</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

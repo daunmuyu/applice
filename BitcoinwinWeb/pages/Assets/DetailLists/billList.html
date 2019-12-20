@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .date {
+            color: #4A4A4A;
+            font-size: 0.45rem;
+            font-weight: bold;
+        }
+        .borderBottom {
+            border-bottom: 1px solid #F5F5F5;
+        }
+    </style>
+</head>
+<body>
+    <div class="canscroll" style="width:100%;height:100%;position:absolute;left:0;top:0;background-color:#fff;">
+        <div style="position:relative;width:100%;">
+            <pageheader :title="textRes.items['资金明细']"></pageheader>
+            <div v-if="types.length>1" style="position:absolute;right:0.48rem;bottom:0.4rem;font-size:0.4rem;color:#fff;">
+                {{textRes.items['筛选']}}
+                <select v-model="opType" style="position:absolute;left:0;top:0;height:100%;width:100%;opacity:0;">
+                    <option v-for="op in types" :value="op.id">{{op.name}}</option>
+                </select>
+            </div>
+
+            <div v-show="isBusy" style="position:absolute;width:1rem;height:1rem;left:5.125rem;">
+                <loading style="width:1rem;height:1rem;margin-top:1rem;" bgcolor="#eee"></loading>
+            </div>
+        </div>
+        <div class="display-flex flex-direction-column align-items-center">
+            <div class="display-flex flex-direction-row align-items-center" style="margin-top:0.21rem;">
+                <div class="display-flex flex-direction-row align-items-center" style="position:relative;padding-top:0.6rem;padding-bottom:0.6rem;">
+                    <img src="imgs/date.svg" style="width:0.48rem;height:0.51rem" />
+                    <div class="date" style="margin-left:0.48rem;margin-right:0.66rem;">{{startDate}}</div>
+                    <input type="date" v-model="startDate" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;" />
+                </div>
+
+                <div style="font-size:0.36rem;font-weight:bold;">{{textRes.items['至']}}</div>
+
+                <div class="display-flex flex-direction-row align-items-center" style="position:relative;padding-top:0.6rem;padding-bottom:0.6rem;">
+                    <div class="date" style="margin-right:0.48rem;margin-left:0.66rem;">{{endDate}}</div>
+                    <img src="imgs/date.svg" style="width:0.48rem;height:0.51rem" />
+                    <input type="date" v-model="endDate" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;" />
+                </div>
+
+            </div>
+        </div>
+        <div style="background-color:#F5F5F5;height:0.3rem;"></div>
+        <template v-for="item in datas">
+            <div @click="itemClick(item)" style="padding:0.36rem 0.45rem 0 0.45rem;color:#4A4A4A;">
+                <div class="display-flex flex-direction-row borderBottom align-items-center" style="padding-bottom:0.15rem;font-size:0.45rem;font-weight:bold;">
+                    <div class="flex-1">{{item.typeObj.name}}</div>
+                    <div v-if="item.typeObj.id==8&&item.result==1" :style="{color:item.typeObj.color}">{{formatMoney(item.resultmoney , item.typeObj.f)}}</div>
+                    <div v-else-if="item.typeObj.id==8">{{formatMoney(item.resultmoney)}}</div>
+                    <div v-else-if="item.typeObj.id==9&&item.result==20" :style="{color:item.typeObj.color}">{{formatMoney(item.amount , item.typeObj.f)}}</div>
+                    <div v-else-if="item.typeObj.id==9">{{formatMoney(item.amount)}}</div>
+                    <div v-else :style="{color:item.typeObj.color}">{{formatMoney(item.amount , item.typeObj.f)}}</div>
+
+                    <svg v-if="item.typeObj.hasDetail" style="width:0.12rem;height:0.27rem;margin-left:0.24rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                        <path d="M0,0 L100,50 L0,100" class="mainstrokecolor" stroke-width="8" fill="none"></path>
+                    </svg>
+                    <!--<div style="color:#719B0F;margin-left:0.18rem;">失败</div>-->
+                </div>
+                <div class="display-flex flex-direction-row align-items-center" style="padding-top:0.15rem;font-size:0.36rem;padding-bottom:0.36rem;">
+                    <div v-if="!isCreditMode">{{textRes.items['余额']}}</div>
+                    <div v-if="isCreditMode">{{textRes.items['信用资本余额']}}</div>
+
+                    <div v-if="item.typeObj.id==8" class="flex-1" style="margin-left:0.75rem;">{{formatMoney(toFixed(item.canusedamount , 2 , true , true))}} {{item.currenttype?item.currenttype:""}}</div>
+                    <div v-else-if="item.typeObj.id==9" class="flex-1" style="margin-left:0.75rem;">{{formatMoney(toFixed(item.canusedamount , 2 , true , true))}} {{item.currenttype}}</div>
+                    <div v-else class="flex-1" style="margin-left:0.75rem;">{{formatMoney(toFixed(item.canusedamount , 2 , true , true))}} USDT</div>
+
+                    <div style="margin-left:0.18rem;">{{showUTCTime(item.biztime||item.tradetime||item.withdrawalstime)}}</div>
+                </div>
+            </div>
+            <div style="background-color:#F5F5F5;height:0.12rem;"></div>
+        </template>
+
+
+        <div @click="loadMore" style="color:#6c6c6e;text-align:center;line-height:1.3rem;font-size:0.3rem;">{{moretext}}</div>
+    </div>
+</body>
+</html>

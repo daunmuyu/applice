@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .content {
+        }
+        .content div {
+            font-size: 0.45rem;
+            color: #9B9B9B;
+        }
+    </style>
+</head>
+<body>
+    <div class="canscroll" style="width:100%;height:100%;position:absolute;left:0;top:0;background-color:#fff;font-size:0.45rem;">
+        <pageheader :title="title"></pageheader>
+
+        <div v-if="level==undefined" class="content" style="padding:0.87rem 0.45rem 0 0.45rem;position:relative;">
+            <div class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="color:#4A4A4A;font-weight:bold;">{{textRes.items['昨日收益']}}</div>
+                <div class="flex-shrink-0" style="color:#EA3131;font-weight:bold;">{{formatMoney(amount,"+")}}</div>
+            </div>
+            <div style="height:0.12rem;background-color:#F5F5F5;margin-top:0.6rem;"></div>
+            <div style="margin-top:0.6rem;" class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['邀请好友收益']}} {{textRes.getItem('n人',data.inviteFriendsCount,'s')}}</div>
+                <div class="flex-shrink-0" style="color:#EA3131;font-size:0.42rem;">{{formatMoney(data.inviteFriendsIncomeAmount,"+")}}</div>
+            </div>
+            <div style="margin-top:0.3rem;" class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['好友邀请收益']}} {{textRes.getItem('n人',data.friendsShareCount,'s')}}</div>
+                <div class="flex-shrink-0" style="color:#EA3131;font-size:0.42rem;">{{formatMoney(data.friendsShareIncomeAmount,"+")}}</div>
+            </div>
+            <div style="margin-top:0.3rem;" class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['邀请收益余额']}}</div>
+                <div class="flex-shrink-0" style="font-size:0.42rem;">{{formatMoney(data.canusedIncome)}}</div>
+            </div>
+            <div style="margin-top:0.3rem;" class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['预计结算时间']}}</div>
+                <div class="flex-shrink-0" style="font-size:0.42rem;">{{showUTCTime(data.estimatedSettlementDate)}}</div>
+            </div>
+        </div>
+
+        <div v-if="level==1" class="content" style="padding:0.87rem 0.45rem 0 0.45rem;position:relative;">
+            <div class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="color:#4A4A4A;font-weight:bold;">{{textRes.items['分享好友收获']}}</div>
+                <div class="flex-shrink-0" style="color:#EA3131;font-weight:bold;">{{formatMoney(amount,"+")}}</div>
+            </div>
+            <div style="height:0.12rem;background-color:#F5F5F5;margin-top:0.6rem;"></div>
+            <div style="margin-top:0.6rem;" class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['好友人数']}} {{textRes.getItem('n人',data.inviteFriendsNum,'s')}}</div>
+                <div class="flex-shrink-0" style="color:#EA3131;font-size:0.42rem;">{{formatMoney(data.inviteFriendsAmount,"+")}}</div>
+            </div>
+            <div style="margin-top:0.3rem;" class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['年化收益率']}}</div>
+                <div class="flex-shrink-0" style="font-size:0.42rem;">3%</div>
+            </div>
+            <div style="margin-top:0.3rem;" class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['邀请收益余额']}}</div>
+                <div class="flex-shrink-0" style="font-size:0.42rem;">{{formatMoney(data.canusedIncome)}}</div>
+            </div>
+            <div style="margin-top:0.3rem;" class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['预计结算时间']}}</div>
+                <div class="flex-shrink-0" style="font-size:0.42rem;">{{showUTCTime(data.estimatedSettlementDate)}}</div>
+            </div>
+        </div>
+
+        <div v-if="level==2" class="content" style="padding:0.87rem 0.45rem 0 0.45rem;position:relative;">
+            <div class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="color:#4A4A4A;font-weight:bold;">{{textRes.items['好友分享获赠']}}</div>
+                <div class="flex-shrink-0" style="color:#EA3131;font-weight:bold;">{{formatMoney(amount,"+")}}</div>
+            </div>
+            <div style="height:0.12rem;background-color:#F5F5F5;margin-top:0.6rem;"></div>
+            <div style="margin-top:0.6rem;" class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['好友分享人数']}} {{textRes.getItem('n人',data.friendsShareNum,'s')}}</div>
+                <div class="flex-shrink-0" style="color:#EA3131;font-size:0.42rem;">{{formatMoney(data.friendsShareAmount,"+")}}</div>
+            </div>
+            <div style="margin-top:0.3rem;" class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['年化收益率']}}</div>
+                <div class="flex-shrink-0" style="font-size:0.42rem;">3%</div>
+            </div>
+            <div style="margin-top:0.3rem;" class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['邀请收益余额']}}</div>
+                <div class="flex-shrink-0" style="font-size:0.42rem;">{{formatMoney(data.canusedIncome)}}</div>
+            </div>
+            <div style="margin-top:0.3rem;" class="display-flex flex-direction-row align-items-center">
+                <div class="flex-1" style="font-size:0.42rem;">{{textRes.items['预计结算时间']}}</div>
+                <div class="flex-shrink-0" style="font-size:0.42rem;">{{showUTCTime(data.estimatedSettlementDate)}}</div>
+            </div>
+        </div>
+
+        <loading v-show="isBusy" style="position:absolute;left:5.125rem;top:1rem;width:1rem;height:1rem;"></loading>
+    </div>
+</body>
+</html>

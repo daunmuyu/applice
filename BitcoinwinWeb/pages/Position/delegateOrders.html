@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    
+    
+    <script src="../../js/base.js"></script>
+    <script src="../../js/api.js"></script>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/flex.css">
+    <style>
+        .td2 {
+        }
+        td {
+            white-space: nowrap;
+            font-size: 0.34rem;
+        }
+            .td2 td {
+                padding-top: 0.22rem;
+                color: #565656;
+                font-size: 0.32rem;
+            }
+    </style>
+</head>
+<body>
+    <div class="display-flex flex-direction-column" style="width:100%;height:100%;background-color:#fff;">
+        <div style="position:relative;width:100%;">
+            <pageheader class="flex-shrink-0" :title="textRes.items['委托']" :withloading="true" :showloading="isBusy"></pageheader>
+            <div @click="showCanceledOrders" style="position:absolute;right:0.48rem;bottom:0.4rem;font-size:0.4rem;color:#fff;">{{textRes.items['撤销的订单']}}</div>
+        </div>
+        <div class="display-flex flex-direction-row align-items-center" style="height:1.28rem;background-color:#f8f8f8;position:relative;">
+            <div v-show="datas.length>0" @click="cancelAllOrders" class="display-flex flex-direction-row align-items-center justify-content-center" style="position:absolute;right:0.61rem;padding-left:0.5rem;padding-right:0.5rem;height:0.72rem;background-color:#e8ebf4;color:#484847;text-align:center;border-radius:5px;font-size:0.36rem;">
+                {{textRes.items['一键撤单']}}
+            </div>
+        </div>
+        <div class="flex-1 canscroll">
+            <template v-for="item in datas">
+                <div style="margin-left:0.55rem;margin-right:0.55rem;">
+                    <div class="display-flex flex-direction-row align-items-center" style="height:1.28rem;border-bottom:1px solid #eeeeee;position:relative;">
+                        <div style="color:#3f3f3f;font-weight:bold;font-size:0.46rem;">{{item.symbolname}}</div>
+                        <div :style="{lineHeight:getFontSize(0.42),fontSize:getFontSize(0.19)}" style="border:1px solid #919191;padding-left:0.22rem;padding-right:0.22rem;border-radius:999rem;margin-left:0.16rem;">{{item.leverage}}x</div>
+                        <div v-if="item.bstype==1" class="display-flex flex-direction-column align-items-center" style="width:0.55rem;height:0.55rem;margin-left:0.16rem;border-radius:999rem;" :style="{backgroundColor:textRes.items['行情列表-涨']}">
+                            <svg style="height:0.3rem;width:0.3rem;margin-top:0.11rem;" viewBox="0 0 11 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon id="Path-2" fill="#ffffff" points="0 5.24584961 5.3918457 0 10.8137207 5.24584961 7.61242676 5.24584961 7.61242676 12 3.10449219 12 3.10449219 5.24584961"></polygon>
+                                </g>
+                            </svg>
+                        </div>
+                        <div v-if="item.bstype==2" class="display-flex flex-direction-column align-items-center" style="width:0.55rem;height:0.55rem;margin-left:0.16rem;border-radius:999rem;" :style="{backgroundColor:textRes.items['行情列表-跌']}">
+                            <svg style="height:0.3rem;width:0.3rem;margin-top:0.13rem;" viewBox="0 0 11 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon id="Path-2" fill="#ffffff" transform="translate(5.406860, 6.000000) scale(1, -1) translate(-5.406860, -6.000000) " points="0 5.24584961 5.3918457 0 10.8137207 5.24584961 7.61242676 5.24584961 7.61242676 12 3.10449219 12 3.10449219 5.24584961"></polygon>
+                                </g>
+                            </svg>
+                        </div>
+                        <div style="font-size:0.24rem;color:#5b5b5b;">
+                            &nbsp;&nbsp;X{{textRes.getItem('n手' , item.orderquantity , 's')}}
+                        </div>
+                        <div @click="cancelOrder(event,item)" style="position:absolute;right:0;color:#4f4f4f;border-radius:0.15rem;padding-left:0.17rem;padding-right:0.17rem;height:0.69rem;line-height:0.69rem;font-size:0.29rem;background-color:#e8ebf4;">
+                            {{textRes.items['撤单']}}
+                        </div>
+                    </div>
+                    <div @click="expandedClick(item)" class="display-flex flex-direction-row align-items-center" style="height:1.75rem;position:relative;border-bottom:1px solid #eeeeee;">
+                        <div class="flex-1">
+                            <div style="font-size:0.51rem;text-align:center;font-weight:bold;color:#242424;">{{formatMoney(item.orderprice)}}</div>
+                            <div style="font-size:0.27rem;margin-top:0.22rem;text-align:center;color:#242424;">{{textRes.items['挂单价']}}</div>
+                        </div>
+                        <div class="flex-1">
+                            <div style="font-size:0.51rem;text-align:center;font-weight:bold;color:#666666;">{{formatMoney(item.stopprofitprice)}}</div>
+                            <div style="font-size:0.27rem;margin-top:0.22rem;text-align:center;color:#666666;">{{textRes.items['止盈价格']}}</div>
+                        </div>
+                        <div class="flex-1">
+                            <div style="font-size:0.51rem;text-align:center;font-weight:bold;color:#a7a7a7;">{{formatMoney(item.stoplossprice)}}</div>
+                            <div style="font-size:0.27rem;margin-top:0.22rem;text-align:center;color:#a7a7a7;">{{textRes.items['止损价格']}}</div>
+                        </div>
+                    </div>
+                    <table class="td2" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td>{{textRes.items['保证金']}}</td>
+                            <td style="width:100%;padding-left:0.42rem;">{{formatMoney(item.margin)}}</td>
+                            <td>{{textRes.items['融资额']}}</td>
+                            <td style="padding-left:0.42rem;">{{formatMoney(item.financingamount)}}</td>
+                        </tr>                       
+                        <tr>
+                            <td>{{textRes.items['委托时间']}}</td>
+                            <td style="width:100%;padding-left:0.42rem;" colspan="3">{{showUTCTime(item.ordetime)}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{textRes.items['委托单号']}}</td>
+                            <td style="width:100%;padding-left:0.42rem;" colspan="3">{{item.orderno}}</td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="height:0.32rem;background-color:#f8f8f8;margin-top:0.3rem;"></div>
+            </template>
+            <div @click="loadMore" style="color:#6c6c6e;text-align:center;line-height:1.3rem;font-size:0.3rem;">{{moretext}}</div>
+        </div>
+    </div>
+</body>
+<script>
+    var global = require("../../Global");
+    //global.setLanguage("en-US");
+    var obj = require("DelegateOrders");
+    var page = new obj.DelegateOrders();
+    page.model.datas.push({
+        ordetime: "2019-04-16 00:00",
+        symbol: "BTC",
+        marketsymbol: "BTCUSDT",
+        leverage: 100,
+        orderquantity: 3,
+        bstype: 1,
+
+        orderprice: 123,
+        margin: 2354,
+        financingamount: 333,
+        stopprofit: "",
+        stoploss: "",
+        stopprofitprice: "--",
+        stoplossprice: "--",
+
+        symbolname: "",
+        orderno: "3689"
+    });
+    page.setParent(document.body);
+</script>
+</html>

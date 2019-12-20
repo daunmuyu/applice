@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .dialogBtn {
+            height: 1rem;
+            line-height: 1rem;
+            font-size: 0.46rem;
+            border-radius: 0.1rem;
+            padding: 0 0.6rem 0 0.6rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="pages-personInfo display-flex flex-direction-column" style="width:100%;height:100%;background-color:#fff;">
+        <pageheader class="flex-shrink-0" :title="textRes.items['设置']" :withloading="true" :showloading="isBusy"></pageheader>
+
+        <div class="flex-1 canscroll">
+            <div style="margin-top:0.1rem;padding-top:0.2rem;">
+
+                <!--<div @click="watchPriceClick" class="item itemborder">
+                    <div class="itemtext">
+                        {{textRes.items['盯盘助手']}}
+                    </div>
+                    <div class="item-right-text"></div>
+                    <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.58rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                        <path d="M0,0 L100,50 L0,100" class="mainstrokecolor" stroke-width="8" fill="none"></path>
+                    </svg>
+                </div>-->
+
+                <div class="item itemborder">
+                    <div class="itemtext">
+                        {{textRes.items['K线图设置']}}
+                    </div>
+                    <div class="item-right-text">{{selectedPriceType}}</div>
+                    <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.58rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                        <path d="M0,0 L100,50 L0,100" class="mainstrokecolor" stroke-width="8" fill="none"></path>
+                    </svg>
+                    <select v-model="priceType" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;">
+                        <option :value="item.value" v-for="item in priceItems">{{item.text}}{{item.value==0?("("+textRes.items['默认']+")") : ""}}</option>
+                    </select>
+                </div>
+
+                <div v-if="logined&&isAllowFllowOrder" class="item itemborder">
+                    <div class="itemtext">
+                        {{textRes.items['自动跟单']}}
+                    </div>
+                    <div class="display-flex flex-direction-row align-items-center" style="position:absolute;right:0.2rem;top:0;height:100%;">
+                        <switcher v-model="isFllowOrder" activecolor="#4371D3" style="width:0.98rem;height:0.49rem;"></switcher>
+                    </div>
+
+                </div>
+
+                <div class="item itemborder">
+                    <div class="itemtext">
+                        {{textRes.items['K线图颜色']}}
+                    </div>
+                    <div class="item-right-text">{{selectedLineColorText}}</div>
+                    <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.58rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                        <path d="M0,0 L100,50 L0,100" class="mainstrokecolor" stroke-width="8" fill="none"></path>
+                    </svg>
+                    <select v-model="currentLineColor" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;">
+                        <option :value="item.value" v-for="item in lineColors">{{item.text}}</option>
+                    </select>
+                </div>
+
+                <div class="item itemborder">
+                    <div class="itemtext">
+                        {{textRes.items['语言选择']}}
+                    </div>
+                    <div class="item-right-text">{{textRes.langDesc}}</div>
+                    <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.58rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                        <path d="M0,0 L100,50 L0,100" class="mainstrokecolor" stroke-width="8" fill="none"></path>
+                    </svg>
+                    <select v-model="currentLangName" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;">
+                        <option :value="item.langName" v-for="item in supportLangs">{{item.langDesc}}</option>
+                    </select>
+                </div>
+                <div @click="checkUpdate" class="item itemborder">
+                    <div class="itemtext">
+                        {{textRes.items['版本']}}
+                    </div>
+                    <div class="item-right-text">{{appVersion}}</div>
+                    <svg style="position:absolute;right:0.18rem;width:0.12rem;height:0.27rem;top:0.58rem;" preserveAspectRatio="none" viewBox="0 0 110 100">
+                        <path d="M0,0 L100,50 L0,100" class="mainstrokecolor" stroke-width="8" fill="none"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div @click="logout" v-if="logined" class="submitbtn" style="margin-top:1.34rem;margin-left:0.46rem;margin-right:0.46rem;height:1.21rem;line-height:1.21rem;">{{textRes.items['退出登录']}}</div>
+        </div>
+
+
+        <div v-if="isShowFllowConfirm" style="position:absolute;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.3);">
+            <div class="display-flex flex-direction-column" style="position:absolute;left:3%;top:3%;width:94%;height:94%;border-radius:0.3rem;background-color:#fff;">
+                <div class="flex-1 canscroll" style="padding-top:0.4rem;">
+                    <img v-if="textRes.langName=='zh-CN'" src="../../imgs/fllow.zh_CN.svg" style="width:100%;" />
+                    <img v-if="textRes.langName=='en-US'" src="../../imgs/fllow.en_US.svg" style="width:100%;" />
+                </div>
+                <div class="display-flex flex-direction-row justify-content-center" style="margin-top:0.47rem;margin-bottom:0.47rem;">
+                    <div @click="cancelFllowOrder" class="dialogBtn" style="background-color:#777;color:#fff;">取消</div>
+                    <div @click="confirmFllowOrder" class="dialogBtn" style="color:#fff;margin-left:0.47rem;" :style="{backgroundColor:fllowOrderConfirmSec>0?'#777':'#ea3031'}">{{fllowOrderConfirmSec>0?'（'+fllowOrderConfirmSec+'）':''}}同意</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

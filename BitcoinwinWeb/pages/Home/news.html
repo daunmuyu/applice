@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <script src="../../js/base.js"></script>
+    <script src="../../js/api.js"></script>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/flex.css">
+    <style>
+        .td2 {
+        }
+        td {
+            white-space: nowrap;
+            font-size: 0.34rem;
+        }
+            .td2 td {
+                padding-top: 0.22rem;
+                color: #565656;
+                font-size: 0.32rem;
+            }
+
+        .content0 {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+        }
+        .content1 {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 30000;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="display-flex flex-direction-column canscroll" style="width:100%;height:100%;background-color:#fff;color:#4A4A4A;">
+        <pageheader class="flex-shrink-0" :withbg="false" :title="textRes.items['今日快讯']" :withloading="true" :showloading="isBusy"></pageheader>
+
+        <div class="flex-1 canscroll">
+            <div style="background-color:#F8F8F8;padding:0.45rem;font-size:0.42rem;font-weight:bold;">
+                {{new Date().Format(textRes.items['日期Format'])}} {{getWeek()}}
+            </div>
+            <div @click="itemClick(item)" v-for="item in datas" style="margin:0.57rem 0.48rem 0 0.48rem;font-size:0.36rem;">
+                <div style="color:#EA3131;">
+                    {{new Date(item.created_at*1000).Format("HH:mm")}}
+                </div>
+                <div style="font-size:0.36rem;margin-top:0.3rem;font-weight:bold;">
+                    {{item.title}}
+                </div>
+                <div class="content0" onclick="if (this.className == 'content0') { this.className = 'content1';} else { this.className = 'content0'; }" style="font-size:0.36rem;margin-top:0.3rem;" >
+                    {{item.content}}
+                </div>
+            </div>
+            <div @click="loadMore" style="color:#6c6c6e;text-align:center;line-height:1.3rem;font-size:0.3rem;">{{moretext}}</div>
+        </div>
+    </div>
+</body>
+<script>
+   
+</script>
+</html>

@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div @click="meclick" class="display-flex flex-direction-row">
+        <div class="display-flex flex-direction-row align-items-center justify-content-center" :style="{border:'1px solid '+color}" style="border-radius:0.1rem;width:0.51rem;height:0.51rem;">
+            <svg v-show="checked" style="width:60%;height:60%;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                 viewBox="0 0 426.67 426.67" xml:space="preserve">
+                <path :style="{fill:color}" d="M153.504,366.839c-8.657,0-17.323-3.302-23.927-9.911L9.914,237.265
+	                c-13.218-13.218-13.218-34.645,0-47.863c13.218-13.218,34.645-13.218,47.863,0l95.727,95.727l215.39-215.386
+	                c13.218-13.214,34.65-13.218,47.859,0c13.222,13.218,13.222,34.65,0,47.863L177.436,356.928
+	                C170.827,363.533,162.165,366.839,153.504,366.839z" />
+
+            </svg>
+        </div>
+
+        <div class="display-flex flex-direction-row align-items-center" style="padding-left:0.24rem;height:100%;white-space:nowrap;" :style="{color:textcolor,fontSize:fontsize}">
+            <div>{{text}}</div>
+        </div>
+    </div>
+    
+    
+</body>
+</html>
